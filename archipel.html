@@ -1,0 +1,891 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow, noarchive">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob:; font-src 'self'; connect-src 'self'; media-src 'self'; manifest-src 'self'; worker-src 'self'; object-src 'none'; base-uri 'self'; form-action 'none'">
+<meta name="referrer" content="no-referrer">
+<link rel="manifest" href="manifest-archipel.json">
+<link rel="apple-touch-icon" href="archipel-180.png">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Archipel">
+<meta name="theme-color" content="#7dd3fc">
+<title>L'Archipel des Savoirs</title>
+<style>
+:root{--ink:#1e1b4b;--muted:#5b5f86;--card:#ffffff;--line:#e0e7ff;--go:#22c55e;--go2:#16a34a;--ko:#ef4444;--hint:#fef3c7}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{margin:0;min-height:100%}
+body{font-family:"Nunito","Trebuchet MS",system-ui,sans-serif;font-size:19px;color:var(--ink);background:linear-gradient(180deg,#7dd3fc 0%,#bae6fd 45%,#e0f2fe 100%) fixed;overflow-x:hidden}
+body:before,body:after{content:"☁️";position:fixed;font-size:90px;opacity:.55;top:60px;left:-120px;animation:cloud 60s linear infinite;z-index:0;pointer-events:none}
+body:after{top:220px;font-size:60px;animation-duration:85s;animation-delay:-30s}
+@keyframes cloud{to{transform:translateX(calc(100vw + 260px))}}
+#app{position:relative;z-index:1;max-width:860px;margin:0 auto;padding:12px 16px 60px}
+h1,h2,h3,.big,.iname,.lvt{font-family:"Fredoka","Trebuchet MS",system-ui,sans-serif}
+h1{font-size:2.3rem;margin:4px 0;color:#fff;text-shadow:0 3px 0 #0369a1,0 6px 14px rgba(3,105,161,.35);letter-spacing:.5px;text-align:center}
+h2{font-size:1.5rem;margin:6px 0 10px}h3{font-size:1.2rem;margin:4px 0 8px}
+button{font:inherit;color:inherit;cursor:pointer}
+.card{background:var(--card);border-radius:24px;padding:20px;margin:14px 0;box-shadow:0 8px 0 rgba(30,27,75,.08),0 12px 30px rgba(30,27,75,.12)}
+.pop{animation:pop .35s cubic-bezier(.2,1.4,.4,1)}
+@keyframes pop{from{transform:scale(.92);opacity:0}to{transform:none;opacity:1}}
+.top{display:flex;justify-content:space-between;align-items:center;gap:8px;padding:6px 0}
+.who{display:flex;align-items:center;gap:8px;background:#fff;border:none;border-radius:40px;padding:4px 14px 4px 4px;font-weight:800;box-shadow:0 4px 0 rgba(30,27,75,.12)}
+.ava{font-size:30px;width:44px;height:44px;display:grid;place-items:center;background:#fef3c7;border-radius:50%}
+.topr{display:flex;gap:6px;align-items:center}
+.pill{background:#fff;border-radius:40px;padding:8px 14px;font-weight:800;box-shadow:0 4px 0 rgba(30,27,75,.12)}
+.pill.bump{animation:bump .5s}
+@keyframes bump{40%{transform:scale(1.35) rotate(-6deg);background:#fde047}}
+.ic{background:#fff;border:none;border-radius:14px;padding:8px 10px;font-size:20px;box-shadow:0 4px 0 rgba(30,27,75,.12)}
+.ic.sm{font-size:18px;padding:6px 9px}
+.ic:active,.big:active,.opt:active,.island:active,.level:active,.pad button:active{transform:translateY(3px);box-shadow:none}
+.hero{text-align:center;margin:6px 0 4px}.hero.small p{color:var(--ink);font-weight:700}
+.mascot{display:flex;align-items:flex-end;gap:10px;justify-content:center;margin:6px 0}
+.bubble{position:relative;background:#fff;border-radius:22px;padding:12px 16px;font-weight:800;max-width:420px;text-align:left;box-shadow:0 6px 0 rgba(30,27,75,.08)}
+.bubble:before{content:"";position:absolute;left:-12px;bottom:22px;border:8px solid transparent;border-right:14px solid #fff;border-left:0}
+.owl{flex:none;animation:bob 3s ease-in-out infinite}.owl.wow,.owl.party{animation:jump .7s ease-in-out 2}
+@keyframes bob{50%{transform:translateY(-6px) rotate(-2deg)}}@keyframes jump{50%{transform:translateY(-14px) scale(1.06)}}
+.islands{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:16px;margin:16px 0}
+.island{position:relative;border:none;border-radius:42% 58% 50% 50%/55% 45% 55% 45%;background:radial-gradient(circle at 50% 35%,#fff 0%,var(--s) 55%,#fde68a 56%,#fcd34d 70%);padding:26px 18px 30px;display:flex;flex-direction:column;align-items:center;gap:2px;box-shadow:0 10px 0 #38bdf8,0 18px 30px rgba(3,105,161,.3);animation:float 4s ease-in-out infinite;transition:transform .15s}
+.island:hover{transform:scale(1.04) rotate(-1deg)}
+@keyframes float{50%{translate:0 -8px}}
+.iemo{font-size:62px;filter:drop-shadow(0 4px 2px rgba(0,0,0,.15))}
+.iname{font-size:1.2rem;font-weight:700;color:var(--c)}
+.idesc{font-size:.85rem;font-weight:700;color:var(--muted)}
+.imed{font-size:1.3rem;letter-spacing:4px;margin-top:4px}
+.mapbtns{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;margin-top:10px}
+.big{border:none;border-radius:18px;padding:14px 22px;font-size:1.15rem;font-weight:700;background:#fff;box-shadow:0 6px 0 rgba(30,27,75,.15)}
+.big.go{background:var(--go);color:#fff;box-shadow:0 6px 0 var(--go2)}
+.big.go.alt{background:#8b5cf6;box-shadow:0 6px 0 #6d28d9}
+.big.defi{background:linear-gradient(135deg,#ec4899,#f59e0b);color:#fff;box-shadow:0 6px 0 #be185d}
+.big.ghost{background:#fff;color:var(--ink)}
+.sea{height:40px;margin:20px -16px 0;background:repeating-radial-gradient(circle at 20px -10px,#38bdf8 0 18px,#0ea5e9 19px 22px,transparent 23px) 0 0/40px 40px;opacity:.6;animation:waves 6s linear infinite}
+@keyframes waves{to{background-position:80px 0}}
+.foot{text-align:center;margin-top:16px}.link{background:none;border:none;text-decoration:underline;color:#075985;font-weight:800}
+.welcome{max-width:560px;margin:40px auto;text-align:center}
+.lbl{display:block;font-weight:800;margin:14px 0 8px;text-align:left}
+.lbl input{display:block;width:100%;margin-top:6px;font:inherit;font-size:1.3rem;padding:12px 16px;border-radius:16px;border:3px solid var(--line)}
+.lbl input:focus{outline:none;border-color:#8b5cf6}
+.avas{display:grid;grid-template-columns:repeat(6,1fr);gap:8px;margin-bottom:18px}
+.avab{font-size:34px;background:#f1f5f9;border:3px solid transparent;border-radius:16px;padding:6px}.avab.on{border-color:#8b5cf6;background:#ede9fe;transform:scale(1.08)}
+.lvhead{text-align:center;background:var(--s);border-radius:28px;padding:14px;border:4px solid var(--c)}.lvhead h2{color:var(--c);margin:0}.lvhead p{margin:4px 0;font-weight:700}
+.method .steps4{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:8px}.method .steps4 span{background:#eff6ff;border-radius:16px;padding:10px;font-size:1.6rem;text-align:center}.method .steps4 b{display:block;font-size:1rem}
+.levels{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:14px}
+.level{border:4px solid var(--c);background:#fff;border-radius:24px;padding:16px;display:flex;flex-direction:column;align-items:center;gap:4px;text-align:center;box-shadow:0 8px 0 var(--c)}
+.lvemo{font-size:48px}.lvt{font-size:1.05rem}.lvt b{font-size:1.3rem;color:var(--c)}.lvd{font-size:.9rem;color:var(--muted);font-weight:700}.lvm{font-size:.85rem;font-weight:800;margin-top:4px}
+.playhead{display:flex;flex-direction:column;align-items:center;gap:8px;background:var(--s);border:3px solid var(--c);border-radius:20px;padding:8px 12px;font-weight:800;color:var(--c)}
+.dots{display:flex;gap:6px;flex-wrap:wrap;justify-content:center}
+.dot{min-width:34px;height:34px;border-radius:50%;background:#fff;display:grid;place-items:center;font-size:.9rem;color:var(--muted);border:3px solid #fff}
+.dot.cur{border-color:var(--c);transform:scale(1.15);color:var(--ink)}
+.qtools{display:flex;gap:8px;align-items:center;justify-content:flex-end}.qtools .tag{margin-right:auto}
+.tag{background:#eef2ff;color:#4338ca;font-weight:800;font-size:.85rem;border-radius:20px;padding:4px 12px}
+.qtext{font-family:"Fredoka",system-ui,sans-serif;font-size:1.55rem;font-weight:600;margin:14px 2px;line-height:1.35}
+.vis{display:flex;flex-direction:column;align-items:center;margin:8px 0 14px}
+.vis-cap{font-size:.8rem;color:var(--muted);font-weight:700;text-align:center;margin-top:6px}
+.emo{font-size:76px;line-height:1;animation:bob 3s ease-in-out infinite}
+.opts{display:grid;grid-template-columns:1fr 1fr;gap:12px}.opts.long,.opts.schemas{grid-template-columns:1fr}
+.opt{display:flex;align-items:center;gap:12px;text-align:left;background:#f8fafc;border:4px solid #e2e8f0;border-radius:20px;padding:14px 16px;font-size:1.25rem;font-weight:800;box-shadow:0 5px 0 #cbd5e1;transition:transform .1s}
+.opt:hover:not(:disabled){border-color:#a78bfa;background:#f5f3ff}
+.opt .lt{flex:none;width:34px;height:34px;border-radius:50%;background:#e0e7ff;color:#4338ca;display:grid;place-items:center;font-size:1rem}
+.opt.ok{background:#dcfce7;border-color:var(--go);box-shadow:0 5px 0 var(--go2);animation:pop .4s}
+.opt.ok .lt{background:var(--go);color:#fff}
+.opt.ko{background:#fee2e2;border-color:#fca5a5;box-shadow:none;opacity:.75;animation:shake .4s}
+.opt:disabled{cursor:default}
+.opts.schemas .opt{flex-direction:row;padding:10px}
+@keyframes shake{20%,60%{transform:translateX(-8px)}40%,80%{transform:translateX(8px)}}
+.shake{animation:shake .4s}
+.inrow{display:flex;justify-content:center;align-items:center;gap:10px;margin:10px 0}
+.inbox{min-width:170px;text-align:center;font-family:"Fredoka",sans-serif;font-size:2.4rem;font-weight:700;background:#f8fafc;border:4px dashed #a5b4fc;border-radius:20px;padding:6px 18px}
+.inbox.ok{border:4px solid var(--go);background:#dcfce7}.inbox.ko{border:4px solid #fca5a5;background:#fee2e2}
+.inbox .ph{color:#c7d2fe}.unit{font-weight:800;font-size:1.3rem;color:var(--muted)}
+.pad{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;max-width:330px;margin:10px auto 4px}
+.pad button{font-family:"Fredoka",sans-serif;font-size:1.7rem;font-weight:700;border:none;border-radius:18px;padding:12px 0;background:#e0e7ff;box-shadow:0 5px 0 #a5b4fc}
+.pad .del{background:#fee2e2;box-shadow:0 5px 0 #fca5a5}.pad .okk{background:var(--go);color:#fff;box-shadow:0 5px 0 var(--go2)}
+.fb{display:flex;gap:12px;align-items:center;border-radius:20px;padding:12px 16px;margin-top:16px}
+.fb p{margin:4px 0 0;font-weight:700}.fb b{font-size:1.2rem}
+.fb.good{background:#dcfce7;border:3px solid #86efac}.fb.miss{background:#e0f2fe;border:3px solid #7dd3fc}.fb.hint{background:var(--hint);border:3px solid #fcd34d;font-size:1.6rem}.fb.hint div{font-size:1rem}
+.next{display:block;margin:14px auto 0}
+.reader .ttype,.ttype{display:inline-block;background:#ffedd5;color:#c2410c;border-radius:20px;padding:3px 12px;font-weight:800;font-size:.85rem}
+.ttext p{font-size:1.25rem;line-height:1.7;margin:10px 0}
+.relire{background:#fff7ed;border-radius:16px;padding:6px 12px;margin-bottom:10px}.relire summary{font-weight:800;cursor:pointer;color:#c2410c}.relire .ttext p{font-size:1.05rem}
+.enonce{display:flex;gap:14px;align-items:center;background:#eff6ff;border-radius:20px;padding:14px;margin:10px 0}
+.enonce p{margin:0;font-size:1.3rem;font-weight:700;line-height:1.5}.pbemo{font-size:54px;flex:none}
+.track{display:flex;align-items:center;justify-content:center;margin:10px 0}
+.tk{width:42px;height:42px;border-radius:50%;display:grid;place-items:center;background:#f1f5f9;font-size:20px;border:3px solid #e2e8f0;filter:grayscale(1);opacity:.6}
+.tk.cur{filter:none;opacity:1;border-color:#3b82f6;transform:scale(1.2);background:#dbeafe}.tk.done{filter:none;opacity:1;background:#dcfce7;border-color:var(--go)}
+.tkl{width:22px;height:4px;background:#e2e8f0}
+.log{list-style:none;padding:0;margin:6px 0;font-weight:700;color:#166534;font-size:.95rem}
+.step h3{text-align:center}
+.solution{background:linear-gradient(135deg,#fef9c3,#dcfce7);border-radius:20px;padding:14px;text-align:center}
+.sol{font-family:"Fredoka",sans-serif;font-size:1.6rem;font-weight:700;margin:6px 0}.phrase{font-size:1.15rem;font-weight:700}
+.results{text-align:center}.medal{font-size:120px;animation:spin 1s cubic-bezier(.2,1.4,.4,1)}
+@keyframes spin{from{transform:rotate(-200deg) scale(0)}to{transform:none}}
+.starsrow{font-size:2rem;letter-spacing:4px}.starsrow span{display:inline-block;animation:pop .4s backwards}
+.rbtns{display:flex;flex-wrap:wrap;gap:10px;justify-content:center;margin-top:12px}
+.newb{background:#fef3c7;border-radius:20px;padding:10px;margin:10px 0}
+.badges{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:12px}
+.badge{background:#fff;border-radius:20px;padding:14px;text-align:center;display:flex;flex-direction:column;gap:4px;opacity:.6;box-shadow:0 6px 0 rgba(30,27,75,.08)}
+.badge span{font-size:48px}.badge small{color:var(--muted);font-weight:700}.badge em{font-size:.75rem;color:var(--muted)}
+.badge.on{opacity:1;background:linear-gradient(160deg,#fff,#fef3c7);border:3px solid #fcd34d}
+.toast{position:fixed;left:50%;top:18%;transform:translateX(-50%);background:linear-gradient(135deg,#f97316,#ef4444);color:#fff;font-family:"Fredoka",sans-serif;font-size:2rem;font-weight:700;padding:14px 26px;border-radius:30px;z-index:20;animation:pop .4s,fade 1.8s forwards;pointer-events:none}
+@keyframes fade{80%{opacity:1}to{opacity:0;transform:translate(-50%,-30px)}}
+#fx{position:fixed;inset:0;pointer-events:none;z-index:30}
+.draft{position:fixed;inset:0;background:rgba(30,27,75,.5);z-index:15;display:grid;place-items:center;padding:12px}
+.draftbox{background:#fff;border-radius:24px;width:min(760px,100%);height:min(560px,88vh);display:flex;flex-direction:column;padding:10px}
+.drafttop{display:flex;justify-content:space-between;align-items:center;padding:4px 6px 10px}
+.draftbox canvas{flex:1;width:100%;border-radius:14px;border:3px dashed #c7d2fe;touch-action:none;background:#fff}
+.money{display:flex;flex-wrap:wrap;gap:10px;justify-content:center;align-items:center}
+.bill{width:96px;height:52px;border-radius:8px;display:grid;place-items:center;font-family:"Fredoka",sans-serif;font-weight:700;font-size:1.2rem;color:#1e1b4b;border:3px solid rgba(0,0,0,.25);box-shadow:inset 0 0 0 4px rgba(255,255,255,.5)}
+.b500{background:#d1d5db}.b1000{background:#fca5a5}.b2000{background:#93c5fd}.b5000{background:#fdba74}
+.coin{border-radius:50%;display:grid;place-items:center;font-weight:800;font-size:.95rem;border:3px solid rgba(0,0,0,.25)}
+.c200{width:64px;height:64px;background:radial-gradient(circle,#facc15 52%,#d1d5db 54%)}.c100{width:60px;height:60px;background:radial-gradient(circle,#e5e7eb 52%,#facc15 54%)}
+.c50,.c20,.c10{width:54px;height:54px;background:#fbbf24}.c20{width:50px;height:50px}.c10{width:46px;height:46px}
+.c5,.c2,.c1{width:44px;height:44px;background:#d97706;color:#fff}
+.prow{display:grid;grid-template-columns:minmax(120px,1.3fr) 2fr 52px 34px;gap:8px;align-items:center;margin:6px 0;font-size:.95rem;font-weight:700}
+.prow small{color:var(--muted)}.pbar{height:14px;background:#e5e7eb;border-radius:8px;overflow:hidden}.pbar i{display:block;height:100%;border-radius:8px}
+.diag{background:#eff6ff;border-radius:14px;padding:10px 14px;font-weight:700}
+.tablewrap{overflow-x:auto}table{border-collapse:collapse;width:100%;font-size:.95rem}td,th{padding:8px;border-bottom:2px solid #eef2ff;text-align:center}td:first-child{text-align:left;font-weight:800}
+.small{font-size:.88rem;color:var(--muted)}
+ul{padding-left:22px}li{margin:4px 0}
+@media (max-width:560px){body{font-size:17px}h1{font-size:1.8rem}.opts{grid-template-columns:1fr}.qtext{font-size:1.3rem}.opt{font-size:1.1rem;padding:12px}.iemo{font-size:52px}.avas{grid-template-columns:repeat(4,1fr)}.enonce p{font-size:1.12rem}.pbemo{font-size:40px}.who span:last-child{max-width:90px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.prow{grid-template-columns:1fr 1.4fr 44px}.prow small{display:none}.ttext p{font-size:1.12rem}.medal{font-size:96px}}
+@media (prefers-reduced-motion:reduce){*{animation:none!important}}
+
+.askov{position:fixed;inset:0;z-index:50;background:rgba(20,20,40,.45);display:flex;align-items:center;justify-content:center;padding:16px}
+.askbox{background:var(--card,#fff);color:var(--ink,#1e1b4b);border-radius:18px;padding:20px;max-width:420px;width:100%;box-shadow:0 20px 50px rgba(0,0,0,.3);display:flex;flex-direction:column;gap:12px;font-size:1.05rem}
+.askbox.wide{max-width:640px}.askbox p{margin:0;font-weight:700}.askbox .askmsg{font-weight:400;font-size:.9rem;opacity:.8}
+.askbox textarea{width:100%;min-height:220px;font:inherit;font-size:.9rem;padding:10px;border-radius:10px;border:1px solid var(--line,#ccd);background:var(--bg,#f6f6fa);color:inherit}
+.askbtns{display:flex;gap:10px;justify-content:flex-end;flex-wrap:wrap}
+.askbtns button{font:inherit;font-weight:700;border-radius:12px;padding:10px 18px;cursor:pointer;border:1px solid var(--line,#ccd);background:var(--bg,#f1f2f8);color:inherit}
+.askbtns .askyes{background:var(--accent,#22c55e);border-color:var(--accent,#22c55e);color:var(--accent-ink,#fff)}
+</style>
+</head>
+<body>
+<div id="app"></div>
+<canvas id="fx"></canvas>
+<script>
+/* ---- boîtes de dialogue et copie intégrées (compatibles iPad / iPhone / pages publiées) ---- */
+function askOK(msg,yes){const d=document.createElement("div");d.className="askov";d.innerHTML='<div class="askbox" role="dialog" aria-modal="true"><p></p><div class="askbtns"><button type="button" class="askno">Annuler</button><button type="button" class="askyes">Confirmer</button></div></div>';d.querySelector("p").textContent=msg;document.body.appendChild(d);d.querySelector(".askno").onclick=()=>d.remove();d.querySelector(".askyes").onclick=()=>{d.remove();yes()};d.querySelector(".askyes").focus()}
+function showText(txt,title){const d=document.createElement("div");d.className="askov";d.innerHTML='<div class="askbox wide" role="dialog" aria-modal="true"><b></b><textarea readonly></textarea><p class="askmsg">Appuie sur « Copier », puis colle le texte dans un message, des notes ou un e-mail.</p><div class="askbtns"><button type="button" class="askno">Fermer</button><button type="button" class="askyes">Copier</button></div></div>';d.querySelector("b").textContent=title||"Texte à copier";const ta=d.querySelector("textarea");ta.value=txt;document.body.appendChild(d);d.querySelector(".askno").onclick=()=>d.remove();d.querySelector(".askyes").onclick=()=>{const m=d.querySelector(".askmsg");const fb=()=>{ta.focus();ta.select();try{ta.setSelectionRange(0,txt.length)}catch(e){}m.textContent="Le texte est sélectionné : utilise « Copier » de ton appareil."};try{navigator.clipboard.writeText(txt).then(()=>{m.textContent="✓ Copié !"},fb)}catch(e){fb()}}}
+
+/* ================= TEXTES DE LECTURE (originaux) ================= */
+const TEXTS=[
+{id:"t1a",l:1,title:"Le chaton de Lina",emo:"🐱",type:"Récit",body:"Lina a trouvé un petit chaton gris derrière la boulangerie. Il miaulait très fort et il tremblait de froid. Lina l'a pris dans ses bras et l'a ramené à la maison.\n\nSa maman a d'abord froncé les sourcils, puis elle a souri. Elle a donné au chaton un peu d'eau, quelques croquettes et une vieille couverture. Le chaton s'est endormi tout de suite.\n\n« Comment allons-nous l'appeler ? » a demandé Lina. Son petit frère a crié : « Nuage ! Parce qu'il est tout gris ! »",
+qs:[
+{q:"Où Lina a-t-elle trouvé le chaton ?",o:["Derrière la boulangerie","Dans le jardin","À l'école","Dans la forêt"],e:"C'est écrit dans la première phrase : « derrière la boulangerie »."},
+{q:"Pourquoi le chaton tremblait-il ?",o:["Il avait froid","Il avait peur d'un chien","Il était en colère","Il venait de se réveiller"],e:"Le texte dit : « il tremblait de froid »."},
+{q:"Qui a choisi le nom du chaton ?",o:["Le petit frère de Lina","Lina","La maman","Le boulanger"],e:"C'est le petit frère qui crie : « Nuage ! »"},
+{q:"Au début, la maman « fronce les sourcils ». Cela veut dire qu'elle…",o:["n'est pas très d'accord","est très joyeuse","a mal aux yeux","va pleurer"],e:"Froncer les sourcils montre qu'on n'est pas content ou pas d'accord. Mais ensuite, elle sourit !"},
+{q:"Pourquoi le chaton s'appelle-t-il Nuage ?",o:["Parce qu'il est tout gris","Parce qu'il est très léger","Parce qu'il est tombé du ciel","Parce qu'il aime la pluie"],e:"Le petit frère l'explique : « Parce qu'il est tout gris ! » comme un nuage de pluie."}]},
+{id:"t1b",l:1,title:"Le potager de Papi Jules",emo:"🥕",type:"Récit",body:"Papi Jules a un potager derrière sa maison. Au printemps, il plante des graines de carottes, de radis et de salades.\n\nTous les soirs, Tom l'aide à arroser les plantes avec un petit arrosoir vert. Les radis poussent très vite : trois ou quatre semaines suffisent ! Les carottes, elles, prennent beaucoup plus de temps.\n\nEn été, Tom et Papi ramassent les légumes et préparent une grande salade pour toute la famille.",
+qs:[
+{q:"À quelle saison Papi Jules plante-t-il les graines ?",o:["Au printemps","En hiver","En automne","En été"],e:"« Au printemps, il plante des graines. »"},
+{q:"Que fait Tom tous les soirs ?",o:["Il arrose les plantes","Il ramasse les carottes","Il plante des graines","Il prépare la salade"],e:"« Tous les soirs, Tom l'aide à arroser les plantes. »"},
+{q:"Quel légume pousse le plus vite ?",o:["Les radis","Les carottes","Les salades","Les tomates"],e:"Les radis : trois ou quatre semaines suffisent. (Il n'y a pas de tomates dans le texte !)"},
+{q:"De quelle couleur est l'arrosoir ?",o:["Vert","Rouge","Bleu","Jaune"],e:"« un petit arrosoir vert »."},
+{q:"Qui est Papi Jules pour Tom ?",o:["Son grand-père","Son voisin","Son professeur","Son frère"],e:"« Papi » est un mot affectueux pour dire « grand-père »."}]},
+{id:"t1c",l:1,title:"Le dragon qui avait peur du noir",emo:"🐉",type:"Conte",body:"Dans une grotte, au sommet de la montagne, vivait un petit dragon nommé Flamèche. Tous les dragons crachent du feu, mais Flamèche, lui, avait un secret : il avait peur du noir !\n\nChaque soir, il allumait une petite flamme pour éclairer sa grotte. Une nuit, un hibou entra. « Pourquoi gardes-tu une lumière ? » demanda-t-il. Flamèche rougit.\n\nLe hibou sourit : « Moi, j'adore la nuit. Viens, je vais te montrer les étoiles. » Ce soir-là, Flamèche découvrit que le noir pouvait être très beau.",
+qs:[
+{q:"Où vit Flamèche ?",o:["Dans une grotte au sommet de la montagne","Dans un château","Au fond de la mer","Dans une forêt"],e:"Première phrase : « Dans une grotte, au sommet de la montagne »."},
+{q:"Quel est le secret de Flamèche ?",o:["Il a peur du noir","Il ne sait pas voler","Il ne crache pas de feu","Il aime les hiboux"],e:"« il avait un secret : il avait peur du noir ! »"},
+{q:"Qui entre dans la grotte ?",o:["Un hibou","Un chevalier","Un autre dragon","Une chauve-souris"],e:"« Une nuit, un hibou entra. »"},
+{q:"« Flamèche rougit. » Que ressent-il ?",o:["De la gêne, un peu de honte","De la colère","De la joie","De la faim"],e:"On rougit quand on est gêné… et un dragon aussi, apparemment !"},
+{q:"Qu'apprend Flamèche à la fin ?",o:["Que le noir peut être très beau","Qu'il faut toujours garder une lumière","Que les hiboux sont dangereux","Qu'il doit quitter sa grotte"],e:"Grâce aux étoiles, Flamèche découvre la beauté de la nuit."}]},
+
+{id:"t2a",l:2,title:"Le mystère du goûter disparu",emo:"🥞",type:"Récit (enquête)",body:"Ce mercredi, Maman avait préparé des crêpes pour le goûter. Elle les avait posées sur la table de la cuisine, puis elle était descendue chercher la confiture à la cave.\n\nQuand elle est remontée, l'assiette était vide ! Sur le carrelage, il y avait des traces de pattes pleines de sucre. Ces traces menaient jusqu'au panier de Biscotte.\n\nBiscotte dormait, roulée en boule, le museau tout blanc. Léo a éclaté de rire : « Je crois que nous avons trouvé le voleur ! »",
+qs:[
+{q:"Pourquoi Maman est-elle descendue à la cave ?",o:["Pour chercher la confiture","Pour chercher Biscotte","Pour ranger les crêpes","Pour chercher du sucre"],e:"« elle était descendue chercher la confiture à la cave »."},
+{q:"Qui a mangé les crêpes ?",o:["Biscotte","Léo","Maman","Personne, elles sont tombées"],e:"Les traces mènent au panier de Biscotte, et son museau est blanc de sucre !"},
+{q:"Qui est Biscotte, d'après les indices ?",o:["Un animal de la maison","La petite sœur de Léo","Une voisine","Une poupée"],e:"Des pattes, un panier, un museau : Biscotte est sûrement un chien ou un chat. Le texte ne le dit pas : c'est toi qui le devines !"},
+{q:"Quel indice montre que Biscotte a mangé les crêpes ?",o:["Son museau est tout blanc","Elle aboie très fort","Elle a mal au ventre","Elle a laissé un mot"],e:"Le sucre blanc des crêpes est resté sur son museau. Les traces de pattes sont aussi un indice."},
+{q:"Comment réagit Léo ?",o:["Il rit","Il pleure","Il se fâche","Il a peur"],e:"« Léo a éclaté de rire »."}]},
+{id:"t2b",l:2,title:"Le manchot empereur",emo:"🐧",type:"Documentaire",body:"Le manchot empereur est le plus grand de tous les manchots : il peut mesurer plus d'un mètre de haut. Il vit en Antarctique, une terre glacée près du pôle Sud.\n\nLe manchot ne sait pas voler, mais c'est un excellent nageur : il plonge très profond pour attraper sa nourriture.\n\nEn hiver, la femelle pond un seul œuf. C'est le mâle qui le garde au chaud sur ses pattes, sous un repli de peau, pendant environ deux mois, sans manger ! Pour résister au froid et au vent, les manchots se serrent les uns contre les autres.",
+qs:[
+{q:"Où vit le manchot empereur ?",o:["En Antarctique, près du pôle Sud","Au pôle Nord","En Afrique","Dans les montagnes"],e:"« Il vit en Antarctique, une terre glacée près du pôle Sud »."},
+{q:"Qui garde l'œuf au chaud ?",o:["Le mâle","La femelle","Les deux à tour de rôle","Personne"],e:"« C'est le mâle qui le garde au chaud sur ses pattes »."},
+{q:"Pendant combien de temps environ ?",o:["Deux mois","Deux jours","Deux semaines","Deux ans"],e:"« pendant environ deux mois, sans manger ! »"},
+{q:"Pourquoi les manchots se serrent-ils les uns contre les autres ?",o:["Pour résister au froid et au vent","Pour jouer","Pour se battre","Pour dormir debout"],e:"C'est écrit dans la dernière phrase."},
+{q:"Ce texte est …",o:["un documentaire : il sert à apprendre","un conte de fées","une recette","un poème"],e:"Il donne des informations vraies sur un animal : c'est un documentaire."}]},
+{id:"t2c",l:2,title:"Le concours de cabanes",emo:"🛖",type:"Récit",body:"Samedi, toute la classe de CE2 participait au grand concours de cabanes dans le bois. Chaque équipe avait deux heures et le droit d'utiliser seulement des branches, des feuilles et de la ficelle.\n\nL'équipe de Maya voulait construire la cabane la plus haute. Mais au bout d'une heure, le toit s'est effondré ! Au lieu de se disputer, les enfants ont réfléchi ensemble. Ils ont planté des branches plus solides, en croix, et ils ont recommencé.\n\nIls n'ont pas gagné le prix de la plus haute cabane, mais le jury leur a remis le prix de la meilleure équipe.",
+qs:[
+{q:"Combien de temps chaque équipe avait-elle ?",o:["Deux heures","Une heure","Une journée","Trente minutes"],e:"« Chaque équipe avait deux heures »."},
+{q:"Quels matériaux étaient autorisés ?",o:["Des branches, des feuilles et de la ficelle","Des planches et des clous","Du carton et de la colle","Des pierres et du sable"],e:"« seulement des branches, des feuilles et de la ficelle »."},
+{q:"Que s'est-il passé au bout d'une heure ?",o:["Le toit s'est effondré","Il a commencé à pleuvoir","L'équipe a gagné","Maya s'est blessée"],e:"« au bout d'une heure, le toit s'est effondré ! »"},
+{q:"Pourquoi le jury leur a-t-il donné le prix de la meilleure équipe ?",o:["Parce qu'ils ont travaillé ensemble sans se disputer","Parce que leur cabane était la plus haute","Parce qu'ils ont fini les premiers","Parce que Maya connaissait le jury"],e:"Le texte ne le dit pas directement : on le comprend car ils ont réfléchi ensemble « au lieu de se disputer »."},
+{q:"Qu'est-ce qu'un « jury » ?",o:["Les personnes qui choisissent les gagnants","Une sorte de cabane","Un outil pour couper les branches","L'équipe de Maya"],e:"Un jury est un groupe de personnes qui juge un concours."}]},
+
+{id:"t3a",l:3,title:"Le voyage de la graine",emo:"🌼",type:"Récit",body:"Je suis une petite graine de pissenlit. Je suis accrochée à une sorte de minuscule parachute tout blanc. Un matin de printemps, un enfant a soufflé très fort sur ma fleur, et le vent m'a emportée.\n\nJ'ai survolé un champ, une rivière, puis le toit d'une école. J'ai fini par atterrir dans une fente du trottoir, entre deux pavés. Il y avait un peu de terre, et le lendemain, il a plu.\n\nAlors, doucement, j'ai sorti une racine, puis deux petites feuilles. Les passants ne me remarquent pas encore. Mais dans quelques semaines, une fleur jaune comme un soleil poussera ici, au milieu de la ville.",
+qs:[
+{q:"Qui raconte cette histoire ?",o:["Une graine de pissenlit","Un enfant","Le vent","Un passant"],e:"« Je suis une petite graine de pissenlit » : la graine parle à la première personne (« je »)."},
+{q:"À quoi sert le « parachute » de la graine ?",o:["À être transportée par le vent","À se protéger de la pluie","À faire joli","À attraper les insectes"],e:"Grâce à lui, le vent emporte la graine loin de sa fleur. C'est ainsi que les pissenlits voyagent !"},
+{q:"Dans quel ordre la graine survole-t-elle ces lieux ?",o:["Un champ, une rivière, le toit d'une école","Une rivière, un champ, une école","Le toit d'une école, un champ, une rivière","Un champ, une école, une rivière"],e:"« J'ai survolé un champ, une rivière, puis le toit d'une école. »"},
+{q:"De quoi la graine a-t-elle eu besoin pour commencer à pousser ?",o:["D'un peu de terre et de pluie","De beaucoup de soleil seulement","D'un pot de fleurs","D'engrais"],e:"Il y avait « un peu de terre » et « il a plu » : alors la racine est sortie."},
+{q:"« Une fleur jaune comme un soleil » : comment appelle-t-on cette façon d'écrire ?",o:["Une comparaison","Une question","Une liste","Une erreur"],e:"Avec « comme », on compare la fleur au soleil : c'est une comparaison. Les écrivains en utilisent beaucoup !"}]},
+{id:"t3b",l:3,title:"Le message codé",emo:"🔐",type:"Récit (énigme)",body:"Ce matin, Inès a trouvé un papier glissé sous la porte de sa chambre. Dessus, on pouvait lire : 10 - 1 - 18 - 4 - 9 - 14.\n\nEn dessous, quelqu'un avait écrit : A = 1, B = 2, C = 3…\n\nInès a pris un crayon et elle a réfléchi. Le 10, c'était J. Le 1, c'était A. Après quelques minutes, elle a compris le message et elle a couru dehors. Derrière le vieux chêne, son grand frère l'attendait avec un grand sourire et une boîte enveloppée de papier doré.\n\nC'était le jour de son anniversaire !",
+qs:[
+{q:"Quel mot est caché dans le code 10 - 1 - 18 - 4 - 9 - 14 ?",o:["JARDIN","JAUNES","JOUETS","CADEAU"],e:"J (10), A (1), R (18), D (4), I (9), N (14) : JARDIN ! Compte sur tes doigts dans l'alphabet pour vérifier."},
+{q:"Qui a sans doute écrit le message ?",o:["Le grand frère d'Inès","Inès elle-même","Sa maîtresse","Un voleur"],e:"C'est lui qui attend Inès au jardin avec un cadeau : c'est sûrement lui l'auteur du message."},
+{q:"Pourquoi le grand frère a-t-il fait un message codé ?",o:["Pour préparer une surprise d'anniversaire","Pour faire peur à Inès","Pour qu'elle fasse ses devoirs","Parce qu'il ne sait pas écrire"],e:"La dernière phrase révèle tout : c'était son anniversaire !"},
+{q:"Avec le même code, que veut dire 3 - 1 - 4 - 5 - 1 - 21 ?",o:["CADEAU","CABANE","BATEAU","CACHÉE"],e:"C (3), A (1), D (4), E (5), A (1), U (21) : CADEAU. Bravo, détective !"},
+{q:"Que montre Inès dans cette histoire ?",o:["Qu'elle sait réfléchir et chercher seule","Qu'elle n'aime pas les surprises","Qu'elle a peur du noir","Qu'elle ne sait pas lire"],e:"Elle prend un crayon, réfléchit et décode le message : elle est patiente et logique."}]},
+{id:"t3c",l:3,title:"Les volcans",emo:"🌋",type:"Documentaire",body:"Sous nos pieds, très profondément, la Terre est si chaude que certaines roches fondent : elles forment le magma. Parfois, ce magma remonte vers la surface par des fissures. Quand il sort d'un volcan, on l'appelle la lave.\n\nUne éruption peut être calme, avec des coulées de lave qui avancent lentement, ou explosive, avec des nuages de cendres projetés très haut dans le ciel.\n\nEn France, la chaîne des Puys, en Auvergne, compte de nombreux volcans endormis depuis des milliers d'années. Sur l'île de La Réunion, le Piton de la Fournaise, lui, est l'un des volcans les plus actifs du monde.",
+qs:[
+{q:"Comment appelle-t-on le magma quand il sort du volcan ?",o:["La lave","La cendre","La fissure","La roche"],e:"« Quand il sort d'un volcan, on l'appelle la lave. »"},
+{q:"Quelles sont les deux sortes d'éruptions décrites ?",o:["Calme et explosive","Chaude et froide","Rapide et invisible","Grande et petite"],e:"Calme (coulées de lave) ou explosive (nuages de cendres)."},
+{q:"Où se trouve le Piton de la Fournaise ?",o:["Sur l'île de La Réunion","En Auvergne","À Paris","En Antarctique"],e:"Dernier paragraphe : « Sur l'île de La Réunion »."},
+{q:"Les volcans de la chaîne des Puys sont …",o:["endormis depuis des milliers d'années","en éruption tous les jours","sous la mer","très jeunes"],e:"« endormis depuis des milliers d'années »."},
+{q:"Dans le texte, « les roches fondent » veut dire qu'elles …",o:["deviennent liquides à cause de la chaleur","disparaissent","se cassent en morceaux","deviennent froides"],e:"Fondre, c'est passer de l'état solide à l'état liquide, comme un glaçon au soleil."}]}
+];
+
+/* ================= FRANÇAIS ================= */
+const FR=[
+{l:1,sk:"nature",q:"Dans la phrase « Le petit chat noir dort », quel mot est le verbe ?",o:["dort","chat","petit","noir"],e:"Le verbe dit ce que fait le chat : il dort. Astuce : on peut le conjuguer à un autre temps (hier, il dormait)."},
+{l:1,sk:"nature",q:"Dans « La fusée décolle vite », quel mot est un nom ?",o:["fusée","décolle","vite","La"],e:"« fusée » est un nom : on peut mettre « une » ou « la » devant."},
+{l:1,sk:"nature",q:"Quels sont les déterminants dans « Mon frère mange une pomme » ?",o:["Mon, une","frère, pomme","mange","Mon, mange"],e:"Les déterminants sont les petits mots devant les noms : MON frère, UNE pomme."},
+{l:1,sk:"nature",q:"Dans « une jolie maison bleue », quels mots sont des adjectifs ?",o:["jolie, bleue","une, maison","maison","une, jolie"],e:"Les adjectifs disent comment est la maison : jolie et bleue."},
+{l:1,sk:"phrase",q:"Dans « Le boulanger prépare le pain », qui fait l'action ?",o:["Le boulanger","le pain","prépare","personne"],e:"C'est le boulanger qui prépare : c'est le sujet. Astuce : « C'est le boulanger qui prépare le pain. »"},
+{l:1,sk:"phrase",q:"Laquelle de ces phrases est bien écrite ?",o:["Le soleil brille dans le ciel.","brille le soleil ciel dans","le soleil brille dans le ciel","Le soleil dans le."],e:"Une phrase a du sens, commence par une majuscule et se termine par un point."},
+{l:1,sk:"phrase",q:"Quelle phrase pose une question ?",o:["Où vas-tu ?","Je vais au parc.","Va au parc !","Quel beau parc !"],e:"Une phrase qui pose une question se termine par un point d'interrogation « ? »."},
+{l:1,sk:"orthographe",q:"une fleur → des …",o:["fleurs","fleur","fleurx","fleures"],e:"Au pluriel, la plupart des noms prennent un « s »."},
+{l:1,sk:"orthographe",q:"un jeu → des …",o:["jeux","jeus","jeu","jeuxs"],e:"Les noms en « -eu » prennent un « x » au pluriel : des jeux, des cheveux, des feux."},
+{l:1,sk:"orthographe",q:"Les enfants … dans la cour. (son / sont)",o:["sont","son"],e:"« sont » est le verbe être : on peut dire « étaient ». Les enfants étaient dans la cour."},
+{l:1,sk:"orthographe",q:"Le ciel … bleu. (et / est)",o:["est","et"],e:"« est » est le verbe être : on peut dire « était ». Le ciel était bleu."},
+{l:1,sk:"orthographe",q:"Il va … la piscine. (a / à)",o:["à","a"],e:"On ne peut pas dire « il va avait la piscine » : on écrit « à » avec un accent."},
+{l:1,sk:"orthographe",q:"un chanteur → une …",o:["chanteuse","chanteure","chanteuze","chanteresse"],e:"Les noms en « -eur » font souvent « -euse » au féminin : un danseur, une danseuse."},
+{l:1,sk:"vocabulaire",q:"Quel est le contraire de « grand » ?",o:["petit","haut","gros","long"],e:"Grand ↔ petit : ce sont des contraires."},
+{l:1,sk:"vocabulaire",q:"Quel mot veut presque dire la même chose que « content » ?",o:["joyeux","fâché","triste","fatigué"],e:"Content et joyeux sont des synonymes."},
+{l:1,sk:"vocabulaire",q:"Quelle liste est rangée dans l'ordre alphabétique ?",o:["ananas, banane, cerise, datte","banane, ananas, datte, cerise","cerise, datte, ananas, banane","datte, cerise, banane, ananas"],e:"A, B, C, D : ananas, banane, cerise, datte."},
+{l:1,sk:"vocabulaire",q:"Quel mot est de la même famille que « dent » ?",o:["dentiste","danse","dans","dindon"],e:"Le dentiste soigne les dents : les deux mots ont la même racine. « danse » commence par le même son, mais n'a aucun rapport."},
+{l:1,sk:"conjugaison",q:"Nous … contents. (être)",o:["sommes","êtes","sont","suis"],e:"Être au présent : je suis, tu es, il est, nous sommes, vous êtes, ils sont."},
+{l:1,sk:"conjugaison",q:"Tu … un vélo rouge. (avoir)",o:["as","a","ai","ont"],e:"Avoir au présent : j'ai, tu as, il a, nous avons, vous avez, ils ont."},
+
+{l:2,sk:"nature",q:"Dans « Demain, les enfants partiront en classe de mer », quel est le verbe ?",o:["partiront","enfants","Demain","classe"],e:"Le verbe « partir » est conjugué au futur : partiront."},
+{l:2,sk:"conjugaison",q:"Quel est l'infinitif du verbe dans « nous finissons » ?",o:["finir","finissons","finisser","fini"],e:"L'infinitif est la forme du verbe qu'on trouve dans le dictionnaire : finir."},
+{l:2,sk:"conjugaison",q:"« chanter », « danser », « jouer » sont des verbes du …",o:["1er groupe","2e groupe","3e groupe"],e:"Les verbes du 1er groupe se terminent par -er à l'infinitif (sauf « aller »)."},
+{l:2,sk:"phrase",q:"Dans « Elles jouent au ballon », quel est le sujet ?",o:["Elles","jouent","au ballon","ballon"],e:"Qui est-ce qui joue ? Elles. Le sujet est ici un pronom."},
+{l:2,sk:"nature",q:"Dans le groupe « le gros chien noir », quel est le nom ?",o:["chien","gros","noir","le"],e:"Le nom est le mot principal du groupe ; « gros » et « noir » le décrivent."},
+{l:2,sk:"phrase",q:"Quelle est la forme négative de « Je mange des épinards » ?",o:["Je ne mange pas d'épinards.","Je mange pas des épinards.","Je ne mange des épinards.","Je ne pas mange d'épinards."],e:"La négation entoure le verbe : ne … pas. Et « des » devient « de » (ou « d' »)."},
+{l:2,sk:"phrase",q:"« Quelle belle journée ! » est une phrase …",o:["exclamative","interrogative","déclarative","négative"],e:"Elle exprime un sentiment et se termine par un point d'exclamation."},
+{l:2,sk:"orthographe",q:"un cheval → des …",o:["chevaux","chevals","chevaus","chevauxs"],e:"La plupart des noms en -al font -aux au pluriel : un journal, des journaux."},
+{l:2,sk:"orthographe",q:"un bijou → des …",o:["bijoux","bijous","bijou","bijoues"],e:"Sept noms en -ou prennent un x : bijou, caillou, chou, genou, hibou, joujou, pou."},
+{l:2,sk:"orthographe",q:"Les … chattes dorment. (petit)",o:["petites","petit","petits","petite"],e:"« chattes » est féminin pluriel, donc l'adjectif aussi : petites."},
+{l:2,sk:"orthographe",q:"Il range … jouets dans sa chambre. (ces / ses)",o:["ses","ces"],e:"Ce sont SES jouets à lui (les siens)."},
+{l:2,sk:"orthographe",q:"Les oiseaux … construit un nid. (on / ont)",o:["ont","on"],e:"« ont » est le verbe avoir : on peut dire « avaient »."},
+{l:2,sk:"orthographe",q:"Choisis la bonne orthographe :",o:["une jambe","une janbe","une gembe","une jembe"],e:"Devant m, b, p, on écrit « m » au lieu de « n » : jambe, chambre, tomber."},
+{l:2,sk:"vocabulaire",q:"Dans le dictionnaire, quel mot vient en premier ?",o:["maison","marché","mardi","matin"],e:"Les trois premiers mots commencent par « ma » : on regarde la 3e lettre. i, puis r, puis t : maison vient en premier."},
+{l:2,sk:"vocabulaire",q:"Quel est le contraire de « heureux » ?",o:["malheureux","joyeux","heureuse","bonheur"],e:"Le préfixe « mal- » donne le contraire : heureux → malheureux."},
+{l:2,sk:"vocabulaire",q:"Quel mot veut presque dire la même chose que « effrayé » ?",o:["apeuré","courageux","amusé","étonné"],e:"Effrayé et apeuré veulent dire « qui a peur »."},
+{l:2,sk:"conjugaison",q:"Je … à l'école à pied. (aller)",o:["vais","va","vas","allons"],e:"Aller au présent : je vais, tu vas, il va, nous allons, vous allez, ils vont."},
+{l:2,sk:"conjugaison",q:"Ils … du vélo le dimanche. (faire)",o:["font","faisent","fait","faites"],e:"Faire au présent : je fais, tu fais, il fait, nous faisons, vous faites, ils font."},
+{l:2,sk:"conjugaison",q:"Vous … en avance ! (être)",o:["êtes","sommes","est","étez"],e:"Vous êtes : attention, pas de « -ez » avec le verbe être !"},
+
+{l:3,sk:"conjugaison",q:"Hier, nous … au parc. (jouer, au passé composé)",o:["avons joué","sommes joué","avons jouer","jouons"],e:"Passé composé = avoir (ou être) au présent + participe passé : nous avons joué."},
+{l:3,sk:"conjugaison",q:"Hier, elles … au cinéma. (aller, au passé composé)",o:["sont allées","ont allé","sont allé","allaient"],e:"« aller » se conjugue avec être, et le participe s'accorde avec le sujet : elles sont allées."},
+{l:3,sk:"conjugaison",q:"« Autrefois, les enfants allaient à l'école à pied. » Le verbe est à quel temps ?",o:["l'imparfait","le présent","le futur","le passé composé"],e:"La terminaison -aient est celle de l'imparfait, temps qui décrit les habitudes du passé."},
+{l:3,sk:"conjugaison",q:"L'été prochain, tu … en Espagne. (partir)",o:["partiras","partirais","pars","partais"],e:"Futur : tu partiras. Terminaisons du futur : -ai, -as, -a, -ons, -ez, -ont."},
+{l:3,sk:"conjugaison",q:"Quand j'étais petit, je … les nuages pendant des heures. (regarder)",o:["regardais","regarderai","regarde","regardait"],e:"Imparfait, avec « je » : je regardais (une habitude du passé)."},
+{l:3,sk:"phrase",q:"Dans « Chaque matin, Lou promène son chien », quel groupe peut être déplacé ou supprimé ?",o:["Chaque matin","Lou","promène","son chien"],e:"« Chaque matin » est un complément de phrase : « Lou promène son chien chaque matin. »"},
+{l:3,sk:"orthographe",q:"Les fleurs du jardin … bon. (sentir)",o:["sentent","sent","sens","sentes"],e:"Qui est-ce qui sent ? Les fleurs (pluriel), pas le jardin ! Donc : sentent."},
+{l:3,sk:"orthographe",q:"Ces garçons sont très … (gentil)",o:["gentils","gentil","gentilles","gentille"],e:"« garçons » est masculin pluriel : gentils."},
+{l:3,sk:"orthographe",q:"Le … de terre se cache dans le sol.",o:["ver","verre","vert","vers"],e:"Le ver (animal), le verre (pour boire), vert (couleur), vers (direction) : ce sont des homophones."},
+{l:3,sk:"vocabulaire",q:"« Il pleut des cordes » veut dire :",o:["Il pleut très fort.","Des cordes tombent du ciel.","Il pleut un tout petit peu.","Il va bientôt pleuvoir."],e:"C'est une expression imagée : la pluie est si forte qu'elle ressemble à des cordes."},
+{l:3,sk:"vocabulaire",q:"« Avoir une faim de loup » veut dire :",o:["avoir très faim","avoir peur des loups","manger comme un animal","ne pas avoir faim"],e:"Expression imagée : le loup est réputé toujours affamé !"},
+{l:3,sk:"vocabulaire",q:"Comment appelle-t-on une personne qui joue du piano ?",o:["un pianiste","un pianeur","un pianier","un pianoteur"],e:"Le suffixe -iste désigne souvent la personne qui pratique : pianiste, cycliste, dentiste."},
+{l:3,sk:"orthographe",q:"… as-tu caché le trésor ? (ou / où)",o:["Où","Ou"],e:"« où » avec un accent indique le lieu. « ou » sans accent veut dire « ou bien »."},
+{l:3,sk:"phrase",q:"Combien de verbes conjugués dans : « Le chat saute sur le mur et regarde les oiseaux qui chantent » ?",o:["3","2","1","4"],e:"saute, regarde, chantent : trois verbes conjugués."},
+{l:3,sk:"phrase",q:"Par quel pronom peut-on remplacer « Ma tante et moi » ?",o:["Nous","Elles","Ils","Vous"],e:"« moi » + une autre personne = nous."},
+{l:3,sk:"phrase",q:"« Ne cours pas dans le couloir ! » est une phrase qui …",o:["donne un ordre","pose une question","raconte une histoire","exprime la joie"],e:"C'est une phrase injonctive (impérative), ici à la forme négative."},
+{l:3,sk:"orthographe",q:"Choisis la bonne orthographe :",o:["un garçon","un garcon","un garsson","un garsçon"],e:"Devant a, o, u, le c fait le son [k] ; pour faire [s], on ajoute une cédille : ç."},
+{l:3,sk:"vocabulaire",q:"« Le chevalier a une volonté de fer. » Le mot « fer » est employé …",o:["au sens figuré : sa volonté est très solide","au sens propre : il parle du métal","par erreur","pour parler de son armure"],e:"Une volonté de fer est solide comme le fer : c'est une image (sens figuré)."}
+];
+
+/* ================= QUESTIONNER LE MONDE ================= */
+const MO=[
+{l:1,sk:"temps",q:"Combien y a-t-il de jours dans une semaine ?",o:["7","5","10","12"],v:"📅",e:"Lundi, mardi, mercredi, jeudi, vendredi, samedi, dimanche : 7 jours."},
+{l:1,sk:"temps",q:"Combien y a-t-il de mois dans une année ?",o:["12","10","7","52"],v:"🗓️",e:"De janvier à décembre : 12 mois. (Et il y a environ 52 semaines !)"},
+{l:1,sk:"temps",q:"Quelle saison vient après l'automne ?",o:["l'hiver","le printemps","l'été"],v:"🍂",e:"Printemps, été, automne, hiver… puis on recommence."},
+{l:1,sk:"temps",q:"En quel mois fête-t-on Noël ?",o:["décembre","novembre","janvier","juillet"],v:"🎄",e:"Noël, c'est le 25 décembre."},
+{l:1,sk:"vivant",q:"Lequel de ces animaux est un mammifère ?",o:["le chien","la poule","le serpent","le poisson rouge"],v:"🐕",e:"Les mammifères ont des poils, et leurs bébés boivent le lait de leur mère."},
+{l:1,sk:"vivant",q:"Que mange un animal herbivore ?",o:["des plantes","de la viande","des cailloux","des insectes seulement"],v:"🐄",e:"Herbivore : qui mange des plantes, comme la vache ou le lapin."},
+{l:1,sk:"vivant",q:"De quoi une plante a-t-elle besoin pour pousser ?",o:["d'eau et de lumière","de chocolat","de musique","du noir complet"],v:"🌱",e:"Une plante a besoin d'eau, de lumière, d'air et des éléments du sol."},
+{l:1,sk:"vivant",q:"Le petit de la vache s'appelle …",o:["le veau","le poulain","l'agneau","le chevreau"],v:"🐮",e:"Poulain : petit du cheval ; agneau : de la brebis ; chevreau : de la chèvre."},
+{l:1,sk:"vivant",q:"En grandissant, la chenille devient …",o:["un papillon","une abeille","une araignée","un ver de terre"],v:"🐛",e:"C'est une métamorphose : chenille → chrysalide → papillon."},
+{l:1,sk:"vivant",q:"Que fait l'ours brun pendant l'hiver ?",o:["Il dort longtemps dans sa tanière","Il part en Afrique","Il nage dans la mer","Il change de couleur"],v:"🐻",e:"L'ours passe l'hiver au repos dans sa tanière : il vit sur ses réserves de graisse."},
+{l:1,sk:"matiere",q:"Que devient l'eau quand il fait très, très froid ?",o:["de la glace","de la vapeur","du sable","du lait"],v:"🧊",e:"Sous 0 °C, l'eau gèle : elle devient solide."},
+{l:1,sk:"corps",q:"Pour être en bonne santé, il faut …",o:["bien dormir, bouger et manger varié","manger seulement des bonbons","dormir 3 heures par nuit","ne jamais boire d'eau"],v:"💪",e:"Sommeil, activité physique et alimentation variée : le trio de la santé !"},
+{l:1,sk:"corps",q:"Combien un enfant a-t-il de dents de lait ?",o:["20","32","10","50"],v:"🦷",e:"20 dents de lait, qui tombent pour laisser la place aux dents d'adulte (32 avec les dents de sagesse)."},
+{l:1,sk:"espace",q:"Le Soleil se lève …",o:["à l'est","à l'ouest","au nord","au sud"],v:"🌅",e:"Le Soleil se lève à l'est et se couche à l'ouest."},
+{l:1,sk:"espace",q:"Quelle est la capitale de la France ?",o:["Paris","Lyon","Marseille","Bordeaux"],v:"🗼",e:"Paris est la capitale de la France."},
+{l:1,sk:"objets",q:"Lequel de ces objets a besoin d'électricité pour fonctionner ?",o:["une lampe de poche","un livre","un vélo","une cuillère"],v:"🔦",e:"La lampe de poche fonctionne avec des piles, qui fournissent l'électricité."},
+
+{l:2,sk:"vivant",q:"Lequel de ces animaux pond des œufs ?",o:["le crocodile","le chat","la baleine","le cheval"],v:"🐊",e:"Le crocodile est ovipare : il naît dans un œuf. Le chat, la baleine et le cheval sont des mammifères."},
+{l:2,sk:"vivant",q:"Chaîne alimentaire : l'herbe est mangée par le lapin, qui est mangé par …",o:["le renard","la carotte","la vache","le papillon"],v:"🌿 → 🐇 → ❓",e:"Le renard est carnivore : il mange le lapin."},
+{l:2,sk:"vivant",q:"Avant de devenir une grenouille, l'animal est …",o:["un têtard","une chenille","un poussin","une limace"],v:"🐸",e:"Œuf → têtard (qui vit dans l'eau) → grenouille."},
+{l:2,sk:"vivant",q:"À quoi servent les racines d'une plante ?",o:["à puiser l'eau et à tenir la plante dans le sol","à faire des fleurs","à attraper la lumière","à rien"],v:"🌳",e:"Les racines absorbent l'eau du sol et ancrent la plante."},
+{l:2,sk:"matiere",q:"Quand l'eau bout dans la casserole, elle se transforme en …",o:["vapeur d'eau","glace","sel","huile"],v:"♨️",e:"L'eau liquide devient un gaz : la vapeur d'eau."},
+{l:2,sk:"matiere",q:"Quand la glace fond, elle devient …",o:["de l'eau liquide","de la vapeur","du verre","de la neige"],v:"🧊 ➡️ 💧",e:"Solide → liquide : la glace fond quand il fait plus de 0 °C."},
+{l:2,sk:"objets",q:"Dans un circuit avec une pile et une ampoule, que se passe-t-il si on ouvre l'interrupteur ?",o:["l'ampoule s'éteint","l'ampoule brille plus fort","la pile se recharge","rien ne change"],v:"💡",e:"Le circuit est ouvert : le courant ne passe plus."},
+{l:2,sk:"objets",q:"Quel objet est attiré par un aimant ?",o:["un trombone en acier","une gomme","un crayon en bois","une feuille de papier"],v:"🧲",e:"L'aimant attire le fer et l'acier (qui contient du fer)."},
+{l:2,sk:"temps",q:"Combien y a-t-il de jours dans une année (non bissextile) ?",o:["365","100","12","52"],v:"📆",e:"365 jours, et 366 les années bissextiles."},
+{l:2,sk:"temps",q:"Quel mois n'a que 28 ou 29 jours ?",o:["février","janvier","août","décembre"],v:"🗓️",e:"Février : 28 jours, ou 29 les années bissextiles."},
+{l:2,sk:"temps",q:"Un siècle, c'est …",o:["100 ans","10 ans","1 000 ans","50 ans"],v:"⏳",e:"Un siècle = 100 ans. Nous vivons au XXIe siècle."},
+{l:2,sk:"espace",q:"Quelle mer borde le sud de la France ?",o:["la Méditerranée","la Manche","la mer du Nord","la mer Rouge"],v:"🌊",e:"Au sud, la Méditerranée ; à l'ouest, l'océan Atlantique ; au nord-ouest, la Manche."},
+{l:2,sk:"espace",q:"Sur la plupart des cartes, le nord est …",o:["en haut","en bas","à gauche","à droite"],v:"🧭",e:"Par convention, le nord est en haut ; la rose des vents l'indique."},
+{l:2,sk:"corps",q:"À quoi sert le cœur ?",o:["à faire circuler le sang dans le corps","à digérer","à respirer","à penser"],v:"❤️",e:"Le cœur est une pompe : il envoie le sang dans tout le corps."},
+{l:2,sk:"corps",q:"Quels aliments apportent beaucoup de calcium, utile pour les os ?",o:["le lait et le fromage","les bonbons","le sel","l'huile"],v:"🧀",e:"Les produits laitiers aident à construire des os solides."},
+{l:2,sk:"corps",q:"À quoi servent les incisives, les dents de devant ?",o:["à couper les aliments","à broyer les aliments","à déchirer la viande","à rien"],v:"🦷",e:"Incisives : couper ; canines : déchirer ; molaires : broyer."},
+
+{l:3,sk:"matiere",q:"Comment s'appelle le passage de l'état solide à l'état liquide ?",o:["la fusion","la solidification","l'évaporation","la condensation"],v:"🧊",e:"Fusion : fondre. Solidification : geler. Évaporation : liquide → gaz. Condensation : gaz → liquide."},
+{l:3,sk:"matiere",q:"À quelle température l'eau pure gèle-t-elle ?",o:["0 °C","10 °C","100 °C","–50 °C"],v:"🌡️",e:"Elle gèle à 0 °C et bout à 100 °C (au niveau de la mer)."},
+{l:3,sk:"matiere",q:"Pourquoi y a-t-il de la buée sur une vitre froide ?",o:["La vapeur d'eau de l'air redevient liquide au contact du froid","La pluie traverse la vitre","La vitre fond","La poussière se mouille"],v:"🪟",e:"C'est la condensation : la vapeur d'eau (gaz) redevient de l'eau liquide."},
+{l:3,sk:"espace",q:"Quelle planète est la plus proche du Soleil ?",o:["Mercure","la Terre","Mars","Jupiter"],v:"☀️🪐",e:"Dans l'ordre : Mercure, Vénus, Terre, Mars, Jupiter, Saturne, Uranus, Neptune."},
+{l:3,sk:"espace",q:"Combien de planètes compte notre système solaire ?",o:["8","9","5","12"],v:"🪐",e:"8 planètes. Pluton a été classée « planète naine » en 2006."},
+{l:3,sk:"espace",q:"Pourquoi y a-t-il le jour et la nuit ?",o:["Parce que la Terre tourne sur elle-même","Parce que le Soleil s'éteint la nuit","Parce que la Lune cache le Soleil","Parce que les nuages cachent le Soleil"],v:"🌍",e:"En 24 heures, la Terre fait un tour sur elle-même : le côté tourné vers le Soleil a le jour."},
+{l:3,sk:"espace",q:"Combien de temps met la Terre pour faire le tour du Soleil ?",o:["environ 1 an","1 jour","1 mois","100 ans"],v:"🌞",e:"Environ 365 jours : c'est la durée d'une année."},
+{l:3,sk:"espace",q:"Quel est le plus grand océan du monde ?",o:["l'océan Pacifique","l'océan Atlantique","l'océan Indien","la mer Méditerranée"],v:"🌊",e:"Le Pacifique est si grand qu'il pourrait contenir tous les continents réunis."},
+{l:3,sk:"espace",q:"Sur quel continent se trouve la France métropolitaine ?",o:["l'Europe","l'Afrique","l'Asie","l'Amérique"],v:"🗺️",e:"La France métropolitaine est en Europe. Certains territoires français sont ailleurs (Guyane, La Réunion…)."},
+{l:3,sk:"vivant",q:"Combien de pattes a un insecte ?",o:["6","8","4","10"],v:"🐜",e:"Tous les insectes ont 6 pattes et un corps en 3 parties."},
+{l:3,sk:"vivant",q:"L'araignée est-elle un insecte ?",o:["Non, elle a 8 pattes","Oui, comme la fourmi","Oui, car elle est petite","Non, c'est un mammifère"],v:"🕷️",e:"L'araignée a 8 pattes : ce n'est pas un insecte, c'est un arachnide."},
+{l:3,sk:"vivant",q:"La baleine est …",o:["un mammifère","un poisson","un reptile","un oiseau"],v:"🐋",e:"Elle respire de l'air avec des poumons et allaite son petit."},
+{l:3,sk:"vivant",q:"Grâce à la lumière, les feuilles vertes fabriquent la nourriture de la plante et rejettent …",o:["de l'oxygène","de la fumée","du sable","du lait"],v:"🍃",e:"C'est la photosynthèse : les plantes produisent l'oxygène que nous respirons."},
+{l:3,sk:"corps",q:"Quels organes nous permettent de respirer ?",o:["les poumons","l'estomac","les reins","le cerveau"],v:"🫁",e:"L'air entre par le nez ou la bouche et va jusqu'aux poumons."},
+{l:3,sk:"temps",q:"Dans quelle grotte trouve-t-on de célèbres peintures de la Préhistoire ?",o:["Lascaux","le Louvre","Versailles","la tour Eiffel"],v:"🦬",e:"Les peintures de la grotte de Lascaux, en Dordogne, ont environ 20 000 ans."},
+{l:3,sk:"temps",q:"À quelle époque a-t-on construit les châteaux forts ?",o:["au Moyen Âge","à la Préhistoire","de nos jours","dans l'Égypte des pharaons"],v:"🏰",e:"Les châteaux forts sont typiques du Moyen Âge."},
+{l:3,sk:"temps",q:"En quelle année des humains ont-ils marché sur la Lune pour la première fois ?",o:["1969","1789","2000","1492"],v:"🌕",e:"En juillet 1969, l'astronaute américain Neil Armstrong pose le pied sur la Lune."},
+{l:3,sk:"objets",q:"Lequel de ces matériaux laisse passer le courant électrique ?",o:["le cuivre","le plastique","le bois","le verre"],v:"🔌",e:"Les métaux comme le cuivre sont conducteurs ; le plastique, le bois et le verre sont isolants. C'est pourquoi les fils électriques sont en cuivre entouré de plastique."}
+];
+
+const SKILLS={nature:"Nature des mots",phrase:"La phrase",orthographe:"Orthographe",vocabulaire:"Vocabulaire",conjugaison:"Conjugaison",
+vivant:"Le vivant",matiere:"La matière",objets:"Les objets",temps:"Se repérer dans le temps",espace:"Se repérer dans l'espace",corps:"Le corps et la santé",
+lecture:"Compréhension de lecture",add:"Additions",sub:"Soustractions",tables:"Tables de multiplication",dbl:"Doubles et moitiés",nombres:"Les nombres",heure:"Lire l'heure",monnaie:"La monnaie",mesures:"Mesures",fractions:"Fractions",geo:"Géométrie",logique:"Logique et suites",mul:"Multiplication",div:"Division (partage)",
+s_question:"Comprendre la question",s_inutile:"Trier les informations",s_schema:"Choisir le schéma",s_calc:"Choisir le calcul",s_first:"Trouver la 1re étape",s_mid:"Calcul intermédiaire",s_result:"Calculer le résultat"};
+
+/* ================= OUTILS ================= */
+const R=(a,b)=>a+Math.floor(Math.random()*(b-a+1));
+const pick=a=>a[Math.floor(Math.random()*a.length)];
+function shuffle(a){a=a.slice();for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a}
+const fmt=n=>String(n).replace(/\B(?=(\d{3})+(?!\d))/g," ");
+const euros=c=>{const e=Math.floor(c/100),r=c%100;return r?`${fmt(e)},${String(r).padStart(2,"0")} €`:`${fmt(e)} €`};
+function numOpts(ans,cands,f){f=f||fmt;const s=new Set([ans]),out=[ans];
+  for(const c of cands){if(out.length>=4)break;if(Number.isInteger(c)&&c>=0&&!s.has(c)){s.add(c);out.push(c)}}
+  let k=1;while(out.length<4){for(const c of [ans+k,ans-k]){if(out.length<4&&c>=0&&!s.has(c)){s.add(c);out.push(c)}}k++}
+  return out.map(f)}
+const hm=(h,m)=>m?`${h} h ${String(m).padStart(2,"0")}`:`${h} h`;
+
+/* nombres en lettres (orthographe recommandée de 1990 : traits d'union partout) */
+const UN=["zéro","un","deux","trois","quatre","cinq","six","sept","huit","neuf","dix","onze","douze","treize","quatorze","quinze","seize","dix-sept","dix-huit","dix-neuf"];
+const DIZ={2:"vingt",3:"trente",4:"quarante",5:"cinquante",6:"soixante"};
+function w99(n){if(n<20)return UN[n];const t=Math.floor(n/10),u=n%10;
+  if(t<=6)return DIZ[t]+(u===0?"":u===1?"-et-un":"-"+UN[u]);
+  if(t===7)return "soixante"+(u===1?"-et-onze":"-"+UN[10+u]);
+  if(t===8)return u===0?"quatre-vingts":"quatre-vingt-"+UN[u];
+  return "quatre-vingt-"+UN[10+u]}
+function words(n){if(n===0)return"zéro";const p=[],m=Math.floor(n/1000),r=n%1000,c=Math.floor(r/100),d=r%100;
+  if(m)p.push(m===1?"mille":w99(m)+"-mille");
+  if(c)p.push(c===1?"cent":UN[c]+"-cent"+(d===0?"s":""));
+  if(d)p.push(w99(d));
+  return p.join("-")}
+
+/* ================= DESSINS (SVG / HTML) ================= */
+function clockSVG(h,m){
+  let s=`<svg viewBox="0 0 200 200" width="190" height="190" role="img" aria-label="horloge"><circle cx="100" cy="100" r="93" fill="#fff" stroke="#4338ca" stroke-width="7"/>`;
+  for(let i=0;i<60;i++){const a=i*Math.PI/30,r1=i%5?82:76;s+=`<line x1="${(100+86*Math.sin(a)).toFixed(1)}" y1="${(100-86*Math.cos(a)).toFixed(1)}" x2="${(100+r1*Math.sin(a)).toFixed(1)}" y2="${(100-r1*Math.cos(a)).toFixed(1)}" stroke="#4338ca" stroke-width="${i%5?1.4:3.2}"/>`}
+  for(let i=1;i<=12;i++){const a=i*Math.PI/6;s+=`<text x="${(100+63*Math.sin(a)).toFixed(1)}" y="${(100-63*Math.cos(a)+7).toFixed(1)}" text-anchor="middle" font-size="19" font-weight="800" fill="#1e1b4b">${i}</text>`}
+  const ha=((h%12)+m/60)*Math.PI/6,ma=m*Math.PI/30;
+  s+=`<line x1="100" y1="100" x2="${(100+70*Math.sin(ma)).toFixed(1)}" y2="${(100-70*Math.cos(ma)).toFixed(1)}" stroke="#2563eb" stroke-width="5" stroke-linecap="round"/>`;
+  s+=`<line x1="100" y1="100" x2="${(100+43*Math.sin(ha)).toFixed(1)}" y2="${(100-43*Math.cos(ha)).toFixed(1)}" stroke="#e11d48" stroke-width="9" stroke-linecap="round"/>`;
+  return s+`<circle cx="100" cy="100" r="7" fill="#1e1b4b"/></svg><div class="vis-cap"><span style="color:#e11d48">■</span> petite aiguille : les heures · <span style="color:#2563eb">■</span> grande aiguille : les minutes</div>`}
+function blocksSVG(c,d,u){
+  const cs=6,H=cs*10;let x=4,s="";
+  for(let i=0;i<c;i++){s+=`<g transform="translate(${x},4)"><rect width="${H}" height="${H}" fill="#fbbf24" stroke="#92400e" stroke-width="1.5"/>`;for(let k=1;k<10;k++)s+=`<line x1="${k*cs}" y1="0" x2="${k*cs}" y2="${H}" stroke="#b45309" stroke-width=".6"/><line x1="0" y1="${k*cs}" x2="${H}" y2="${k*cs}" stroke="#b45309" stroke-width=".6"/>`;s+=`</g>`;x+=H+8}
+  if(c)x+=6;
+  for(let i=0;i<d;i++){s+=`<g transform="translate(${x},4)"><rect width="${cs}" height="${H}" fill="#34d399" stroke="#065f46" stroke-width="1.2"/>`;for(let k=1;k<10;k++)s+=`<line x1="0" y1="${k*cs}" x2="${cs}" y2="${k*cs}" stroke="#065f46" stroke-width=".6"/>`;s+=`</g>`;x+=cs+5}
+  if(d)x+=8;
+  for(let i=0;i<u;i++){const col=i%3,row=Math.floor(i/3);s+=`<rect x="${x+col*(cs+3)}" y="${4+H-cs-row*(cs+3)}" width="${cs}" height="${cs}" fill="#60a5fa" stroke="#1e3a8a" stroke-width="1"/>`}
+  if(u)x+=3*(cs+3);
+  return `<svg viewBox="0 0 ${x+4} ${H+8}" width="${Math.min(340,(x+4)*2.4)}" role="img" aria-label="blocs">${s}</svg><div class="vis-cap"><span style="color:#d97706">■</span> plaque = 1 centaine · <span style="color:#059669">■</span> barre = 1 dizaine · <span style="color:#2563eb">■</span> cube = 1 unité</div>`}
+function moneyHTML(items){return `<div class="money">`+items.map(v=>v>=500?`<div class="bill b${v}">${v/100} €</div>`:`<div class="coin c${v}">${v>=100?v/100+" €":v+" c"}</div>`).join("")+`</div>`}
+function fracSVG(n,k,shape){
+  const col="#a855f7";let s="";
+  if(shape==="pie"){const cx=90,cy=90,r=80;
+    for(let i=0;i<n;i++){const a1=2*Math.PI*i/n-Math.PI/2,a2=2*Math.PI*(i+1)/n-Math.PI/2;
+      s+=`<path d="M${cx},${cy} L${(cx+r*Math.cos(a1)).toFixed(1)},${(cy+r*Math.sin(a1)).toFixed(1)} A${r},${r} 0 ${n===1?1:0} 1 ${(cx+r*Math.cos(a2)).toFixed(1)},${(cy+r*Math.sin(a2)).toFixed(1)} Z" fill="${i<k?col:"#fff"}" stroke="#4c1d95" stroke-width="3"/>`}
+    return `<svg viewBox="0 0 180 180" width="170" role="img" aria-label="fraction">${s}</svg>`}
+  const W=280,h=60,w=W/n;for(let i=0;i<n;i++)s+=`<rect x="${4+i*w}" y="4" width="${w}" height="${h}" fill="${i<k?col:"#fff"}" stroke="#4c1d95" stroke-width="3"/>`;
+  return `<svg viewBox="0 0 ${W+8} ${h+8}" width="300" role="img" aria-label="fraction">${s}</svg>`}
+function lineSVG(start,step,n,idx,labels){
+  const W=320,x0=20,dx=(W-40)/(n-1);let s=`<line x1="${x0-10}" y1="50" x2="${x0+dx*(n-1)+12}" y2="50" stroke="#1e1b4b" stroke-width="3"/><polygon points="${x0+dx*(n-1)+18},50 ${x0+dx*(n-1)+8},44 ${x0+dx*(n-1)+8},56" fill="#1e1b4b"/>`;
+  for(let i=0;i<n;i++){const x=x0+i*dx;s+=`<line x1="${x}" y1="42" x2="${x}" y2="58" stroke="#1e1b4b" stroke-width="2.5"/>`;if(labels.includes(i))s+=`<text x="${x}" y="80" text-anchor="middle" font-size="15" font-weight="700" fill="#1e1b4b">${fmt(start+i*step)}</text>`}
+  const xa=x0+idx*dx;s+=`<polygon points="${xa},38 ${xa-9},14 ${xa+9},14" fill="#e11d48"/><text x="${xa}" y="11" text-anchor="middle" font-size="14" font-weight="800" fill="#e11d48">?</text>`;
+  return `<svg viewBox="0 0 ${W+10} 90" width="340" role="img" aria-label="droite graduée">${s}</svg>`}
+function rectSVG(L,l,unit,square){
+  const sc=Math.min(200/L,110/l),w=L*sc,h=l*sc;
+  return `<svg viewBox="0 0 ${w+90} ${h+60}" width="${Math.min(330,w+90)}" role="img" aria-label="figure"><rect x="45" y="20" width="${w}" height="${h}" fill="#fde68a" stroke="#b45309" stroke-width="4"/><text x="${45+w/2}" y="14" text-anchor="middle" font-size="15" font-weight="800" fill="#1e1b4b">${L} ${unit}</text><text x="38" y="${20+h/2+5}" text-anchor="end" font-size="15" font-weight="800" fill="#1e1b4b">${l} ${unit}</text>${square?`<text x="${45+w/2}" y="${h+48}" text-anchor="middle" font-size="13" fill="#6b7280">(c'est un carré)</text>`:""}</svg>`}
+function polySVG(n){const cx=80,cy=80,r=62;let pts=[];for(let i=0;i<n;i++){const a=2*Math.PI*i/n-Math.PI/2;pts.push(`${(cx+r*Math.cos(a)).toFixed(1)},${(cy+r*Math.sin(a)).toFixed(1)}`)}
+  return `<svg viewBox="0 0 160 160" width="150" role="img" aria-label="polygone"><polygon points="${pts.join(" ")}" fill="#bae6fd" stroke="#0369a1" stroke-width="4" stroke-linejoin="round"/></svg>`}
+
+/* schémas en barres */
+function brace(x1,x2,y,txt){return `<path d="M${x1},${y+8} L${x1},${y} L${x2},${y} L${x2},${y+8}" fill="none" stroke="#6d28d9" stroke-width="2.5"/><text x="${(x1+x2)/2}" y="${y-6}" text-anchor="middle" font-size="16" font-weight="800" fill="#6d28d9">${txt}</text>`}
+const segCol=["#93c5fd","#fca5a5","#86efac","#fcd34d"];
+function seg(x,y,w,h,txt,col,dash,cap){return `<rect x="${x}" y="${y}" width="${w}" height="${h}" rx="4" fill="${dash?"#fff":col}" stroke="#1e1b4b" stroke-width="2" ${dash?'stroke-dasharray="6 4"':""}/><text x="${x+w/2}" y="${y+h/2+6}" text-anchor="middle" font-size="16" font-weight="800" fill="#1e1b4b">${txt}</text>${cap?`<text x="${x+w/2}" y="${y+h+17}" text-anchor="middle" font-size="12" fill="#4b5563">${cap}</text>`:""}`}
+function sv(v){return v==="?"?"?":fmt(v)}
+function schemaSVG(sp){
+  const W=300,MIN=46;let s="",width=W+20,height=120;
+  if(sp.t==="pp"){
+    const tot=sp.parts.reduce((a,p)=>a+p.n,0);let ws=sp.parts.map(p=>Math.max(MIN,p.n/tot*W));const sum=ws.reduce((a,b)=>a+b,0);ws=ws.map(w=>w*W/sum);
+    let x=10;sp.parts.forEach((p,i)=>{s+=seg(x,44,ws[i],40,sv(p.s),segCol[i],false,p.l);x+=ws[i]});
+    s+=brace(10,10+W,30,sv(sp.tot.s)+(sp.tot.l?` (${sp.tot.l})`:""));height=118;
+  }else if(sp.t==="cmp"){
+    const LM=78,WW=W-LM+10,big=sp.big.n,sm=sp.small.n,mx=Math.max(big,sm);
+    const wb=Math.max(MIN,big/mx*WW),ws=Math.max(MIN,sm/mx*WW);
+    s+=`<text x="${LM-8}" y="38" text-anchor="end" font-size="14" font-weight="700" fill="#1e1b4b">${sp.big.l}</text>`+seg(LM,14,wb,36,sv(sp.big.s),segCol[0]);
+    s+=`<text x="${LM-8}" y="92" text-anchor="end" font-size="14" font-weight="700" fill="#1e1b4b">${sp.small.l}</text>`+seg(LM,68,ws,36,sv(sp.small.s),segCol[1]);
+    if(wb>ws+4){s+=seg(LM+ws,68,wb-ws,36,"",null,true)+`<text x="${LM+ws+(wb-ws)/2}" y="126" text-anchor="middle" font-size="15" font-weight="800" fill="#6d28d9">${sv(sp.diff.s)}</text><path d="M${LM+ws},112 L${LM+wb},112" stroke="#6d28d9" stroke-width="2.5"/>`}
+    else if(ws>wb+4){s+=seg(LM+wb,14,ws-wb,36,"",null,true)+`<text x="${LM+wb+(ws-wb)/2}" y="9" text-anchor="middle" font-size="15" font-weight="800" fill="#6d28d9">${sv(sp.diff.s)}</text>`}
+    height=134;
+  }else if(sp.t==="mul"){
+    const shown=sp.nUnknown?4:sp.n,bw=Math.min(62,(W-(sp.nUnknown?30:0))/shown);let x=10;
+    for(let i=0;i<shown;i++){if(sp.nUnknown&&i===3){s+=`<text x="${x+14}" y="70" text-anchor="middle" font-size="22" font-weight="800" fill="#1e1b4b">…</text>`;x+=30}
+      s+=seg(x,44,bw,40,sv(sp.k.s),segCol[0]);x+=bw}
+    s+=brace(10,x,30,sv(sp.tot.s));
+    if(sp.nUnknown)s+=`<text x="${(10+x)/2}" y="106" text-anchor="middle" font-size="14" font-weight="800" fill="#6d28d9">? ${sp.unitLabel||"boîtes"}</text>`;
+    height=114;width=Math.max(width,x+14);
+  }
+  return `<svg viewBox="0 0 ${width} ${height}" width="100%" style="max-width:420px" role="img" aria-label="schéma">${s}</svg>`}
+
+/* ================= GÉNÉRATEURS DE CALCUL ================= */
+const C1=[
+()=>{let a=R(11,58),b=R(6,39);if(a+b>99)b=99-a;return{sk:"add",q:`${a} + ${b} = ?`,input:true,ans:a+b,e:`${a} + ${b} = ${a+b}. Astuce : ajoute d'abord les dizaines, puis les unités.`}},
+()=>{const a=R(30,99),b=R(5,a-10);return{sk:"sub",q:`${a} − ${b} = ?`,input:true,ans:a-b,e:`${a} − ${b} = ${a-b}. Vérifie : ${a-b} + ${b} = ${a}.`}},
+()=>{const t=pick([2,3,4,5,10]),x=R(2,10);return{sk:"tables",q:`${t} × ${x} = ?`,o:numOpts(t*x,[t*(x+1),t*(x-1),t+x,(t+1)*x]),e:`${t} × ${x} = ${t*x} : c'est ${x} fois ${t}.`}},
+()=>{if(Math.random()<.5){const a=R(6,45);return{sk:"dbl",q:`Quel est le double de ${a} ?`,input:true,ans:2*a,e:`Le double, c'est 2 fois : ${a} + ${a} = ${2*a}.`}}const a=2*R(5,50);return{sk:"dbl",q:`Quelle est la moitié de ${a} ?`,input:true,ans:a/2,e:`La moitié, c'est partager en 2 parts égales : ${a/2} + ${a/2} = ${a}.`}},
+()=>{const ds=shuffle([1,2,3,4,5,6,7,8,9]).slice(0,3);const perm=[[0,1,2],[0,2,1],[1,0,2],[1,2,0],[2,0,1],[2,1,0]].map(p=>ds[p[0]]*100+ds[p[1]]*10+ds[p[2]]);const opts=shuffle(perm).slice(0,4);const mx=Math.max(...opts);return{sk:"nombres",q:"Quel est le plus grand nombre ?",o:[mx,...opts.filter(x=>x!==mx)].map(fmt),e:`On compare d'abord les centaines, puis les dizaines, puis les unités : ${fmt(mx)} est le plus grand.`}},
+()=>{const c=R(1,3),d=R(0,6),u=R(0,9),n=c*100+d*10+u;return{sk:"nombres",q:"Quel nombre est représenté ?",vis:blocksSVG(c,d,u),o:numOpts(n,[c*100+u*10+d,d*100+c*10+u,c*10+d+u,n+100]),e:`${c} centaine${c>1?"s":""}, ${d} dizaine${d>1?"s":""} et ${u} unité${u>1?"s":""} : ${n}.`}},
+()=>{const h=R(1,12),m=pick([0,30]);const sw=m===30?hm(6,h*5%60):hm(12,h*5%60);return{sk:"heure",q:"Quelle heure est-il ?",vis:clockSVG(h,m),o:[hm(h,m),hm(h,m?0:30),hm(h%12+1,m),sw].filter((v,i,a)=>a.indexOf(v)===i),e:`La petite aiguille indique les heures, la grande les minutes : il est ${hm(h,m)}.${m===30?" Quand la grande aiguille est sur le 6, c'est « et demie ».":""}`}},
+()=>{const items=[];const n=R(3,5);for(let i=0;i<n;i++)items.push(pick([1000,500,200,200,100,100]));items.sort((a,b)=>b-a);const t=items.reduce((a,b)=>a+b,0)/100;return{sk:"monnaie",q:"Combien d'euros y a-t-il en tout ?",vis:moneyHTML(items),o:numOpts(t,[t+1,t-1,t+2,items.length]).map(x=>x+" €"),e:`${items.map(v=>v/100).join(" + ")} = ${t} €.`}},
+()=>{const sh=pick([[3,"un triangle"],[4,"un carré"],[5,"un pentagone"],[6,"un hexagone"]]);return{sk:"geo",q:`Combien de côtés a ${sh[1]} ?`,vis:polySVG(sh[0]),o:numOpts(sh[0],[sh[0]+1,sh[0]-1,sh[0]+2]),e:`${sh[1].charAt(0).toUpperCase()+sh[1].slice(1)} a ${sh[0]} côtés.${sh[0]===6?" « Hexa » veut dire six.":sh[0]===5?" « Penta » veut dire cinq.":""}`}},
+()=>{const st=pick([2,5,10]),a=st*R(1,8);const seq=[a,a+st,a+2*st,a+3*st];return{sk:"logique",q:`Continue la suite : ${seq.join(", ")}, … ?`,input:true,ans:a+4*st,e:`On ajoute ${st} à chaque fois : ${a+3*st} + ${st} = ${a+4*st}.`}}
+];
+const C2=[
+()=>{const m=R(1,9);let c=R(0,9),d=R(0,9),u=R(0,9);if(Math.random()<.6){const z=R(0,2);if(z===0)c=0;else if(z===1)d=0;else u=0}const n=m*1000+c*100+d*10+u;return{sk:"nombres",q:`Écris en chiffres : « ${words(n)} »`,o:numOpts(n,[m*1000+d*100+c*10+u,m*1000+c*100+u*10+d,m*100+c*10+d+(c?0:u),m*1000+c*10+u,n+1000]),e:`${words(n)} = ${fmt(n)} (${m} millier${m>1?"s":""}, ${c} centaine${c>1?"s":""}, ${d} dizaine${d>1?"s":""}, ${u} unité${u>1?"s":""}).`}},
+()=>{const base=R(1,9)*1000+R(0,9)*100;const opts=shuffle([base+R(10,99),base+R(10,99)+100*R(1,3),base+R(1,9)*10,base-100+R(10,99)]).filter((v,i,a)=>a.indexOf(v)===i);const mx=Math.max(...opts);return{sk:"nombres",q:"Quel est le plus grand nombre ?",o:[mx,...opts.filter(x=>x!==mx)].map(fmt),e:`On compare chiffre par chiffre, en commençant par la gauche (milliers, centaines…) : ${fmt(mx)}.`}},
+()=>{const kind=R(0,2);let n;if(kind===0)n=R(1,8)*1000+R(0,9)*100+99;else if(kind===1)n=R(1,8)*1000+999;else n=R(1,9)*1000+R(1,9)*100+R(1,8)*10+9;return{sk:"nombres",q:`Quel nombre vient juste après ${fmt(n)} ?`,o:numOpts(n+1,[n+10,n+100,n-1,n+1000]),e:`${fmt(n)} + 1 = ${fmt(n+1)}. Attention aux retenues : 9 + 1 = 10 !`}},
+()=>{const m=R(1,9),c=R(0,9),u=R(1,9);return{sk:"nombres",q:`${fmt(m*1000)} + ${c*100} + ${u} = ?`,input:true,ans:m*1000+c*100+u,e:`${m} milliers, ${c} centaines, 0 dizaine et ${u} unités : ${fmt(m*1000+c*100+u)}.`}},
+()=>{if(Math.random()<.5){const a=R(1,7)*100+R(1,9)*10,b=R(1,2)*100+R(1,9)*10;return{sk:"add",q:`${a} + ${b} = ?`,input:true,ans:a+b,e:`${a} + ${b} = ${a+b}. Astuce : centaines avec centaines, dizaines avec dizaines.`}}const a=R(3,9)*100+R(1,9)*10,b=R(1,2)*100+R(1,9)*10;return{sk:"sub",q:`${a} − ${b} = ?`,input:true,ans:a-b,e:`${a} − ${b} = ${a-b}. Vérifie : ${a-b} + ${b} = ${a}.`}},
+()=>{const a=R(11,89);return{sk:"add",q:`${a} + ? = 100`,input:true,ans:100-a,e:`${a} + ${100-a} = 100. Astuce : va d'abord à la dizaine suivante, puis jusqu'à 100.`}},
+()=>{const t=R(2,9),x=R(2,10);return{sk:"tables",q:`${t} × ${x} = ?`,input:true,ans:t*x,e:`${t} × ${x} = ${t*x}.`}},
+()=>{const n=R(3,99),k=pick([10,100]);return{sk:"tables",q:`${n} × ${k} = ?`,input:true,ans:n*k,e:`Multiplier par ${k}, c'est décaler les chiffres : les unités deviennent des ${k===10?"dizaines":"centaines"}. ${n} × ${k} = ${fmt(n*k)}.`}},
+()=>{const a=2*R(26,100);return{sk:"dbl",q:`Quelle est la moitié de ${a} ?`,input:true,ans:a/2,e:`${a/2} + ${a/2} = ${a}.`}},
+()=>{const h=R(1,12),m=pick([15,45,30,0,15,45]);const words2={0:"pile",15:"et quart",30:"et demie",45:"moins le quart"};return{sk:"heure",q:"Quelle heure est-il ?",vis:clockSVG(h,m),o:[hm(h,m),hm(h,(m+15)%60),hm(h%12+1,m),hm((m/5)||12,(h%12)*5)].filter((v,i,a)=>a.indexOf(v)===i),e:`Il est ${hm(h,m)}${m===45?` (on dit aussi « ${h%12+1} heure${h%12+1>1?"s":""} moins le quart »)`:m===15?" (« et quart »)":m===30?" (« et demie »)":""}.`}},
+()=>{const items=[pick([500,1000,200]),pick([200,100,100]),pick([50,20,50]),pick([20,10,10])];if(Math.random()<.5)items.push(pick([10,20]));items.sort((a,b)=>b-a);const t=items.reduce((a,b)=>a+b,0);const opts=[t,t+10,t-10,t+100,Math.floor(t/100)*100+Math.floor((t%100)/10)].filter((v,i,a)=>v>0&&a.indexOf(v)===i).slice(0,4);return{sk:"monnaie",q:"Combien d'argent y a-t-il en tout ?",vis:moneyHTML(items),o:opts.map(euros),e:`Les euros : ${items.filter(v=>v>=100).map(v=>v/100).join(" + ")} = ${Math.floor(t/100)} €. Les centimes : ${items.filter(v=>v<100).join(" + ")} = ${t%100} c. Total : ${euros(t)}.`}},
+()=>{const k=R(0,2);if(k===0){const m=R(1,5),c=R(5,95);return{sk:"mesures",q:`${m} m ${c} cm = ? cm`,input:true,ans:m*100+c,e:`1 m = 100 cm, donc ${m} m = ${m*100} cm, et ${m*100} + ${c} = ${m*100+c} cm.`}}if(k===1){const m=R(2,9);return{sk:"mesures",q:`${m*100} cm = ? m`,input:true,ans:m,e:`100 cm = 1 m, donc ${m*100} cm = ${m} m.`}}const m=R(2,9);return{sk:"mesures",q:`${m} m = ? cm`,input:true,ans:m*100,e:`1 m = 100 cm, donc ${m} m = ${m*100} cm.`}},
+()=>{const f=pick([[2,1],[3,1],[3,2],[4,1],[4,3],[4,2]]);const lab=(n,k)=>`${k}/${n}`;const nm={"1/2":"un demi","1/3":"un tiers","2/3":"deux tiers","1/4":"un quart","3/4":"trois quarts","2/4":"deux quarts (= un demi)"};const opts=[lab(f[0],f[1]),lab(f[0],f[0]-f[1]),lab(f[0]-f[1],f[1]),lab(f[0]+1,f[1]),lab(f[0]+2,f[1])].filter((v,i,a)=>a.indexOf(v)===i&&!/\/1$/.test(v)).slice(0,4);return{sk:"fractions",q:"Quelle fraction de la figure est coloriée ?",vis:fracSVG(f[0],f[1],pick(["pie","bar"])),o:opts,e:`La figure est partagée en ${f[0]} parts égales et ${f[1]} ${f[1]>1?"sont coloriées":"est coloriée"} : ${lab(f[0],f[1])}, ${nm[lab(f[0],f[1])]}.`}},
+()=>{const step=pick([10,100,5,50]),n=11,idx=R(1,9),start=step===5?R(2,8)*10:step===50?R(0,4)*1000:0;return{sk:"nombres",q:"Quel nombre indique la flèche ?",vis:lineSVG(start,step,n,idx,[0,5,10]),input:true,ans:start+idx*step,e:`Chaque graduation vaut ${step}. La flèche est à ${idx} graduation${idx>1?"s":""} de ${fmt(start)} : ${fmt(start)} + ${idx} × ${step} = ${fmt(start+idx*step)}.`}},
+()=>{const st=pick([3,4,25,50,100]),a=R(1,9)*st;const seq=[a,a+st,a+2*st,a+3*st];return{sk:"logique",q:`Continue la suite : ${seq.map(fmt).join(", ")}, … ?`,input:true,ans:a+4*st,e:`On ajoute ${st} à chaque fois.`}}
+];
+const C3=[
+()=>{const a=R(12,48),b=R(2,6);return{sk:"mul",q:`${a} × ${b} = ?`,input:true,ans:a*b,e:`Décompose : ${a} × ${b} = ${Math.floor(a/10)*10} × ${b} + ${a%10} × ${b} = ${Math.floor(a/10)*10*b} + ${(a%10)*b} = ${a*b}.`}},
+()=>{const b=R(2,9),q=R(2,10);return{sk:"div",q:`${b*q} : ${b} = ?`,input:true,ans:q,e:`${b*q} : ${b} = ${q}, car ${b} × ${q} = ${b*q}. (« : » veut dire « divisé par »)`}},
+()=>{const f=pick([[2,R(6,30)*2],[4,R(2,10)*4],[3,R(2,10)*3],[10,R(2,9)*10]]);const nm={2:"La moitié (1/2)",3:"Le tiers (1/3)",4:"Le quart (1/4)",10:"Le dixième (1/10)"};return{sk:"fractions",q:`Combien font 1/${f[0]} de ${f[1]} ?`,input:true,ans:f[1]/f[0],e:`${nm[f[0]]} de ${f[1]}, c'est partager ${f[1]} en ${f[0]} parts égales : ${f[1]} : ${f[0]} = ${f[1]/f[0]}.`}},
+()=>{if(Math.random()<.5){const ds=shuffle([2,3,4,8]);const mn=Math.min(...ds);return{sk:"fractions",q:"On partage la même tarte. Quelle part est la plus grande ?",vis:`<div class="emo">🥧</div>`,o:[`1/${mn}`,...ds.filter(d=>d!==mn).map(d=>`1/${d}`)],e:`Plus on partage en beaucoup de parts, plus chaque part est petite ! 1/${mn} est la plus grande.`}}const n=pick([4,5,6,8]);const ks=shuffle([1,2,3,n-1]).filter((v,i,a)=>a.indexOf(v)===i&&v<n);const mx=Math.max(...ks);return{sk:"fractions",q:"Quelle fraction est la plus grande ?",o:[`${mx}/${n}`,...ks.filter(k=>k!==mx).map(k=>`${k}/${n}`)],e:`Les parts sont de la même taille (${n} parts) : celle qui en prend le plus est la plus grande, ${mx}/${n}.`}},
+()=>{const h=R(8,16),m=pick([0,15,30,45]),dh=R(0,2),dm=pick([15,30,45]);const tot=h*60+m+dh*60+dm,eh=Math.floor(tot/60),em=tot%60;const dur=dh?`${dh} h ${dm} min`:`${dm} min`;const wrong=[hm(h+dh,(m+dm)%60),hm(eh+1,em),hm(eh,(em+15)%60),hm(h+dh+1,(m+dm)%60)].filter(v=>v!==hm(eh,em));return{sk:"heure",q:`Un film commence à ${hm(h,m)} et dure ${dur}. À quelle heure finit-il ?`,vis:`<div class="emo">🎬</div>`,o:[hm(eh,em),...wrong].filter((v,i,a)=>a.indexOf(v)===i).slice(0,4),e:`${hm(h,m)} + ${dur} = ${hm(eh,em)}. Attention : 60 minutes font 1 heure !`}},
+()=>{if(Math.random()<.35){const c=R(3,12);return{sk:"geo",q:"Quel est le périmètre de ce carré ?",vis:rectSVG(c,c,"cm",true),input:true,ans:4*c,unit:"cm",e:`Le périmètre, c'est le tour de la figure. Un carré a 4 côtés égaux : 4 × ${c} = ${4*c} cm.`}}const L=R(5,14),l=R(2,L-1);return{sk:"geo",q:"Quel est le périmètre de ce rectangle ?",vis:rectSVG(L,l,"cm"),input:true,ans:2*(L+l),unit:"cm",e:`On fait le tour : ${L} + ${l} + ${L} + ${l} = ${2*(L+l)} cm.`}},
+()=>{const k=R(0,3);if(k===0){const a=R(2,9);return{sk:"mesures",q:`${a} km = ? m`,input:true,ans:a*1000,e:`1 km = 1 000 m, donc ${a} km = ${fmt(a*1000)} m.`}}if(k===1){const a=R(2,9);return{sk:"mesures",q:`${a} kg = ? g`,input:true,ans:a*1000,e:`1 kg = 1 000 g, donc ${a} kg = ${fmt(a*1000)} g.`}}if(k===2){const h=R(1,3),m=pick([5,10,15,20,30,45]);return{sk:"mesures",q:`${h} h ${m} min = ? min`,input:true,ans:h*60+m,e:`1 h = 60 min, donc ${h} h = ${h*60} min, et ${h*60} + ${m} = ${h*60+m} min.`}}const a=R(2,9);return{sk:"mesures",q:`${a*1000} m = ? km`,input:true,ans:a,e:`1 000 m = 1 km, donc ${fmt(a*1000)} m = ${a} km.`}},
+()=>{if(Math.random()<.5){const a=R(2,6);const seq=[a,a*2,a*4,a*8];return{sk:"logique",q:`Continue la suite : ${seq.join(", ")}, … ?`,input:true,ans:a*16,e:`On double à chaque fois : ${a*8} × 2 = ${a*16}.`}}const st=pick([9,11,25,75]),a=R(20,60)*st;const seq=[a,a-st,a-2*st,a-3*st];return{sk:"logique",q:`Continue la suite : ${seq.map(fmt).join(", ")}, … ?`,input:true,ans:a-4*st,e:`On enlève ${st} à chaque fois.`}},
+()=>{for(let g=0;g<50;g++){const t=R(6,9),lo=R(20,80),hi=lo+R(6,9);const ms=[];for(let x=lo+1;x<hi;x++)if(x%t===0)ms.push(x);if(ms.length===1)return{sk:"logique",q:`Je suis un nombre plus grand que ${lo} et plus petit que ${hi}. Je suis dans la table de ${t}. Qui suis-je ?`,vis:`<div class="emo">🕵️</div>`,input:true,ans:ms[0],e:`Entre ${lo} et ${hi}, le seul nombre de la table de ${t} est ${ms[0]} (${t} × ${ms[0]/t}).`}}return C3[0]()},
+()=>{const h=R(1,11),m=pick([0,15,30,45]);return{sk:"heure",q:"C'est l'après-midi. Quelle heure est-il ?",vis:clockSVG(h,m),o:[hm(h+12,m),hm(h,m),hm(h+10,m),hm(h+11,m)],e:`L'après-midi, on ajoute 12 aux heures : ${h} + 12 = ${h+12}. Il est ${hm(h+12,m)}.`}},
+()=>{const a=R(2,8)*100+pick([R(1,20),R(80,99)]),b=R(1,5)*100+pick([R(1,15),R(85,99)]);const ra=Math.round(a/100)*100,rb=Math.round(b/100)*100;return{sk:"nombres",q:`Sans calculer exactement : ${a} + ${b} fait environ …`,o:numOpts(ra+rb,[ra+rb+100,ra+rb-100,ra+rb+200],v=>fmt(v)),e:`${a} est proche de ${ra} et ${b} de ${rb} : ${ra} + ${rb} = ${ra+rb}. (Le résultat exact est ${a+b}.)`}}
+];
+
+/* ================= CONJUGAISON GÉNÉRÉE ================= */
+const VERBS=["chanter","jouer","danser","parler","marcher","regarder","sauter","dessiner","porter","rêver","tomber","gagner","cuisiner","bricoler","compter","grimper","siffler"];
+const PRON=[["Je",0],["Tu",1],["Il",2],["Elle",2],["On",2],["Nous",3],["Vous",4],["Ils",5],["Elles",5]];
+const NSUBJ=[["Le chat",2],["Ma sœur",2],["Les enfants",5],["Mes parents",5],["Léa et moi",3],["Toi et ton frère",4],["La maîtresse",2],["Les oiseaux",5]];
+const TENSES={present:["e","es","e","ons","ez","ent"],futur:["erai","eras","era","erons","erez","eront"],imparfait:["ais","ais","ait","ions","iez","aient"]};
+const TLAB={present:"au présent",futur:"au futur",imparfait:"à l'imparfait"};
+function genConj(L){
+  const v=pick(VERBS),rad=v.slice(0,-2),t=L===1?"present":L===2?pick(["present","present","futur"]):pick(["futur","imparfait","imparfait"]);
+  const subj=L===1?pick(PRON):pick(Math.random()<.5?PRON:NSUBJ);
+  const forms=TENSES[t].map(x=>rad+x),ok=forms[subj[1]];
+  let others=[...new Set(forms)].filter(f=>f!==ok);
+  if(L===3){const other=t==="futur"?"imparfait":"futur";others.push(rad+TENSES[other][subj[1]])}
+  others=shuffle(others).slice(0,3);
+  const pm=["je","tu","il","nous","vous","ils"][subj[1]];const isP=PRON.some(x=>x[0]===subj[0]);
+  return{sk:"conjugaison",q:`${subj[0]} … (${v}, ${TLAB[t]})`,o:[ok,...others],e:`${isP?"":`« ${subj[0]} » se conjugue comme « ${pm} ». `}${subj[0]} ${ok}. ${TLAB[t].charAt(0).toUpperCase()+TLAB[t].slice(1)}, les terminaisons sont : ${TENSES[t].map(x=>"-"+x).join(", ")}.`}
+}
+
+/* ================= PROBLÈMES (mode détective) ================= */
+const NAMES=[{n:"Léa",g:"f"},{n:"Hugo",g:"m"},{n:"Inès",g:"f"},{n:"Malik",g:"m"},{n:"Chloé",g:"f"},{n:"Noah",g:"m"},{n:"Jade",g:"f"},{n:"Sacha",g:"m"},{n:"Lina",g:"f"},{n:"Amir",g:"m"},{n:"Zoé",g:"f"},{n:"Tom",g:"m"},{n:"Rose",g:"f"},{n:"Yanis",g:"m"}];
+function two(){const p=pick(NAMES);let q;do{q=pick(NAMES)}while(q.n===p.n);return[p,q]}
+const il=p=>p.g==="f"?"elle":"il",Il=p=>p.g==="f"?"Elle":"Il";
+const VOW=/^[AEIOUÉÈHaeiouéèh]/;const deN=n=>VOW.test(n)?"d'"+n:"de "+n,queN=n=>VOW.test(n)?"qu'"+n:"que "+n;
+const OBJ=[{s:"bille",p:"billes",e:"🔵",f:1},{s:"carte",p:"cartes",e:"🃏",f:1},{s:"autocollant",p:"autocollants",e:"⭐",f:0},{s:"perle",p:"perles",e:"📿",f:1},{s:"timbre",p:"timbres",e:"📮",f:0},{s:"coquillage",p:"coquillages",e:"🐚",f:0}];
+const ag=(o,w)=>w+(o.f?"es":"s");
+function useless(p){return pick([()=>({s:`${p.n} a ${R(7,10)} ans.`}),()=>({s:`Il est ${R(8,11)} heures du matin.`}),()=>({s:`${p.n} habite au numéro ${R(3,48)} de sa rue.`}),()=>({s:`Il y a ${R(3,9)} arbres dans le jardin.`})])()}
+function numIn(s){const m=s.replace(/ /g,"").match(/\d+/);return m?+m[0]:null}
+function mk(L,P){
+  const withU=P.allowU!==false&&((L===2&&Math.random()<.4)||(L===3&&Math.random()<.5));
+  const sents=P.sents.slice();let u=null;
+  if(withU){u=useless(P.p);sents.splice(R(0,sents.length),0,u.s);u.v=numIn(u.s)}
+  const text=sents.join(" ")+" "+P.question;
+  const steps=[{k:"s_question",title:"🔍 Que cherche-t-on ?",o:P.qs}];
+  if(u){const data=P.sents.filter(s=>/\d/.test(s)).slice(0,2);steps.push({k:"s_inutile",title:"🗑️ Une information ne sert à rien. Laquelle ?",o:[u.s,...data]})}
+  if(P.two){
+    steps.push({k:"s_first",title:"🪜 Que faut-il calculer d'abord ?",o:P.two.first});
+    steps.push({k:"s_mid",title:`✏️ Étape 1 : ${P.two.midQ}`,input:true,ans:P.two.mid,unit:P.two.midUnit||""});
+    const d2=P.two.calc2.slice(1);if(u&&u.v!=null)d2.push(P.two.calc2[0].replace(/(\d[\d ]*)$/,m=>fmt(u.v)));
+    steps.push({k:"s_calc",title:"🧮 Étape 2 : quel calcul faut-il faire ?",o:[P.two.calc2[0],...[...new Set(d2)].filter(x=>x!==P.two.calc2[0]).slice(0,2)]});
+  }else{
+    steps.push({k:"s_schema",title:"📊 Quel schéma correspond au problème ?",schema:true,o:[schemaSVG(P.schema[0]),...P.schema.slice(1).map(schemaSVG)]});
+    const d=P.calc.slice(1);if(u&&u.v!=null)d.push(P.calc[0]+" + "+fmt(u.v));
+    steps.push({k:"s_calc",title:"🧮 Quel calcul faut-il faire ?",o:[P.calc[0],...[...new Set(d)].filter(x=>x!==P.calc[0]).slice(0,2)]});
+  }
+  steps.push({k:"s_result",title:"✏️ Calcule le résultat",input:true,ans:P.ans,unit:P.unit});
+  return{L,emo:P.emo,text,steps,ans:P.ans,phrase:P.phrase,sol:P.sol,schema:P.schema?schemaSVG(P.schema[0]):null,two:!!P.two}
+}
+const PB=[
+{lv:[1,2],f:L=>{const[p,q]=two(),o=pick(OBJ);let a,b;if(L===1){a=R(12,48);b=R(6,35)}else{a=R(120,480);b=R(35,260)}const mx=Math.max(a,b),mn=Math.min(a,b);
+ return mk(L,{p,emo:o.e,sents:[`${p.n} a ${a} ${o.p}.`,`${q.n} lui en donne ${b}.`],question:`Combien de ${o.p} ${p.n} a-t-${il(p)} maintenant ?`,
+ qs:[`Le nombre de ${o.p} ${deN(p.n)} à la fin`,`Le nombre de ${o.p} ${ag(o,"donné")} par ${q.n}`,`Le nombre d'amis ${deN(p.n)}`],
+ schema:[{t:"pp",parts:[{n:a,s:a,l:"au début"},{n:b,s:b,l:"en plus"}],tot:{s:"?"}},{t:"pp",parts:[{n:mn,s:mn},{n:Math.max(mx-mn,1),s:"?"}],tot:{s:mx}}],
+ calc:[`${fmt(a)} + ${fmt(b)}`,`${fmt(mx)} − ${fmt(mn)}`],ans:a+b,unit:o.p,phrase:`${p.n} a maintenant ${fmt(a+b)} ${o.p}.`,sol:`${fmt(a)} + ${fmt(b)} = ${fmt(a+b)}`})}},
+{lv:[1,2,3],f:L=>{const ctx=pick([
+  {e:"📚",tot:"livres",a:"bandes dessinées",b:"romans",s1:t=>`Dans la bibliothèque de la classe, il y a ${t} livres.`,s2:a=>`${a} sont des bandes dessinées, les autres sont des romans.`,qu:"Combien y a-t-il de romans ?"},
+  {e:"🐔",tot:"animaux",a:"poules",b:"lapins",s1:t=>`Une fermière a ${t} animaux : des poules et des lapins.`,s2:a=>`Elle a ${a} poules.`,qu:"Combien a-t-elle de lapins ?"},
+  {e:"🚗",tot:"places",a:"places occupées",b:"places libres",s1:t=>`Un parking a ${t} places.`,s2:a=>`${a} voitures y sont garées.`,qu:"Combien de places sont libres ?"}]);
+ let t,a;if(L===1){t=R(30,90);a=R(10,t-8)}else if(L===2){t=R(200,900);a=R(60,t-40)}else{t=R(1200,5000);a=R(300,t-200)}const p=pick(NAMES);
+ return mk(L,{p,emo:ctx.e,sents:[ctx.s1(fmt(t)),ctx.s2(fmt(a))],question:ctx.qu,
+ qs:[`Le nombre de ${ctx.b}`,`Le nombre total de ${ctx.tot}`,`Le nombre de ${ctx.a}`],
+ schema:[{t:"pp",parts:[{n:a,s:a,l:ctx.a},{n:t-a,s:"?",l:ctx.b}],tot:{s:t,l:"en tout"}},{t:"pp",parts:[{n:t,s:t},{n:a,s:a}],tot:{s:"?"}}],
+ calc:[`${fmt(t)} − ${fmt(a)}`,`${fmt(t)} + ${fmt(a)}`],ans:t-a,unit:ctx.b,phrase:`Il y a ${fmt(t-a)} ${ctx.b}.`,sol:`${fmt(t)} − ${fmt(a)} = ${fmt(t-a)}`})}},
+{lv:[1,2,3],f:L=>{const[p,q]=two();let big,small;if(L===1){big=R(30,90);small=R(8,big-6)}else if(L===2){big=R(200,900);small=R(80,big-30)}else{big=R(1500,6000);small=R(500,big-200)}
+ const k=pick([["a lu","pages","lues"],["a marqué","points","marqués"]]);
+ return mk(L,{p,emo:k[1]==="pages"?"📖":"🎯",sents:[`${p.n} ${k[0]} ${fmt(big)} ${k[1]}.`,`${q.n} ${k[0].replace("a ","en a ")} ${fmt(small)}.`],question:`Combien de ${k[1]} ${p.n} a-t-${il(p)} ${k[2]} de plus ${queN(q.n)} ?`,
+ qs:[`La différence entre ${p.n} et ${q.n}`,`Le nombre total de ${k[1]} des deux enfants`,`Le nombre de ${k[1]} ${deN(q.n)}`],
+ schema:[{t:"cmp",big:{n:big,s:big,l:p.n},small:{n:small,s:small,l:q.n},diff:{s:"?"}},{t:"pp",parts:[{n:big,s:big},{n:small,s:small}],tot:{s:"?"}}],
+ calc:[`${fmt(big)} − ${fmt(small)}`,`${fmt(big)} + ${fmt(small)}`],ans:big-small,unit:k[1],phrase:`${p.n} a ${fmt(big-small)} ${k[1]} de plus ${queN(q.n)}.`,sol:`${fmt(big)} − ${fmt(small)} = ${fmt(big-small)}`})}},
+{lv:[1,2],f:L=>{const[p,q]=two();let small,diff;if(L===1){small=R(18,40);diff=R(3,14)}else{small=R(120,400);diff=R(30,110)}
+ return mk(L,{p,emo:"💶",sents:[`${q.n} a ${fmt(small)} € dans sa tirelire.`,`${p.n} a ${fmt(diff)} € de plus ${queN(q.n)}.`],question:`Combien d'euros ${p.n} a-t-${il(p)} ?`,
+ qs:[`L'argent ${deN(p.n)}`,`L'argent ${deN(q.n)}`,`Combien ${p.n} a de plus ${queN(q.n)}`],
+ schema:[{t:"cmp",big:{n:small+diff,s:"?",l:p.n},small:{n:small,s:small,l:q.n},diff:{s:diff}},{t:"cmp",big:{n:small,s:small,l:q.n},small:{n:small-diff,s:"?",l:p.n},diff:{s:diff}}],
+ calc:[`${fmt(small)} + ${fmt(diff)}`,`${fmt(small)} − ${fmt(diff)}`],ans:small+diff,unit:"€",phrase:`${p.n} a ${fmt(small+diff)} €.`,sol:`${fmt(small)} + ${fmt(diff)} = ${fmt(small+diff)}`})}},
+{lv:[2,3],f:L=>{const[p,q]=two();let big,diff,X;if(L===2){big=R(60,180);diff=R(15,big-30);X={e:"🧱",a:`La tour de Kapla ${deN(p.n)} mesure`,b:`Celle ${deN(q.n)} mesure`,u:"cm",qu:`Combien mesure la tour ${deN(q.n)} ?`,la:p.n,lb:q.n,h:`La hauteur de la tour ${deN(q.n)}`,h2:`La hauteur de la tour ${deN(p.n)}`,h3:"La hauteur des deux tours ensemble",ph:`La tour ${deN(q.n)} mesure`}}else{big=R(350,950);diff=R(80,big-150);X={e:"🏞️",a:"La rivière Bleue mesure",b:"La rivière Verte mesure",u:"km",qu:"Combien mesure la rivière Verte ?",la:"Bleue",lb:"Verte",h:"La longueur de la rivière Verte",h2:"La longueur de la rivière Bleue",h3:"La longueur des deux rivières ensemble",ph:"La rivière Verte mesure"}}
+ return mk(L,{p,emo:X.e,sents:[`${X.a} ${fmt(big)} ${X.u}.`,`${X.b} ${fmt(diff)} ${X.u} de moins.`],question:X.qu,
+ qs:[X.h,X.h2,X.h3],
+ schema:[{t:"cmp",big:{n:big,s:big,l:X.la},small:{n:big-diff,s:"?",l:X.lb},diff:{s:diff}},{t:"cmp",big:{n:big+diff,s:"?",l:X.lb},small:{n:big,s:big,l:X.la},diff:{s:diff}}],
+ calc:[`${fmt(big)} − ${fmt(diff)}`,`${fmt(big)} + ${fmt(diff)}`],ans:big-diff,unit:X.u,phrase:`${X.ph} ${fmt(big-diff)} ${X.u}.`,sol:`${fmt(big)} − ${fmt(diff)} = ${fmt(big-diff)}`})}},
+{lv:[1,2,3],f:L=>{const o=pick(OBJ),p=pick(NAMES);let n,k;if(L===1){n=R(2,5);k=pick([2,5,10])}else if(L===2){n=R(3,9);k=R(3,9)}else{n=R(4,9);k=R(12,25)}
+ return mk(L,{p,emo:"📦",sents:[`${p.n} a ${n} boîtes.`,`Dans chaque boîte, il y a ${k} ${o.p}.`],question:`Combien de ${o.p} ${p.n} a-t-${il(p)} en tout ?`,
+ qs:[`Le nombre total de ${o.p}`,`Le nombre de boîtes`,`Le nombre de ${o.p} dans une boîte`],
+ schema:[{t:"mul",n,k:{s:k},tot:{s:"?"}},{t:"pp",parts:[{n:n,s:n},{n:k,s:k}],tot:{s:"?"}}],
+ calc:[`${n} × ${k}`,`${n} + ${k}`],ans:n*k,unit:o.p,phrase:`${p.n} a ${n*k} ${o.p} en tout.`,sol:`${n} × ${k} = ${n*k}`})}},
+{lv:[2,3],f:L=>{const p=pick(NAMES);let n,k;if(L===2){n=R(2,6);k=R(3,9)}else{n=R(3,9);k=R(6,15)}const t=n*k;
+ return mk(L,{p,emo:"🍬",sents:[`${p.n} partage ${t} bonbons entre ${n} amis.`,`Chacun reçoit le même nombre de bonbons.`],question:`Combien de bonbons reçoit chaque ami ?`,
+ qs:[`Le nombre de bonbons pour un ami`,`Le nombre total de bonbons`,`Le nombre d'amis`],
+ schema:[{t:"mul",n,k:{s:"?"},tot:{s:t}},{t:"pp",parts:[{n:Math.max(t-n,1),s:"?"},{n:n,s:n}],tot:{s:t}}],
+ calc:[`${t} : ${n}`,`${t} − ${n}`,`${t} × ${n}`],ans:k,unit:"bonbons",phrase:`Chaque ami reçoit ${k} bonbons.`,sol:`${t} : ${n} = ${k} (car ${n} × ${k} = ${t})`})}},
+{lv:[2,3],f:L=>{const p=pick(NAMES);const k=pick([6,10,12]);const n=L===2?R(2,8):R(5,12);const t=n*k;
+ return mk(L,{p,emo:"🥚",sents:[`La fermière a ramassé ${t} œufs.`,`Elle les range dans des boîtes de ${k} œufs.`],question:`Combien de boîtes peut-elle remplir ?`,
+ qs:[`Le nombre de boîtes`,`Le nombre d'œufs dans une boîte`,`Le nombre total d'œufs`],
+ schema:[{t:"mul",n,nUnknown:true,k:{s:k},tot:{s:t},unitLabel:"boîtes"},{t:"pp",parts:[{n:Math.max(t-k,1),s:"?"},{n:k,s:k}],tot:{s:t}}],
+ calc:[`${t} : ${k}`,`${t} − ${k}`,`${t} × ${k}`],ans:n,unit:"boîtes",phrase:`Elle peut remplir ${n} boîtes.`,sol:`${t} : ${k} = ${n} (car ${k} × ${n} = ${t})`})}},
+{lv:[2,3],f:L=>{const p=pick(NAMES);let t,a;if(L===2){t=R(40,150);a=R(12,t-10)}else{t=R(300,900);a=R(90,t-40)}const item=pick(["un jeu de société","un livre","un ballon","une trousse"]);
+ return mk(L,{p,emo:"🐷",sents:[`${p.n} a ${fmt(t)} € dans sa tirelire.`,`${Il(p)} achète ${item} à ${fmt(a)} €.`],question:`Combien d'argent lui reste-t-il ?`,
+ qs:[`L'argent qui reste à ${p.n}`,`Le prix de ${item}`,`L'argent de la tirelire au début`],
+ schema:[{t:"pp",parts:[{n:a,s:a,l:"dépensé"},{n:t-a,s:"?",l:"reste"}],tot:{s:t,l:"au début"}},{t:"pp",parts:[{n:t,s:t},{n:a,s:a}],tot:{s:"?"}}],
+ calc:[`${fmt(t)} − ${fmt(a)}`,`${fmt(t)} + ${fmt(a)}`],ans:t-a,unit:"€",phrase:`Il reste ${fmt(t-a)} € à ${p.n}.`,sol:`${fmt(t)} − ${fmt(a)} = ${fmt(t-a)}`})}},
+/* deux étapes */
+{lv:[3],f:L=>{const p=pick(NAMES),n=R(2,5),pr=R(2,4),mid=n*pr,B=[10,20,50].find(x=>x>mid);
+ return mk(L,{p,emo:"📒",allowU:true,sents:[`${p.n} achète ${n} cahiers à ${pr} € chacun.`,`${Il(p)} paie avec un billet de ${B} €.`],question:`Combien d'argent lui rend-on ?`,
+ qs:[`L'argent qu'on rend à ${p.n}`,`Le prix d'un cahier`,`Le nombre de cahiers`],
+ two:{first:[`Le prix des ${n} cahiers`,`Le nombre de billets`,`Le prix d'un seul cahier`],midQ:`combien coûtent les ${n} cahiers ?`,mid,midUnit:"€",calc2:[`${B} − ${mid}`,`${B} + ${mid}`,`${mid} − ${pr}`]},
+ ans:B-mid,unit:"€",phrase:`On rend ${B-mid} € à ${p.n}.`,sol:`${n} × ${pr} = ${mid}\n${B} − ${mid} = ${B-mid}`})}},
+{lv:[3],f:L=>{const p=pick(NAMES),a=R(25,60),b=R(5,a-10),c=R(4,20),mid=a-b;
+ return mk(L,{p,emo:"🚌",sents:[`Dans un bus, il y a ${a} passagers.`,`À l'arrêt, ${b} passagers descendent et ${c} montent.`],question:`Combien y a-t-il de passagers dans le bus maintenant ?`,
+ qs:[`Le nombre de passagers à la fin`,`Le nombre de passagers qui descendent`,`Le nombre d'arrêts`],
+ two:{first:[`Le nombre de passagers après la descente`,`Le nombre total de personnes qui bougent`,`Le nombre de passagers qui montent`],midQ:`combien reste-t-il de passagers après la descente ?`,mid,midUnit:"passagers",calc2:[`${mid} + ${c}`,`${mid} − ${c}`,`${a} + ${c}`]},
+ ans:mid+c,unit:"passagers",phrase:`Il y a maintenant ${mid+c} passagers dans le bus.`,sol:`${a} − ${b} = ${mid}\n${mid} + ${c} = ${mid+c}`})}},
+{lv:[3],f:L=>{const p=pick(NAMES),n=R(3,8),k=R(6,12),mid=n*k,s=R(5,mid-5);
+ return mk(L,{p,emo:"🍎",sents:[`Un fermier a ${n} paniers de ${k} pommes.`,`Il vend ${s} pommes au marché.`],question:`Combien de pommes lui reste-t-il ?`,
+ qs:[`Le nombre de pommes qui restent`,`Le nombre de paniers`,`Le nombre de pommes vendues`],
+ two:{first:[`Le nombre total de pommes au début`,`Le nombre de paniers vendus`,`Le prix des pommes`],midQ:`combien de pommes y a-t-il au début ?`,mid,midUnit:"pommes",calc2:[`${mid} − ${s}`,`${mid} + ${s}`,`${k} − ${s}`]},
+ ans:mid-s,unit:"pommes",phrase:`Il reste ${mid-s} pommes au fermier.`,sol:`${n} × ${k} = ${mid}\n${mid} − ${s} = ${mid-s}`})}},
+{lv:[3],f:L=>{const[p,q]=two(),a=R(15,60),b=R(5,30),mid=a+b;
+ return mk(L,{p,emo:"💰",sents:[`${p.n} a ${a} €.`,`${q.n} a ${b} € de plus ${queN(p.n)}.`],question:`Combien d'argent ont-ils à eux deux ?`,
+ qs:[`L'argent des deux enfants ensemble`,`L'argent ${deN(q.n)}`,`La différence entre eux`],
+ two:{first:[`L'argent ${deN(q.n)}`,`L'argent ${deN(p.n)}`,`La différence entre eux`],midQ:`combien d'argent a ${q.n} ?`,mid,midUnit:"€",calc2:[`${a} + ${mid}`,`${a} + ${b}`,`${mid} − ${a}`]},
+ ans:a+mid,unit:"€",phrase:`À eux deux, ils ont ${a+mid} €.`,sol:`${a} + ${b} = ${mid}\n${a} + ${mid} = ${a+mid}`})}},
+{lv:[3],f:L=>{const p=pick(NAMES),o=pick(OBJ),a=R(30,90),b=R(10,40),c=R(5,a+b-10),mid=a+b;
+ return mk(L,{p,emo:o.e,sents:[`${p.n} a ${a} ${o.p}.`,`Le matin, ${il(p)} en gagne ${b}.`,`L'après-midi, ${il(p)} en perd ${c}.`],question:`Combien de ${o.p} a-t-${il(p)} le soir ?`,
+ qs:[`Le nombre de ${o.p} le soir`,`Le nombre de ${o.p} ${ag(o,"perdu")}`,`Le nombre de ${o.p} le matin`],
+ two:{first:[`Le nombre de ${o.p} après le matin`,`Le nombre de ${o.p} ${ag(o,"perdu")}`,`Le nombre de parties jouées`],midQ:`combien de ${o.p} ${p.n} a-t-${il(p)} après le matin ?`,mid,midUnit:o.p,calc2:[`${mid} − ${c}`,`${mid} + ${c}`,`${a} − ${c}`]},
+ ans:mid-c,unit:o.p,phrase:`Le soir, ${p.n} a ${mid-c} ${o.p}.`,sol:`${a} + ${b} = ${mid}\n${mid} − ${c} = ${mid-c}`})}}
+];
+function genProblem(L){const pool=PB.filter(t=>t.lv.includes(L));
+  if(L===3&&Math.random()<.55){const tw=PB.slice(-5);return pick(tw).f(3)}
+  return pick(pool).f(L)}
+
+/* ================= CONFIGURATION ================= */
+const KEY="archipel-ce2-v1",VERSION="v1.1";
+const WORLDS=[
+ {id:"lecture",name:"L'Île des Histoires",emo:"📚",col:"#ea580c",soft:"#ffedd5",desc:"Lire et comprendre"},
+ {id:"fr",name:"Le Château des Mots",emo:"🏰",col:"#7c3aed",soft:"#ede9fe",desc:"Grammaire, orthographe, conjugaison"},
+ {id:"monde",name:"La Forêt des Découvertes",emo:"🌳",col:"#15803d",soft:"#dcfce7",desc:"Questionner le monde"},
+ {id:"calc",name:"Le Volcan des Nombres",emo:"🌋",col:"#dc2626",soft:"#fee2e2",desc:"Calcul, nombres, mesures"},
+ {id:"prob",name:"Le Phare des Détectives",emo:"🔍",col:"#1d4ed8",soft:"#dbeafe",desc:"Résoudre des problèmes"}];
+const LEVELS=[{n:1,t:"Je consolide",e:"🌱",d:"Les bases, pour être bien solide"},{n:2,t:"Je progresse",e:"🚀",d:"Ce qu'on apprend en ce moment en CE2"},{n:3,t:"Je vais plus loin",e:"🏔️",d:"Des défis pour les esprits curieux"}];
+const AVATARS=["🦊","🐼","🦄","🐯","🐸","🐙","🐨","🦁","🐰","🐬","🐝","🦖"];
+const PRAISE=["Bravo !","Génial !","Super !","Excellent !","Waouh !","Tu as trouvé !","Quel talent !","Magnifique !","Chapeau !","Trop fort !"];
+const ENC=["Presque ! Regarde l'indice 💡","Pas tout à fait… Essaie encore !","Se tromper, c'est apprendre ! Réessaie 💪","Hmm… Relis bien et réessaie !"];
+const HINTS={nature:"Un verbe se conjugue (hier, demain…) ; un nom peut avoir « le, la, un, une » devant.",phrase:"Relis la phrase tout bas. Qui fait l'action ? Comment se termine-t-elle ?",orthographe:"Essaie de remplacer le mot (par « était », « avait », « les siens »…) ou cherche le pluriel.",vocabulaire:"Pense au sens de chaque mot. Lequel va le mieux ?",conjugaison:"Qui fait l'action : je, tu, il, nous, vous, ils ? Regarde bien la terminaison.",lecture:"Retourne dans le texte 📖 : la réponse y est, ou elle se devine grâce aux indices !",heure:"Petite aiguille = les heures. Grande aiguille = les minutes.",fractions:"Compte toutes les parts, puis celles qui sont coloriées.",monnaie:"Compte d'abord les billets, puis les pièces.",nombres:"Regarde chaque chiffre : milliers, centaines, dizaines, unités.",
+s_question:"Relis la dernière phrase de l'énoncé : c'est elle qui pose la question.",s_inutile:"Quelle phrase pourrait disparaître sans changer la réponse ?",s_schema:"Dans le bon schéma, le « ? » est à la place de ce qu'on cherche. Connaît-on le tout ? les parties ? l'écart ?",s_calc:"Cherche-t-on le tout (+) ? une partie (−) ? un écart (−) ? des groupes égaux (×) ? un partage (:) ?",s_first:"Pour répondre, de quel nombre as-tu besoin qui n'est pas écrit dans l'énoncé ?",s_mid:"Prends ton brouillon ✏️ et vérifie ton calcul.",s_result:"Prends ton brouillon ✏️ et vérifie ton calcul.",def:"Élimine d'abord les réponses impossibles, puis choisis !"};
+const BADGES=[
+ {id:"first",e:"🚣",t:"Premier voyage",d:"Terminer une première aventure"},
+ {id:"rainbow",e:"🌈",t:"Arc-en-ciel",d:"Visiter les 5 îles"},
+ {id:"read3",e:"📚",t:"Dévore-livres",d:"Lire 3 textes de l'Île des Histoires"},
+ {id:"plume",e:"✒️",t:"Plume d'or",d:"Médaille d'or au Château des Mots"},
+ {id:"boussole",e:"🧭",t:"Boussole d'or",d:"Médaille d'or dans la Forêt des Découvertes"},
+ {id:"fusee",e:"🚀",t:"Fusée des nombres",d:"Médaille d'or au Volcan des Nombres"},
+ {id:"loupe",e:"🔍",t:"Détective",d:"Résoudre 10 problèmes"},
+ {id:"sherlock",e:"🕵️",t:"Super-détective",d:"Résoudre 30 problèmes"},
+ {id:"fire",e:"🔥",t:"En feu !",d:"5 bonnes réponses du premier coup d'affilée"},
+ {id:"summit",e:"🏔️",t:"Sommet",d:"Médaille d'or à un niveau 3"},
+ {id:"defi",e:"🎲",t:"Défi relevé",d:"Réussir un défi surprise (6 étoiles ou plus)"},
+ {id:"gem",e:"💎",t:"Trésor",d:"Gagner 100 étoiles"},
+ {id:"crown",e:"👑",t:"Couronne",d:"Gagner 300 étoiles"}];
+
+/* ================= ÉTAT ================= */
+const blank=()=>({name:"",avatar:"🦊",sound:true,stars:0,best:{},plays:{},sk:{},st:{},badges:{},solved:0,readTexts:{},visited:{},seen:{},sessions:0});
+function load(){try{const s=JSON.parse(localStorage.getItem(KEY));if(s)return Object.assign(blank(),s)}catch(e){}return blank()}
+function save(){try{localStorage.setItem(KEY,JSON.stringify(S))}catch(e){}}
+let S=load(),view={s:S.name?"map":"welcome"},run=null;
+const $=s=>document.querySelector(s);
+const app=()=>document.getElementById("app");
+const W=id=>WORLDS.find(w=>w.id===id);
+const esc=t=>String(t).replace(/&/g,"&amp;").replace(/</g,"&lt;");
+
+/* ================= SON, VOIX, CONFETTIS ================= */
+let AC=null;
+function tone(seq){if(!S.sound)return;try{AC=AC||new (window.AudioContext||window.webkitAudioContext)();let t=AC.currentTime;seq.forEach(([f,d,type])=>{const o=AC.createOscillator(),g=AC.createGain();o.type=type||"sine";o.frequency.value=f;g.gain.setValueAtTime(.0001,t);g.gain.exponentialRampToValueAtTime(.18,t+.02);g.gain.exponentialRampToValueAtTime(.0001,t+d);o.connect(g);g.connect(AC.destination);o.start(t);o.stop(t+d+.02);t+=d*.8})}catch(e){}}
+const sGood=()=>tone([[660,.12],[880,.12],[1320,.22]]),sBad=()=>tone([[300,.18,"triangle"],[240,.25,"triangle"]]),sWin=()=>tone([[523,.14],[659,.14],[784,.14],[1047,.3],[784,.12],[1047,.45]]),sClick=()=>tone([[520,.05]]);
+function speak(t){try{const u=new SpeechSynthesisUtterance(t.replace(/…/g," blanc ").replace(/[«»]/g,"").replace(/ /g," "));u.lang="fr-FR";u.rate=.92;const v=speechSynthesis.getVoices().find(v=>/^fr/i.test(v.lang));if(v)u.voice=v;speechSynthesis.cancel();speechSynthesis.speak(u)}catch(e){}}
+const canSpeak=()=>{try{return "speechSynthesis" in window}catch(e){return false}};
+function confetti(n){const c=document.getElementById("fx");if(!c)return;const x=c.getContext("2d");c.width=innerWidth;c.height=innerHeight;const cols=["#f43f5e","#f59e0b","#22c55e","#3b82f6","#a855f7","#ec4899","#facc15"];const P=[];for(let i=0;i<(n||160);i++)P.push({x:innerWidth/2+(Math.random()-.5)*200,y:innerHeight*.35,vx:(Math.random()-.5)*16,vy:-Math.random()*16-4,s:Math.random()*8+5,r:Math.random()*6,vr:(Math.random()-.5)*.3,c:pick(cols),sh:Math.random()<.3?"star":"rect"});let f=0;
+  (function tick(){x.clearRect(0,0,c.width,c.height);P.forEach(p=>{p.vy+=.45;p.vx*=.99;p.x+=p.vx;p.y+=p.vy;p.r+=p.vr;x.save();x.translate(p.x,p.y);x.rotate(p.r);x.fillStyle=p.c;if(p.sh==="star"){x.font=`${p.s*2.2}px serif`;x.fillText("⭐",0,0)}else x.fillRect(-p.s/2,-p.s/4,p.s,p.s/2);x.restore()});if(++f<170)requestAnimationFrame(tick);else x.clearRect(0,0,c.width,c.height)})()}
+function bumpStars(){const el=$("#starCount");if(el){el.textContent=S.stars;el.parentElement.classList.remove("bump");void el.offsetWidth;el.parentElement.classList.add("bump")}}
+
+/* ================= MASCOTTE ================= */
+function owl(mood,size){size=size||110;const eye=mood==="wow"?`<text x="40" y="58" font-size="22" text-anchor="middle">⭐</text><text x="80" y="58" font-size="22" text-anchor="middle">⭐</text>`:`<circle cx="40" cy="50" r="15" fill="#fff"/><circle cx="80" cy="50" r="15" fill="#fff"/><circle cx="${mood==="think"?44:42}" cy="${mood==="think"?46:52}" r="7" fill="#1e1b4b"/><circle cx="${mood==="think"?84:82}" cy="${mood==="think"?46:52}" r="7" fill="#1e1b4b"/><circle cx="${mood==="think"?46:44}" cy="${mood==="think"?44:50}" r="2.2" fill="#fff"/><circle cx="${mood==="think"?86:84}" cy="${mood==="think"?44:50}" r="2.2" fill="#fff"/>`;
+  return `<svg viewBox="0 0 120 130" width="${size}" height="${size*1.08}" class="owl ${mood||""}" aria-hidden="true">${mood==="party"?`<polygon points="60,0 48,24 72,24" fill="#f43f5e"/><circle cx="60" cy="2" r="4" fill="#facc15"/>`:""}<path d="M28,30 L22,8 L42,24 Z" fill="#7c4a2d"/><path d="M92,30 L98,8 L78,24 Z" fill="#7c4a2d"/><ellipse cx="60" cy="72" rx="44" ry="50" fill="#a16207"/><ellipse cx="60" cy="86" rx="28" ry="32" fill="#fde68a"/><path d="M48,82 q4,4 8,0 M60,94 q4,4 8,0 M48,100 q4,4 8,0" stroke="#d97706" stroke-width="2" fill="none"/>${eye}<polygon points="60,60 54,68 66,68" fill="#f97316"/><ellipse cx="18" cy="80" rx="10" ry="24" fill="#854d0e" transform="rotate(${mood==="party"||mood==="wow"?-30:10} 18 80)"/><ellipse cx="102" cy="80" rx="10" ry="24" fill="#854d0e" transform="rotate(${mood==="party"||mood==="wow"?30:-10} 102 80)"/><path d="M46,120 l-4,8 M52,120 l0,9 M74,120 l4,8 M68,120 l0,9" stroke="#f97316" stroke-width="3"/></svg>`}
+function bubble(mood,txt,size){return `<div class="mascot">${owl(mood,size)}<div class="bubble">${txt}</div></div>`}
+
+/* ================= BARRE DU HAUT ================= */
+function topbar(){return `<header class="top"><button class="who" onclick="go('profile')" title="Changer de profil"><span class="ava">${S.avatar}</span><span>${esc(S.name||"Explorateur")}</span></button><div class="topr"><span class="pill star" title="Mes étoiles">⭐ <b id="starCount">${S.stars}</b></span><button class="ic" onclick="toggleSound()" title="Son">${S.sound?"🔊":"🔇"}</button><button class="ic" onclick="go('trophies')" title="Mes trophées">🏆</button><button class="ic" onclick="leave()" title="Retour à l'archipel">🏝️</button></div></header>`}
+function toggleSound(){S.sound=!S.sound;save();render()}
+function go(s,extra){sClick();view=Object.assign({s},extra||{});if(s!=="play")run=null;render();window.scrollTo(0,0)}
+function leave(){if(run&&!run.finished){askOK("Quitter cette aventure ? Les étoiles déjà gagnées seront perdues.",()=>go("map"));return}go("map")}
+
+/* ================= ÉCRANS ================= */
+function render(){
+  const v=view.s;let h="";
+  if(v==="welcome"||v==="profile")h=welcome();
+  else{h=topbar();
+    if(v==="map")h+=mapScreen();else if(v==="levels")h+=levelScreen(view.w);else if(v==="play")h+=playScreen();else if(v==="results")h+=resultsScreen();else if(v==="trophies")h+=trophies();else if(v==="parents")h+=parents()}
+  app().innerHTML=h;
+  if(v==="play")afterPlayRender();
+}
+function welcome(){
+  return `<div class="welcome card pop">${bubble("happy",S.name?"On change de profil ?":"Bonjour ! Je suis <b>Pilou</b>, le hibou de l'archipel. Comment t'appelles-tu ?",120)}
+  <label class="lbl">Ton prénom<input id="nm" maxlength="20" value="${esc(S.name)}" placeholder="Écris ton prénom" autocomplete="off"></label>
+  <div class="lbl">Choisis ton compagnon de voyage</div><div class="avas">${AVATARS.map(a=>`<button class="avab ${a===S.avatar?"on":""}" onclick="pickAva('${a}',this)">${a}</button>`).join("")}</div>
+  <button class="big go" onclick="saveProfile()">C'est parti ! 🚀</button></div>`}
+function pickAva(a,b){S.avatar=a;document.querySelectorAll(".avab").forEach(x=>x.classList.remove("on"));b.classList.add("on");sClick()}
+function saveProfile(){S.name=($("#nm").value||"").trim().slice(0,20)||"Explorateur";save();go("map")}
+
+function medalOf(r){return r>=.85?"🥇":r>=.6?"🥈":"🥉"}
+function mapScreen(){
+  const greet=pick([`Bonjour ${esc(S.name)} ! Où partons-nous aujourd'hui ?`,`Prête ou prêt pour l'aventure, ${esc(S.name)} ?`,`Coucou ${esc(S.name)} ! Une île t'attend…`,`${esc(S.name)}, tu as déjà ${S.stars} étoiles ! On continue ?`]);
+  let h=`<section class="hero"><h1>L'Archipel des Savoirs</h1>${bubble("happy",greet,96)}</section><div class="islands">`;
+  WORLDS.forEach((w,i)=>{const st=[1,2,3].map(L=>{const b=S.best[w.id+L];return b?medalOf(b):"⚪"}).join("");
+    h+=`<button class="island" style="--c:${w.col};--s:${w.soft};animation-delay:${i*.4}s" onclick="go('levels',{w:'${w.id}'})"><span class="iemo">${w.emo}</span><span class="iname">${w.name}</span><span class="idesc">${w.desc}</span><span class="imed">${st}</span></button>`});
+  h+=`</div><div class="mapbtns"><button class="big defi" onclick="startDefi()">🎲 Défi surprise</button><button class="big ghost" onclick="go('trophies')">🏆 Mes trophées</button></div><div class="sea"></div><p class="foot"><button class="link" onclick="go('parents')">👨‍👩‍👧 Coin des parents</button></p>`;
+  return h}
+function levelScreen(wid){
+  const w=W(wid);let intro="";
+  if(wid==="prob")intro=`<div class="card method"><h3>🕵️ La méthode du détective</h3><div class="steps4"><span>🔍<b>Je cherche</b> ce qu'on demande</span><span>📊<b>Je dessine</b> un schéma</span><span>🧮<b>Je choisis</b> le calcul</span><span>✏️<b>Je calcule</b> et je réponds</span></div></div>`;
+  if(wid==="lecture")intro=`<div class="card method"><h3>📖 Comment ça marche ?</h3><p>Lis le texte tranquillement (deux fois si tu veux !), puis réponds aux questions. Tu pourras toujours relire le texte.</p></div>`;
+  return `<section class="lvhead" style="--c:${w.col};--s:${w.soft}"><span class="iemo">${w.emo}</span><h2>${w.name}</h2><p>${w.desc}</p></section>${intro}<div class="levels">`+LEVELS.map(L=>{const b=S.best[wid+L.n],p=S.plays[wid+L.n]||0;return `<button class="level" style="--c:${w.col};--s:${w.soft}" onclick="start('${wid}',${L.n})"><span class="lvemo">${L.e}</span><span class="lvt">Niveau ${L.n}<br><b>${L.t}</b></span><span class="lvd">${L.d}</span><span class="lvm">${b?medalOf(b)+" meilleur score : "+Math.round(b*100)+" %":"Pas encore exploré"}${p?` · ${p} partie${p>1?"s":""}`:""}</span></button>`}).join("")+`</div>`}
+
+/* ================= SESSIONS ================= */
+function normQ(q,src){const o=q.o?q.o.map(String):null;return{type:q.input?"input":"qcm",q:q.q,o,order:o?shuffle(o.map((_,i)=>i)):null,ans:q.ans,unit:q.unit||"",vis:q.vis||(q.v?`<div class="emo">${q.v}</div>`:""),e:q.e,sk:q.sk||src,id:q.id||null,tries:0,res:null,buf:"",wrong:[]}}
+function pickFixed(bank,L,n,w){const pool=bank.map((q,i)=>Object.assign({id:w+i},q)).filter(q=>q.l===L);const seen=S.seen[w]||[];return shuffle(pool).sort((a,b)=>seen.indexOf(a.id)-seen.indexOf(b.id)).slice(0,n)}
+function markSeen(w,ids){S.seen[w]=((S.seen[w]||[]).filter(x=>!ids.includes(x)).concat(ids)).slice(-40)}
+function buildItems(w,L){
+  if(w==="fr"){const f=pickFixed(FR,L,6,"fr");markSeen("fr",f.map(q=>q.id));return shuffle(f.map(q=>normQ(q)).concat([normQ(genConj(L)),normQ(genConj(L))]))}
+  if(w==="monde"){const f=pickFixed(MO,L,8,"mo");markSeen("mo",f.map(q=>q.id));return f.map(q=>normQ(q))}
+  if(w==="calc"){const main=L===1?C1:L===2?C2:C3,low=L===1?C1:L===2?C1:C2;const g=shuffle(main).slice(0,6).concat(shuffle(low).slice(0,2));return shuffle(g).map(f=>normQ(f()))}
+  if(w==="prob"){const n=L===3?4:5;const out=[];for(let i=0;i<n;i++)out.push({type:"pb",pb:genProblem(L),si:0,tries:0,log:[],res:null,buf:"",wrong:[]});return out}
+  return[]}
+function start(w,L){sClick();
+  if(w==="lecture"){const cand=TEXTS.filter(t=>t.l===L);const t=cand.slice().sort((a,b)=>(S.readTexts[a.id]||0)-(S.readTexts[b.id]||0)||Math.random()-.5)[0];
+    run={w,L,text:t,phase:"read",items:t.qs.map(q=>normQ(Object.assign({sk:"lecture"},q))),i:0,streak:0,maxStreak:0}}
+  else run={w,L,items:buildItems(w,L),i:0,streak:0,maxStreak:0};
+  view={s:"play"};render();window.scrollTo(0,0)}
+function startDefi(){sClick();const L=Math.max(2,...[1,2,3].filter(l=>WORLDS.some(w=>(S.best[w.id+l]||0)>=.6)));const lv=Math.min(3,L);
+  const items=[normQ(pick(lv===3?C3:C2)()),normQ(pick(lv===3?C3:C2)()),normQ(pick(C2)()),normQ(genConj(lv))].concat(pickFixed(FR,lv,2,"fr").map(q=>normQ(q)),pickFixed(MO,lv,2,"mo").map(q=>normQ(q)));
+  run={w:"defi",L:lv,items:shuffle(items),i:0,streak:0,maxStreak:0};view={s:"play"};render();window.scrollTo(0,0)}
+
+/* ================= JEU ================= */
+function progressDots(){return `<div class="dots">`+run.items.map((it,i)=>`<span class="dot ${i===run.i?"cur":""}">${it.res==="star"?"⭐":it.res==="ok"?"✔️":it.res==="miss"?"💭":i+1}</span>`).join("")+`</div>`}
+function playScreen(){
+  const w=run.w==="defi"?{name:"Défi surprise",emo:"🎲",col:"#db2777",soft:"#fce7f3"}:W(run.w);
+  let h=`<div class="playhead" style="--c:${w.col};--s:${w.soft}"><span>${w.emo} ${w.name} · niveau ${run.L}</span>${progressDots()}</div>`;
+  if(run.phase==="read"){const t=run.text;return h+`<div class="card reader pop"><div class="ttype">${t.type}</div><h2>${t.emo} ${t.title}</h2><div class="ttext">${t.body.split("\n\n").map(p=>`<p>${esc(p)}</p>`).join("")}</div><button class="big go" onclick="run.phase='q';render();window.scrollTo(0,0)">J'ai lu ! Aux questions ➜</button></div>`}
+  const it=run.items[run.i];
+  if(it.type==="pb")return h+problemHTML(it);
+  let body=`<div class="card qcard pop">`;
+  if(run.text)body+=`<details class="relire"><summary>📖 Relire le texte « ${run.text.title} »</summary><div class="ttext">${run.text.body.split("\n\n").map(p=>`<p>${esc(p)}</p>`).join("")}</div></details>`;
+  body+=`<div class="qtools"><span class="tag">${SKILLS[it.sk]||""}</span>${canSpeak()?`<button class="ic sm" onclick="speakQ()" title="Écouter">🔈</button>`:""}<button class="ic sm" onclick="openDraft()" title="Brouillon">✏️</button></div><div class="qtext">${esc(it.q)}</div>${it.vis?`<div class="vis">${it.vis}</div>`:""}`;
+  if(it.type==="qcm"){body+=`<div class="opts ${it.o.some(x=>x.length>26)?"long":""}">`+it.order.map((oi,k)=>{let c="opt";if(it.res){if(oi===0)c+=" ok";else if(it.wrong.includes(oi))c+=" ko"}else if(it.wrong.includes(oi))c+=" ko";return `<button class="${c}" ${it.res||it.wrong.includes(oi)?"disabled":""} onclick="answer(${oi})"><span class="lt">${"ABCD"[k]}</span>${esc(it.o[oi])}${it.res&&oi===0?" ✓":""}</button>`}).join("")+`</div>`}
+  else body+=keypad(it);
+  body+=`<div id="fb">${feedbackHTML(it)}</div></div>`;
+  return h+body}
+function keypad(it){return `<div class="inrow"><div class="inbox ${it.res==="miss"?"ko":it.res?"ok":""}" id="inbox">${it.res==="miss"?fmt(it.ans):(it.buf?fmt(+it.buf):"<span class='ph'>?</span>")}</div>${it.unit?`<span class="unit">${it.unit}</span>`:""}</div>${it.res?"":`<div class="pad">${[1,2,3,4,5,6,7,8,9].map(n=>`<button onclick="key('${n}')">${n}</button>`).join("")}<button class="del" onclick="key('del')">⌫</button><button onclick="key('0')">0</button><button class="okk" onclick="key('ok')">OK</button></div>`}`}
+function feedbackHTML(it){
+  if(it.res==="star"||it.res==="ok")return `<div class="fb good pop">${owl("wow",64)}<div><b>${pick(PRAISE)} ${it.res==="star"?"⭐ +1":""}</b><p>${esc(it.e)}</p></div></div><button class="big go next" onclick="next()">Continuer ➜</button>`;
+  if(it.res==="miss")return `<div class="fb miss pop">${owl("think",64)}<div><b>Voici la bonne réponse.</b><p>${esc(it.e)}</p></div></div><button class="big go next" onclick="next()">J'ai compris ➜</button>`;
+  if(it.tries>0)return `<div class="fb hint pop">💡 <div><b>${pick(ENC)}</b><p>${HINTS[it.sk]||HINTS.def}</p></div></div>`;
+  return ""}
+function afterPlayRender(){try{document.activeElement&&document.activeElement.blur()}catch(e){}}
+function speakQ(){const it=run.items[run.i];if(it.type==="pb"){speak(it.pb.text+". "+it.pb.steps[it.si].title.replace(/^[^\wÀ-ÿ]+/,""));return}let t=it.q;if(it.type==="qcm")t+=". "+it.order.map((oi,k)=>"Réponse "+"ABCD"[k]+" : "+it.o[oi]).join(". ");speak(t)}
+function score(it,first){if(first){it.res="star";run.streak++;run.maxStreak=Math.max(run.maxStreak,run.streak);S.stars++;bumpStars();sGood();if(run.streak>=3&&run.streak%3===0){const k=run.streak;setTimeout(()=>toast(`🔥 Série de ${k} !`),300)}}else{it.res="ok";run.streak=0;sGood()}}
+function stat(sk,ok){const s=S.sk[sk]||(S.sk[sk]={n:0,ok:0});s.n++;if(ok)s.ok++}
+function answer(oi){const it=run.items[run.i];if(it.res)return;
+  if(oi===0){stat(it.sk,it.tries===0);score(it,it.tries===0)}
+  else{it.tries++;it.wrong.push(oi);run.streak=0;sBad();if(it.tries>=2){it.res="miss";stat(it.sk,false)}}
+  save();rerenderQ()}
+function key(k){const it=run.items[run.i];if(it.type==="pb")return pbKey(k);if(it.res)return;
+  if(k==="del")it.buf=it.buf.slice(0,-1);else if(k==="ok"){if(!it.buf)return;checkInput(it)}else if(it.buf.length<6)it.buf+=k;
+  const b=$("#inbox");if(b&&!it.res&&k!=="ok")b.innerHTML=it.buf?fmt(+it.buf):"<span class='ph'>?</span>"}
+function checkInput(it){if(+it.buf===it.ans){stat(it.sk,it.tries===0);score(it,it.tries===0)}else{it.tries++;run.streak=0;sBad();it.buf="";if(it.tries>=2){it.res="miss";stat(it.sk,false)}else{const b=$("#inbox");if(b){b.classList.add("shake");setTimeout(()=>b.classList.remove("shake"),500)}}}save();rerenderQ()}
+function rerenderQ(){render()}
+function next(){sClick();run.i++;if(run.i>=run.items.length)return finish();render();window.scrollTo(0,0)}
+function toast(t){const d=document.createElement("div");d.className="toast";d.textContent=t;document.body.appendChild(d);setTimeout(()=>d.remove(),1800)}
+document.addEventListener("keydown",e=>{if(view.s!=="play"||!run||run.phase==="read")return;if(e.target.tagName==="INPUT")return;const it=run.items[run.i];if(!it)return;
+  if(/^[0-9]$/.test(e.key)){const step=it.type==="pb"?it.pb.steps[it.si]:null;if(it.type==="input"||(step&&step.input&&!it.stepDone))key(e.key);return}
+  if(e.key==="Backspace"){key("del");e.preventDefault();return}
+  if(e.key==="Enter"){e.preventDefault();if(e.repeat)return;const n=$(".next");if(n)n.click();else key("ok");return}
+  const idx="abcd".indexOf(e.key.toLowerCase());if(idx>=0&&it.type==="qcm"&&!it.res&&idx<it.order.length&&!it.wrong.includes(it.order[idx]))answer(it.order[idx]);});
+
+/* ================= MODE DÉTECTIVE ================= */
+const lc1=t=>t.charAt(0).toLowerCase()+t.slice(1);
+const STEPICON={s_question:"🔍",s_inutile:"🗑️",s_schema:"📊",s_calc:"🧮",s_first:"🪜",s_mid:"✏️",s_result:"✏️"};
+function problemHTML(it){
+  const pb=it.pb,n=run.items.indexOf(it)+1;
+  let h=`<div class="card pbcard pop"><div class="qtools"><span class="tag">🕵️ Enquête n° ${n}${pb.two?" · en 2 étapes":""}</span>${canSpeak()?`<button class="ic sm" onclick="speakQ()" title="Écouter">🔈</button>`:""}<button class="ic sm" onclick="openDraft()" title="Brouillon">✏️</button></div><div class="enonce"><span class="pbemo">${pb.emo}</span><p>${esc(pb.text)}</p></div>`;
+  h+=`<div class="track">`+pb.steps.map((s,i)=>`<span class="tk ${i<it.si||(i===it.si&&it.stepDone)?"done":i===it.si?"cur":""}">${STEPICON[s.k]}</span>`).join(`<span class="tkl"></span>`)+`</div>`;
+  if(it.log.length)h+=`<ul class="log">${it.log.map(l=>`<li>✅ ${l}</li>`).join("")}</ul>`;
+  if(it.finished){h+=`<div class="solution pop"><h3>${it.res==="star"?"🎉 Enquête résolue du premier coup ! ⭐":"✅ Enquête résolue !"}</h3>${pb.schema?`<div class="vis">${pb.schema}</div>`:""}<div class="sol">${pb.sol.split("\n").map(esc).join("<br>")}</div><p class="phrase">💬 <b>Je réponds par une phrase :</b> ${esc(pb.phrase)}</p></div><button class="big go next" onclick="next()">${run.i+1<run.items.length?"Enquête suivante ➜":"Voir mon trésor ➜"}</button></div>`;return h}
+  const s=pb.steps[it.si];
+  h+=`<div class="step"><h3>${s.title}</h3>`;
+  if(s.input){h+=`<div class="inrow"><div class="inbox ${it.stepDone?(it.stepMiss?"ko":"ok"):""}" id="inbox">${it.stepDone?fmt(s.ans):(it.buf?fmt(+it.buf):"<span class='ph'>?</span>")}</div>${s.unit?`<span class="unit">${s.unit}</span>`:""}</div>${it.stepDone?"":`<div class="pad">${[1,2,3,4,5,6,7,8,9].map(k=>`<button onclick="key('${k}')">${k}</button>`).join("")}<button class="del" onclick="key('del')">⌫</button><button onclick="key('0')">0</button><button class="okk" onclick="key('ok')">OK</button></div>`}`}
+  else{if(!it.order||it.orderFor!==it.si){it.order=shuffle(s.o.map((_,i)=>i));it.orderFor=it.si}
+    h+=`<div class="opts ${s.schema?"schemas":s.o.some(x=>x.length>26)?"long":""}">`+it.order.map((oi,k)=>{let c="opt";if(it.stepDone&&oi===0)c+=" ok";if(it.wrong.includes(oi))c+=" ko";return `<button class="${c}" ${it.stepDone||it.wrong.includes(oi)?"disabled":""} onclick="pbAnswer(${oi})">${s.schema?`<span class="lt">${"ABC"[k]}</span>${s.o[oi]}`:`<span class="lt">${"ABCD"[k]}</span>${esc(s.o[oi])}`}</button>`}).join("")+`</div>`}
+  if(it.stepDone)h+=`<div class="fb ${it.stepMiss?"miss":"good"} pop">${owl(it.stepMiss?"think":"wow",56)}<div><b>${it.stepMiss?"Voici la bonne réponse.":pick(PRAISE)}</b><p>${stepExplain(s,pb)}</p></div></div><button class="big go next" onclick="pbNext()">Étape suivante ➜</button>`;
+  else if(it.tries>0)h+=`<div class="fb hint pop">💡 <div><b>${pick(ENC)}</b><p>${HINTS[s.k]}</p></div></div>`;
+  return h+`</div></div>`}
+function stepExplain(s,pb){
+  if(s.k==="s_question")return `On cherche : <b>${esc(lc1(s.o[0]))}</b>.`;
+  if(s.k==="s_inutile")return `« ${esc(s.o[0])} » ne sert à rien pour répondre : on peut l'oublier !`;
+  if(s.k==="s_schema")return `Dans ce schéma, le « ? » est bien à la place de ce qu'on cherche.`;
+  if(s.k==="s_calc")return `On fait <b>${esc(s.o[0])}</b>.`;
+  if(s.k==="s_first")return `D'abord : <b>${esc(lc1(s.o[0]))}</b>. Ensuite, on pourra répondre à la question.`;
+  return `Le résultat est <b>${fmt(s.ans)}</b>${s.unit?" "+esc(s.unit):""}.`}
+function logLine(s){if(s.k==="s_question")return "On cherche : "+esc(lc1(s.o[0]));if(s.k==="s_inutile")return "Information inutile repérée";if(s.k==="s_schema")return "Schéma choisi";if(s.k==="s_calc")return "Calcul : "+esc(s.o[0]);if(s.k==="s_first")return "D'abord : "+esc(lc1(s.o[0]));if(s.k==="s_mid")return "Étape 1 : "+fmt(s.ans)+(s.unit?" "+esc(s.unit):"");return ""}
+function stepStat(k,ok){const s=S.st[k]||(S.st[k]={n:0,ok:0});s.n++;if(ok)s.ok++}
+function pbAnswer(oi){const it=run.items[run.i],s=it.pb.steps[it.si];if(it.stepDone)return;
+  if(oi===0){stepStat(s.k,it.tries===0);it.stepDone=true;it.stepMiss=false;if(it.tries===0)sGood();else sClick()}
+  else{it.tries++;it.wrong.push(oi);sBad();if(it.tries>=2){stepStat(s.k,false);it.stepDone=true;it.stepMiss=true}}
+  save();render()}
+function pbKey(k){const it=run.items[run.i],s=it.pb.steps[it.si];if(!s.input||it.stepDone||it.finished)return;
+  if(k==="del")it.buf=it.buf.slice(0,-1);else if(k==="ok"){if(!it.buf)return;
+    if(+it.buf===s.ans){stepStat(s.k,it.tries===0);it.stepDone=true;it.stepMiss=false;
+      if(s.k==="s_result"){it.firstResult=it.tries===0}
+      if(it.tries===0)sGood();else sClick()}
+    else{it.tries++;sBad();it.buf="";if(it.tries>=2){stepStat(s.k,false);it.stepDone=true;it.stepMiss=true;if(s.k==="s_result")it.firstResult=false}}
+    save();return render()}
+  else if(it.buf.length<6)it.buf+=k;
+  const b=$("#inbox");if(b)b.innerHTML=it.buf?fmt(+it.buf):"<span class='ph'>?</span>"}
+function pbNext(){const it=run.items[run.i],s=it.pb.steps[it.si];sClick();
+  const ll=logLine(s);if(ll&&s.k!=="s_result")it.log.push(ll);
+  if(s.k==="s_result"){it.finished=true;S.solved++;if(it.firstResult){it.res="star";run.streak++;run.maxStreak=Math.max(run.maxStreak,run.streak);S.stars++;bumpStars();confetti(70);sWin()}else{it.res=it.stepMiss?"miss":"ok";run.streak=0}save();return render()}
+  it.si++;it.tries=0;it.wrong=[];it.buf="";it.stepDone=false;it.stepMiss=false;render()}
+
+/* ================= FIN DE SESSION ================= */
+function finish(){
+  run.finished=true;const n=run.items.length,st=run.items.filter(i=>i.res==="star").length,ratio=st/n;
+  const key=run.w+run.L;S.sessions++;
+  if(run.w!=="defi"){S.plays[key]=(S.plays[key]||0)+1;S.best[key]=Math.max(S.best[key]||0,ratio);S.visited[run.w]=1}
+  if(run.text)S.readTexts[run.text.id]=(S.readTexts[run.text.id]||0)+1;
+  const before=Object.assign({},S.badges);
+  const gold=w=>[1,2,3].some(L=>(S.best[w+L]||0)>=.85);
+  const cond={first:S.sessions>=1,rainbow:WORLDS.every(w=>S.visited[w.id]),read3:Object.keys(S.readTexts).length>=3,plume:gold("fr"),boussole:gold("monde"),fusee:gold("calc"),loupe:S.solved>=10,sherlock:S.solved>=30,fire:run.maxStreak>=5||!!S.badges.fire,summit:WORLDS.some(w=>(S.best[w.id+3]||0)>=.85),defi:(run.w==="defi"&&st>=6)||!!S.badges.defi,gem:S.stars>=100,crown:S.stars>=300};
+  BADGES.forEach(b=>{if(cond[b.id]&&!S.badges[b.id])S.badges[b.id]=new Date().toLocaleDateString("fr-FR")});
+  run.newBadges=BADGES.filter(b=>S.badges[b.id]&&!before[b.id]);run.st=st;run.ratio=ratio;
+  save();view={s:"results"};render();window.scrollTo(0,0);sWin();confetti(ratio>=.6?220:120);
+}
+function resultsScreen(){
+  const n=run.items.length,st=run.st,r=run.ratio,m=medalOf(r);
+  const msg=r===1?"PARFAIT ! Tout juste du premier coup ! 🤩":r>=.85?"Médaille d'or ! Quel talent !":r>=.6?"Médaille d'argent ! Encore un petit effort pour l'or !":"Médaille de bronze ! Chaque essai te fait progresser. On recommence ?";
+  const canNext=run.w!=="defi"&&run.L<3&&r>=.6;
+  return `<div class="card results pop"><div class="medal">${m}</div><h2>${st} étoile${st>1?"s":""} sur ${n}</h2><div class="starsrow">${run.items.map(i=>`<span>${i.res==="star"?"⭐":"☆"}</span>`).join("")}</div>${bubble("party",msg,100)}
+  ${run.newBadges.length?`<div class="newb"><h3>Nouveau trophée !</h3>${run.newBadges.map(b=>`<div class="badge on pop"><span>${b.e}</span><b>${b.t}</b><small>${b.d}</small></div>`).join("")}</div>`:""}
+  <div class="rbtns">${run.w==="defi"?`<button class="big go" onclick="startDefi()">🎲 Nouveau défi</button>`:`<button class="big go" onclick="start('${run.w}',${run.L})">🔁 Rejouer</button>${canNext?`<button class="big go alt" onclick="start('${run.w}',${run.L+1})">Niveau ${run.L+1} ➜</button>`:""}`}<button class="big ghost" onclick="go('map')">🏝️ Retour à l'archipel</button></div></div>`}
+function trophies(){return `<section class="hero small"><h1>🏆 Mes trophées</h1><p>${Object.keys(S.badges).length} sur ${BADGES.length} · ⭐ ${S.stars} étoiles</p></section><div class="badges">`+BADGES.map(b=>`<div class="badge ${S.badges[b.id]?"on":""}"><span>${S.badges[b.id]?b.e:"🔒"}</span><b>${b.t}</b><small>${b.d}</small>${S.badges[b.id]?`<em>${S.badges[b.id]}</em>`:""}</div>`).join("")+`</div><p class="foot"><button class="big ghost" onclick="go('map')">🏝️ Retour à l'archipel</button></p>`}
+
+/* ================= BROUILLON ================= */
+let draftImg=null;
+function openDraft(){sClick();const d=document.createElement("div");d.className="draft";d.innerHTML=`<div class="draftbox"><div class="drafttop"><b>✏️ Mon brouillon</b><span><button class="ic" onclick="clearDraft()">🧽 Effacer</button><button class="ic" onclick="closeDraft()">✖ Fermer</button></span></div><canvas id="dc"></canvas></div>`;document.body.appendChild(d);
+  const c=$("#dc"),r=c.getBoundingClientRect();c.width=r.width;c.height=r.height;const x=c.getContext("2d");x.lineWidth=3;x.lineCap="round";x.strokeStyle="#1e3a8a";x.fillStyle="#fff";x.fillRect(0,0,c.width,c.height);
+  if(draftImg){const im=new Image();im.onload=()=>x.drawImage(im,0,0);im.src=draftImg}
+  let dr=false;const pos=e=>{const b=c.getBoundingClientRect();return[e.clientX-b.left,e.clientY-b.top]};
+  c.onpointerdown=e=>{dr=true;c.setPointerCapture(e.pointerId);const[a,b]=pos(e);x.beginPath();x.moveTo(a,b)};c.onpointermove=e=>{if(!dr)return;const[a,b]=pos(e);x.lineTo(a,b);x.stroke()};c.onpointerup=()=>{dr=false}}
+function clearDraft(){const c=$("#dc"),x=c.getContext("2d");x.fillStyle="#fff";x.fillRect(0,0,c.width,c.height);draftImg=null}
+function closeDraft(){const c=$("#dc");try{draftImg=c.toDataURL()}catch(e){}document.querySelector(".draft").remove()}
+
+/* ================= COIN DES PARENTS ================= */
+function pct(s){return s&&s.n?Math.round(100*s.ok/s.n):null}
+function parents(){
+  const rows=WORLDS.map(w=>`<tr><td>${w.emo} ${w.name}</td>${[1,2,3].map(L=>{const b=S.best[w.id+L],p=S.plays[w.id+L]||0;return `<td>${b!=null?medalOf(b)+" "+Math.round(b*100)+" %":"—"}<br><small>${p} partie${p>1?"s":""}</small></td>`}).join("")}</tr>`).join("");
+  const sks=Object.keys(S.sk).filter(k=>S.sk[k].n>=3).map(k=>({k,p:pct(S.sk[k]),n:S.sk[k].n})).sort((a,b)=>a.p-b.p);
+  const stepOrder=["s_question","s_inutile","s_schema","s_calc","s_first","s_mid","s_result"];
+  const steps=stepOrder.filter(k=>S.st[k]&&S.st[k].n).map(k=>({k,p:pct(S.st[k]),n:S.st[k].n}));
+  let diag="Pas encore assez de problèmes résolus pour un diagnostic (il en faut une dizaine).";
+  if(steps.filter(s=>s.n>=4).length>=3){const w=steps.filter(s=>s.n>=4).sort((a,b)=>a.p-b.p)[0];
+    diag={s_question:"La difficulté principale est de <b>comprendre ce qu'on cherche</b>. Faites reformuler la question avec ses mots avant tout calcul (« On veut savoir… »).",
+      s_inutile:"Les <b>informations inutiles</b> sont un piège. Prenez l'habitude de barrer ce qui ne sert pas avant de calculer.",
+      s_schema:"La difficulté principale est de <b>représenter la situation</b>. Encouragez à dessiner le schéma en barres sur le brouillon : où est le tout ? où est le « ? » ?",
+      s_calc:"La situation est comprise, mais le <b>choix de l'opération</b> hésite. Faites le lien schéma → calcul : tout inconnu = addition, partie inconnue = soustraction, groupes égaux = multiplication.",
+      s_first:"Les problèmes <b>en deux étapes</b> posent souci : demandez « de quel nombre as-tu besoin qui n'est pas écrit ? ».",
+      s_mid:"Les erreurs viennent surtout du <b>calcul intermédiaire</b> : c'est de l'inattention plus qu'un problème de raisonnement.",
+      s_result:"Le raisonnement est bon ; les erreurs viennent surtout du <b>calcul final</b> : invitez à vérifier (ordre de grandeur, opération inverse)."}[w.k]+` <small>(réussite du premier coup à cette étape : ${w.p} %)</small>`}
+  const bar=(lbl,p,n)=>`<div class="prow"><span>${lbl}</span><div class="pbar"><i style="width:${p}%;background:${p>=80?"#22c55e":p>=60?"#f59e0b":"#ef4444"}"></i></div><b>${p} %</b><small>${n}</small></div>`;
+  return `<section class="hero small"><h1>👨‍👩‍👧 Coin des parents</h1></section>
+<div class="card"><h2>Résultats par île et par niveau</h2><p class="small">Meilleur score : part des réponses justes <b>du premier coup</b>.</p><div class="tablewrap"><table><tr><th></th><th>🌱 Niv. 1</th><th>🚀 Niv. 2</th><th>🏔️ Niv. 3</th></tr>${rows}</table></div></div>
+<div class="card"><h2>🕵️ Diagnostic « résolution de problèmes »</h2><p class="small">Chaque problème est découpé en étapes. On mesure la réussite du premier coup à chacune : cela montre <b>où</b> le raisonnement bloque.</p>${steps.length?steps.map(s=>bar(SKILLS[s.k],s.p,s.n)).join(""):"<p class='small'>Aucun problème résolu pour l'instant.</p>"}<p class="diag">${diag}</p></div>
+<div class="card"><h2>Compétences (du plus fragile au plus solide)</h2>${sks.length?sks.map(s=>bar(SKILLS[s.k]||s.k,s.p,s.n)).join(""):"<p class='small'>Pas encore assez de réponses (3 minimum par compétence).</p>"}</div>
+<div class="card"><h2>Conseils pour la résolution de problèmes</h2><ul>
+<li><b>Lire deux fois</b> : une fois pour l'histoire, une fois pour les nombres.</li>
+<li><b>Reformuler la question</b> avec ses mots : « On veut savoir… ».</li>
+<li><b>Dessiner</b> un schéma en barres (le tout, les parties, l'écart, les groupes égaux) : c'est la méthode mise en avant par les programmes de 2025.</li>
+<li><b>Estimer</b> avant de calculer : le résultat doit-il être plus grand ou plus petit que les nombres de l'énoncé ?</li>
+<li><b>Vérifier et répondre par une phrase</b> avec l'unité (billes, €, cm…).</li>
+<li>Pour aller plus loin : faire inventer un problème à partir d'un schéma ou d'un calcul (« invente une histoire pour 45 − 18 »).</li></ul></div>
+<div class="card"><h2>À propos</h2><p class="small">Contenus alignés sur le programme de CE2 entré en vigueur à la rentrée 2025 (nombres jusqu'à 10 000, prix en euros et centimes, fractions simples, problèmes modélisés par des schémas). Les nombres en lettres suivent l'orthographe recommandée (traits d'union partout : « deux-cent-cinq »). Calculs et problèmes sont générés automatiquement : ils ne se répètent pas. Version ${VERSION}.</p>
+<p class="small">Toutes les données (prénom, scores) restent dans ce navigateur, sur cet appareil : rien n'est envoyé sur internet.</p><button class="big ghost" onclick="askOK('Effacer toute la progression (étoiles, trophées, statistiques) ?',()=>{S=Object.assign(blank(),{name:S.name,avatar:S.avatar});save();go('map')})">🗑️ Remettre à zéro</button> <button class="big ghost" onclick="go('map')">🏝️ Retour</button></div>`}
+
+render();
+
+</script>
+<script>if("serviceWorker" in navigator){addEventListener("load",function(){navigator.serviceWorker.register("sw.js").catch(function(){})})}</script>
+</body>
+</html>

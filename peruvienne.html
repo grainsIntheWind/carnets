@@ -1,0 +1,727 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow, noarchive">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob:; font-src 'self'; connect-src 'self'; media-src 'self'; manifest-src 'self'; worker-src 'self'; object-src 'none'; base-uri 'self'; form-action 'none'">
+<meta name="referrer" content="no-referrer">
+<link rel="manifest" href="manifest-peruvienne.json">
+<link rel="apple-touch-icon" href="peruvienne-180.png">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Péruvienne">
+<meta name="theme-color" content="#7c2d12">
+<title>Carnet Péruvienne</title>
+<style>
+:root{--bg:#f3eee3;--card:#fbf8f1;--ink:#2a2823;--muted:#6d675b;--line:#d9d0bd;--accent:#5d6337;--accent-ink:#fff;--ok:#3f6b3a;--ok-bg:#e3eedc;--ko:#9a3b26;--ko-bg:#f6e1da;--lock:#a39c8c}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#1d1c19;--card:#26241f;--ink:#ece6d8;--muted:#a79f8e;--line:#3c3931;--accent:#9aa266;--accent-ink:#1d1c19;--ok:#9cc58f;--ok-bg:#24321f;--ko:#e59b84;--ko-bg:#3a2520;--lock:#6c665a;color-scheme:dark}}
+:root[data-theme="dark"]{--bg:#1d1c19;--card:#26241f;--ink:#ece6d8;--muted:#a79f8e;--line:#3c3931;--accent:#9aa266;--accent-ink:#1d1c19;--ok:#9cc58f;--ok-bg:#24321f;--ko:#e59b84;--ko-bg:#3a2520;--lock:#6c665a;color-scheme:dark}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.55 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
+.wrap{max-width:780px;margin:0 auto;padding:20px 16px 60px}
+header{display:flex;justify-content:space-between;align-items:flex-end;gap:10px;flex-wrap:wrap}
+header h1{font-family:Georgia,"Times New Roman",serif;font-weight:normal;font-size:1.7rem;margin:0}
+header p{margin:4px 0 0;color:var(--muted);font-size:.92rem}
+.ver{font-size:.8rem;color:var(--muted);border:1px solid var(--line);border-radius:20px;padding:2px 10px}
+.readbar{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin:14px 0 0;padding:10px 14px;background:var(--card);border:1px solid var(--line);border-radius:10px}
+.readbar label{font-weight:600}
+nav{display:flex;gap:4px;margin:14px 0 6px;border-bottom:1px solid var(--line);overflow-x:auto}
+nav button{background:none;border:none;border-bottom:3px solid transparent;padding:10px 12px;font:inherit;color:var(--muted);cursor:pointer;white-space:nowrap}
+nav button.on{color:var(--ink);border-color:var(--accent);font-weight:600}
+.card{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:18px;margin:14px 0}
+h2{font-family:Georgia,serif;font-weight:normal;font-size:1.25rem;margin:0 0 10px}
+h3{font-size:1.02rem;margin:4px 0 8px}
+select{font:inherit;padding:8px 10px;border:1px solid var(--line);border-radius:8px;background:var(--bg);color:var(--ink);max-width:100%}
+.form{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:12px;margin:8px 0}
+.form label{display:flex;flex-direction:column;gap:4px;font-size:.86rem;color:var(--muted)}
+.btn{font:inherit;border:1px solid var(--line);background:var(--bg);color:var(--ink);padding:9px 14px;border-radius:8px;cursor:pointer}
+.btn:hover:not(:disabled){border-color:var(--accent)}
+.btn.primary{background:var(--accent);color:var(--accent-ink);border-color:var(--accent)}
+.btn:disabled{color:var(--lock);cursor:not-allowed;opacity:.6}
+.btn.ghost{background:none;border-color:transparent;color:var(--muted);text-decoration:underline;padding:9px 6px}
+.small{font-size:.86rem;color:var(--muted)}
+.cols{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));column-gap:18px}
+.bar{height:8px;background:var(--line);border-radius:4px;overflow:hidden;margin-top:4px}
+.bar i{display:block;height:100%;background:var(--accent)}
+.prog-row{margin:8px 0}
+.prog-row .lbl{display:flex;justify-content:space-between;font-size:.88rem}
+.tag{display:inline-block;font-size:.78rem;padding:2px 8px;border-radius:20px;background:var(--bg);border:1px solid var(--line);color:var(--muted);margin:0 6px 4px 0}
+.q{font-family:Georgia,serif;font-size:1.2rem;margin:12px 0 16px}
+.opt{display:block;width:100%;text-align:left;margin:8px 0;padding:12px 14px}
+.opt:disabled{color:var(--ink);opacity:1;cursor:default}
+.opt.ok{background:var(--ok-bg);border-color:var(--ok)}
+.opt.ko{background:var(--ko-bg);border-color:var(--ko)}
+.opt.ok,.opt.ko{border-width:2px}
+.mk{display:block;font-size:.82rem;font-weight:700;margin-top:4px}
+.opt.ok .mk{color:var(--ok)}.opt.ko .mk{color:var(--ko)}
+details.flag{margin-top:12px}details.flag .btn{margin-top:6px}
+.expl,.piste{border-left:4px solid var(--accent);padding:10px 14px;background:var(--bg);border-radius:0 8px 8px 0;margin-top:14px}
+.piste p{margin:6px 0}
+.relance{color:var(--accent)}
+.verdict-ok{color:var(--ok);font-weight:700}.verdict-ko{color:var(--ko);font-weight:700}
+.top{display:flex;justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap}
+.score{font-family:Georgia,serif;font-size:2.4rem;margin:6px 0}
+textarea{width:100%;min-height:120px;font:inherit;padding:10px;border:1px solid var(--line);border-radius:8px;background:var(--bg);color:var(--ink);resize:vertical}
+details summary{cursor:pointer;color:var(--accent);font-size:.92rem;margin:6px 0}
+ul.pistes{margin:6px 0 10px;padding-left:20px;color:var(--muted)}
+.locked{color:var(--lock);font-style:italic}
+.miss{border-top:1px solid var(--line);padding:10px 0}
+.kbd{font-size:.8rem;color:var(--muted);margin:12px 0 0}
+.actions{display:flex;gap:6px;flex-wrap:wrap;align-items:center;margin:10px 0 0}
+.tl{position:relative;margin:6px 0 0 6px;padding-left:22px;border-left:2px solid var(--line)}
+.tl-item{position:relative;margin:0 0 16px}
+.tl-item:before{content:"";position:absolute;left:-30px;top:5px;width:12px;height:12px;border-radius:50%;background:var(--card);border:2px solid var(--accent)}
+.tl-item.star:before{background:var(--accent)}
+.tl-item.locked:before{border-color:var(--lock)}
+.tl-date{font-weight:600;font-size:.88rem;color:var(--accent)}
+.tl-per{font-family:Georgia,serif;font-size:1.05rem;margin:18px 0 8px -22px;padding-left:22px}
+.badge{display:inline-block;font-size:.74rem;padding:1px 8px;border-radius:20px;border:1px solid currentColor;margin-left:6px;vertical-align:middle}
+.badge.pd{color:var(--ok)}.badge.res{color:var(--ko)}.badge.sum{color:var(--muted)}.badge.lien{color:var(--accent)}
+blockquote{margin:10px 0;padding:10px 14px;border-left:4px solid var(--line);font-family:Georgia,serif;white-space:pre-line;background:var(--bg);border-radius:0 8px 8px 0}
+.doc-meta{font-size:.86rem;color:var(--muted)}
+footer{margin-top:30px;font-size:.82rem;color:var(--muted)}
+
+.askov{position:fixed;inset:0;z-index:50;background:rgba(20,20,40,.45);display:flex;align-items:center;justify-content:center;padding:16px}
+.askbox{background:var(--card,#fff);color:var(--ink,#1e1b4b);border-radius:18px;padding:20px;max-width:420px;width:100%;box-shadow:0 20px 50px rgba(0,0,0,.3);display:flex;flex-direction:column;gap:12px;font-size:1.05rem}
+.askbox.wide{max-width:640px}.askbox p{margin:0;font-weight:700}.askbox .askmsg{font-weight:400;font-size:.9rem;opacity:.8}
+.askbox textarea{width:100%;min-height:220px;font:inherit;font-size:.9rem;padding:10px;border-radius:10px;border:1px solid var(--line,#ccd);background:var(--bg,#f6f6fa);color:inherit}
+.askbtns{display:flex;gap:10px;justify-content:flex-end;flex-wrap:wrap}
+.askbtns button{font:inherit;font-weight:700;border-radius:12px;padding:10px 18px;cursor:pointer;border:1px solid var(--line,#ccd);background:var(--bg,#f1f2f8);color:inherit}
+.askbtns .askyes{background:var(--accent,#22c55e);border-color:var(--accent,#22c55e);color:var(--accent-ink,#fff)}
+</style>
+</head>
+<body>
+<div class="wrap">
+<header>
+  <div><h1>Lettres d'une Péruvienne</h1><p>Carnet de travail — Françoise de Graffigny (1747, éd. augmentée 1752) · Bac de français</p></div>
+  <span class="ver">version 1.1</span>
+</header>
+<div class="readbar"><label for="lvl">📖 J'ai lu jusqu'à :</label><select id="lvl"></select><span class="small">Le carnet cache tout ce qui dévoile la suite.</span></div>
+<nav>
+  <button data-t="quiz" class="on">Quiz</button>
+  <button data-t="refl">Réflexion</button>
+  <button data-t="ctx">Contexte</button>
+  <button data-t="bac">Préparer le bac</button>
+  <button data-t="par">Mode d'emploi</button>
+</nav>
+<main id="app"></main>
+<footer>Usage personnel et familial. Le roman de Graffigny (XVIIIe siècle) est dans le domaine public ; seules de courtes formules, recoupées dans plusieurs sources, sont citées : vérifie-les dans ton édition. Fonctionne sans connexion internet.</footer>
+</div>
+<script>
+/* ---- boîtes de dialogue et copie intégrées (compatibles iPad / iPhone / pages publiées) ---- */
+function askOK(msg,yes){const d=document.createElement("div");d.className="askov";d.innerHTML='<div class="askbox" role="dialog" aria-modal="true"><p></p><div class="askbtns"><button type="button" class="askno">Annuler</button><button type="button" class="askyes">Confirmer</button></div></div>';d.querySelector("p").textContent=msg;document.body.appendChild(d);d.querySelector(".askno").onclick=()=>d.remove();d.querySelector(".askyes").onclick=()=>{d.remove();yes()};d.querySelector(".askyes").focus()}
+function showText(txt,title){const d=document.createElement("div");d.className="askov";d.innerHTML='<div class="askbox wide" role="dialog" aria-modal="true"><b></b><textarea readonly></textarea><p class="askmsg">Appuie sur « Copier », puis colle le texte dans un message, des notes ou un e-mail.</p><div class="askbtns"><button type="button" class="askno">Fermer</button><button type="button" class="askyes">Copier</button></div></div>';d.querySelector("b").textContent=title||"Texte à copier";const ta=d.querySelector("textarea");ta.value=txt;document.body.appendChild(d);d.querySelector(".askno").onclick=()=>d.remove();d.querySelector(".askyes").onclick=()=>{const m=d.querySelector(".askmsg");const fb=()=>{ta.focus();ta.select();try{ta.setSelectionRange(0,txt.length)}catch(e){}m.textContent="Le texte est sélectionné : utilise « Copier » de ton appareil."};try{navigator.clipboard.writeText(txt).then(()=>{m.textContent="✓ Copié !"},fb)}catch(e){fb()}}}
+
+/* ===== CONFIGURATION ===== */
+const CFG={
+ key:"peruvienne-carnet-v1",version:"v1.1",
+ title:"Lettres d'une Péruvienne",sub:"Carnet de travail — Françoise de Graffigny (1747, éd. augmentée 1752) — Bac de français",
+ unitName:"Étape",readLabel:"J'ai lu jusqu'à l'étape :",
+ units:[
+  {v:0,l:"Je n'ai pas encore commencé"},
+  {v:1,l:"Étape 1 — Le rapt (≈ lettres I-II)"},
+  {v:2,l:"Étape 2 — Sur le vaisseau français (≈ III-IX)"},
+  {v:3,l:"Étape 3 — L'arrivée en France (≈ X-XVIII)"},
+  {v:4,l:"Étape 4 — Le couvent et le regard critique (≈ XIX-XXVII)"},
+  {v:5,l:"Étape 5 — Une nouvelle vie (≈ XXVIII-XXXIII)"},
+  {v:6,l:"Étape 6 — Aza et le choix de Zilia (≈ XXXIV-fin)"}
+ ]
+};
+const CATS={personnages:"Personnages",intrigue:"Intrigue",themes:"Idées et thèmes",ecriture:"Écriture et genre"};
+const CTX={auteur:"Françoise de Graffigny",oeuvre:"L'œuvre : publication, réception",perou:"Les Incas et la conquête",lumieres:"Les Lumières et le regard étranger",femmes:"La condition des femmes au XVIIIe siècle",genre:"Le roman épistolaire",bac:"Le programme et l'épreuve",grammaire:"Grammaire (oral du bac)"};
+const PER={avant:"Avant 1700",lumieres:"1700-1758",apres:"Après 1758"};
+
+/* ===== QUESTIONS SUR LE LIVRE (par étape) — bonne réponse = option 0 ===== */
+const B=[
+{id:"e1a",ch:1,cat:"personnages",q:"Qui est Zilia au début du roman ?",o:["Une jeune vierge du Soleil, de sang royal inca, promise à Aza","Une princesse espagnole","Une esclave africaine","Une religieuse française"],e:"Zilia vit au temple du Soleil à Cuzco. Elle doit épouser Aza, héritier de l'empire inca. Toute sa vision du monde vient de cette éducation."},
+{id:"e1b",ch:1,cat:"personnages",q:"À qui sont adressées la plupart des lettres de Zilia ?",o:["À Aza, son fiancé","À sa mère","À Déterville","Au roi de France"],e:"C'est un roman épistolaire à une seule voix : on ne lit jamais les réponses d'Aza, qui ne peut d'ailleurs pas les recevoir. Les toutes dernières lettres changent de destinataire : retiens-le pour la fin."},
+{id:"e1c",ch:1,cat:"intrigue",q:"Quel événement ouvre le roman ?",o:["L'attaque du temple du Soleil par les conquérants espagnols","Le naufrage d'un navire","L'arrivée de Zilia à Paris","Le mariage de Zilia et Aza"],e:"Zilia décrit la ville du Soleil livrée à la fureur d'une nation barbare : pour elle, les « barbares », ce sont les Européens. Le roman retourne d'emblée le point de vue habituel."},
+{id:"e1d",ch:1,cat:"ecriture",q:"Comment Zilia écrit-elle ses premières lettres ?",o:["Avec des quipos, des cordelettes nouées utilisées par les Incas","Avec une plume et de l'encre","En gravant des tablettes d'argile","En dictant à un interprète"],e:"Les quipos (ou quipus) servaient aux Incas à conserver des informations par des nœuds de couleurs. Le roman fait comme si Zilia pouvait y exprimer ses sentiments : c'est une invention littéraire."},
+{id:"e1e",ch:1,cat:"themes",q:"Dans la première lettre, qui Zilia qualifie-t-elle de « barbares » ?",o:["Les conquérants espagnols","Les Incas","Les Français","Les prêtres du temple"],e:"Le mot « barbare » change de camp : c'est un retournement que Montaigne pratiquait déjà dans « Des cannibales » (1580). Il traverse tout le parcours « un nouvel univers s'est offert à mes yeux »."},
+
+{id:"e2a",ch:2,cat:"intrigue",q:"Qui délivre Zilia des Espagnols ?",o:["L'équipage d'un vaisseau français commandé par Déterville","Des guerriers incas","Une tempête qui coule le navire espagnol","Des pirates anglais"],e:"Le navire espagnol est pris par des Français. Zilia, qui ne comprend rien à ce qui se passe, change de mains sans le savoir."},
+{id:"e2b",ch:2,cat:"personnages",q:"Comment Zilia appelle-t-elle d'abord Déterville, faute de connaître son nom ?",o:["Le Cacique","Le Capitaine","Le Roi","L'Espagnol"],e:"« Cacique » désigne un chef dans les sociétés amérindiennes. Zilia décrit le monde européen avec ses propres mots : c'est le procédé du regard étranger."},
+{id:"e2c",ch:2,cat:"intrigue",q:"Que fait Zilia lorsqu'elle comprend qu'elle est en pleine mer, loin d'Aza ?",o:["Elle tente de se jeter à la mer","Elle tente de s'enfuir à la nage vers la côte","Elle prend le commandement du navire","Elle se résigne aussitôt"],e:"Le désespoir la pousse à vouloir mourir ; on l'en empêche. Elle se reprochera ensuite d'avoir oublié Aza dans ce moment."},
+{id:"e2d",ch:2,cat:"intrigue",q:"Que se passe-t-il avec les quipos de Zilia pendant la traversée ?",o:["On les lui retire, puis on les lui rend quand on voit son chagrin","Elle les jette à la mer","Déterville les lit en secret","Ils brûlent dans un incendie"],e:"Les quipos sont son seul lien avec Aza et avec sa culture : les perdre serait perdre sa voix."},
+{id:"e2e",ch:2,cat:"themes",q:"Comment Zilia interprète-t-elle d'abord les gestes du médecin qui lui prend la main pour son pouls ?",o:["Comme une superstition de ces étrangers","Comme une déclaration d'amour","Comme une menace","Comme un rite inca"],e:"Le regard étranger rend étranges les gestes les plus familiers aux Européens. L'effet est comique… et nous invite à regarder nos propres usages autrement."},
+{id:"e2f",ch:2,cat:"intrigue",q:"Que croit Zilia quand elle aperçoit enfin une terre ?",o:["Qu'il s'agit peut-être d'une partie de l'empire d'Aza","Qu'il s'agit de l'Espagne","Qu'elle est arrivée au paradis","Qu'il s'agit d'une île déserte"],e:"Elle interprète tout à partir de ce qu'elle connaît : l'empire du Soleil lui semble le monde entier. C'est l'ignorance qu'elle reconnaîtra plus tard."},
+{id:"e2g",ch:2,cat:"intrigue",q:"Quels sont parmi les premiers mots de français que Zilia apprend sur le navire ?",o:["Le nom de Déterville et celui de « France »","« Bonjour » et « merci »","Les jours de la semaine","Les prières catholiques"],e:"Elle découvre où on l'emmène. Déterville lui fait aussi répéter des mots tendres qu'elle ne comprend pas encore : l'ironie est savoureuse pour le lecteur."},
+
+{id:"e3a",ch:3,cat:"intrigue",q:"Quel objet provoque la stupeur de Zilia à son arrivée en France ?",o:["Un miroir, où elle croit d'abord voir une autre femme","Une horloge","Un livre imprimé","Un canon"],e:"Les Incas ne connaissaient pas nos grands miroirs. Le texte en fait une scène d'étrangeté : l'objet le plus banal devient une énigme. Le miroir est aussi un symbole : le livre tend un miroir aux Français."},
+{id:"e3b",ch:3,cat:"personnages",q:"Comment Madame Déterville, la mère, accueille-t-elle Zilia à Paris ?",o:["Froidement : elle ne veut pas de cette étrangère chez elle","Avec une grande tendresse","En l'adoptant officiellement","En la présentant au roi"],e:"La mère favorise son fils aîné et voit d'un mauvais œil l'attachement de son cadet. Elle incarne une noblesse attachée au rang et aux intérêts."},
+{id:"e3c",ch:3,cat:"personnages",q:"Qui est Céline ?",o:["La sœur de Déterville, qui se lie d'amitié avec Zilia","La mère de Déterville","Une servante espagnole","La fiancée d'Aza"],e:"Céline est un personnage important : amie, sœur de cœur, parfois jalouse ou blessée. Son mariage marque une étape du roman."},
+{id:"e3d",ch:3,cat:"intrigue",q:"Lors d'une réception, comment Zilia est-elle traitée par certains invités ?",o:["Comme une curiosité qu'on examine sans respect","Comme une reine","Comme une ennemie dangereuse","On l'ignore totalement"],e:"La « bonne société » la regarde comme un objet exotique. Déterville intervient pour la défendre. Qui est le plus « sauvage » dans cette scène ?"},
+{id:"e3e",ch:3,cat:"intrigue",q:"Que se passe-t-il quand les quipos de Zilia s'épuisent ?",o:["Elle apprend à lire et à écrire le français","Elle cesse d'écrire","Elle en fabrique de nouveaux avec des rubans","Elle dicte ses lettres à Céline"],e:"Changer d'écriture, c'est changer de monde : la langue française lui donne accès à la culture européenne… et à ses illusions."},
+{id:"e3f",ch:3,cat:"ecriture",q:"D'où vient la formule « un nouvel univers s'est offert à mes yeux », titre du parcours du bac ?",o:["D'une lettre où Zilia raconte ce que lui apporte la compréhension de la langue française","De la première lettre, lors de l'attaque du temple","D'une lettre de Déterville","De l'introduction historique"],e:"Dans les éditions qui suivent le texte de 1747, c'est la lettre XVIII. En comprenant la langue, Zilia voit les objets prendre une autre forme… et chaque éclaircissement lui découvre un nouveau malheur. La découverte n'est pas qu'un émerveillement."},
+{id:"e3g",ch:3,cat:"themes",q:"Pourquoi la découverte de la langue est-elle aussi une épreuve pour Zilia ?",o:["Elle comprend enfin sa situation : elle est sous une domination étrangère, loin de l'empire d'Aza","Elle trouve le français trop difficile","On lui interdit de parler sa langue","Elle oublie la langue des Incas"],e:"Savoir, c'est voir clair, y compris sur ce qui fait mal. C'est une idée forte des Lumières : la connaissance libère, mais elle ôte aussi les illusions."},
+{id:"e3h",ch:3,cat:"intrigue",q:"Quels spectacles Zilia découvre-t-elle à Paris ?",o:["Le théâtre et l'opéra","Les courses de chevaux","Les combats de taureaux","Les jeux du cirque"],e:"Elle les décrit avec ses yeux d'étrangère, ce qui rend l'expérience neuve. Le spectacle est un thème du roman : la société elle-même est une scène où l'on joue un rôle."},
+
+{id:"e4a",ch:4,cat:"intrigue",q:"Où Madame Déterville place-t-elle Zilia et Céline pendant que Déterville est à la guerre ?",o:["Au couvent","Dans un château en province","Chez une tante en Espagne","À la cour de Versailles"],e:"Le couvent est alors le lieu où l'on éduque (peu) et où l'on surveille les jeunes filles nobles. Zilia y observe ce qu'on enseigne aux femmes."},
+{id:"e4b",ch:4,cat:"themes",q:"Quelle question Zilia se pose-t-elle en découvrant l'inégalité de la société française (« dans quelle classe dois-je me ranger ? ») ?",o:["À quel groupe social elle appartient, dans une société divisée entre riches, nobles et pauvres","À quelle classe de l'école elle doit aller","À quelle classe du navire elle voyagera","Dans quel ordre religieux entrer"],e:"Dans cette lettre (XX dans les éditions qui suivent le texte de 1747), Zilia critique l'inégalité, les nobles qui méprisent le travail et le pouvoir de l'argent. Étrangère et sans fortune, elle ne trouve pas sa place."},
+{id:"e4c",ch:4,cat:"themes",q:"Que reproche Zilia aux Français à propos des apparences ?",o:["Ils cherchent à paraître plutôt qu'à être : richesse de façade, politesse sans sincérité","Ils sont trop modestes","Ils s'habillent trop simplement","Ils ne parlent pas assez"],e:"La critique des apparences est au cœur du roman. À l'inverse, l'idéal inca de Zilia repose sur la sincérité et la simplicité, tel qu'elle le présente."},
+{id:"e4d",ch:4,cat:"personnages",q:"Comment se passe la rencontre de Zilia avec un religieux au couvent ?",o:["Il méprise sa religion du Soleil et juge son amour pour Aza incompatible avec la vertu ; elle s'en méfie","Il la convertit immédiatement","Il l'aide à rejoindre Aza","Il la demande en mariage"],e:"Zilia accepte de discuter mais refuse qu'on méprise ce qu'elle croit. Le roman questionne une foi qui se dit charitable mais méprise les autres croyances."},
+{id:"e4e",ch:4,cat:"intrigue",q:"Quand Déterville revient de la guerre, que révèle-t-il à Zilia ?",o:["Qu'il l'aime","Qu'il est marié","Qu'Aza est mort","Qu'il est espagnol"],e:"Zilia est sincère : son cœur appartient à Aza. Elle refuse, avec reconnaissance mais fermeté. Le triangle Zilia–Aza–Déterville structure tout le roman."},
+{id:"e4f",ch:4,cat:"intrigue",q:"Que se passe-t-il après la mort de Madame Déterville ?",o:["Elle a tout laissé au fils aîné ; il faut un procès pour que Céline retrouve ses biens","Déterville hérite de tout","Zilia devient l'héritière","La famille part au Pérou"],e:"Le droit d'aînesse favorise le premier fils au détriment des cadets et des filles. Le roman montre une société où la naissance compte plus que le mérite."},
+{id:"e4g",ch:4,cat:"intrigue",q:"Quelle nouvelle Déterville apporte-t-il à Zilia au parloir du couvent ?",o:["Aza est vivant et se trouve à la cour d'Espagne","Aza a été tué","Aza est devenu roi de France","Le Pérou a été libéré"],e:"La joie de Zilia est immense. Déterville, qui l'aime, accepte d'aider à réunir les fiancés : c'est son sacrifice."},
+{id:"e4h",ch:4,cat:"intrigue",q:"Que fait Déterville des trésors pris sur le navire espagnol ?",o:["Il fait remettre à Zilia les ornements du temple du Soleil qui lui reviennent","Il les garde pour lui","Il les offre au roi","Il les jette à la mer"],e:"Ces objets, venus du temple, rendent à Zilia une part de son monde… et lui donnent une indépendance matérielle. Garde-les en tête pour la suite."},
+
+{id:"e5a",ch:5,cat:"intrigue",q:"Quel événement heureux concerne Céline dans cette partie ?",o:["Elle se marie","Elle entre au couvent pour toujours","Elle part au Pérou","Elle devient reine"],e:"Ayant retrouvé ses biens, Céline peut épouser celui qu'elle aime. Zilia assiste au mariage, sans enthousiasme, et repousse les jeunes gens qui la courtisent."},
+{id:"e5b",ch:5,cat:"themes",q:"« Heureuse la nation qui n'a que la nature pour guide » : quelle idée cette phrase exprime-t-elle ?",o:["Une société simple, guidée par la nature, vaut mieux qu'une société d'artifices et de préjugés","Il faut supprimer toutes les lois","La nature est dangereuse","Seuls les Français sont heureux"],e:"C'est l'idéal d'une société « naturelle », que Rousseau développera bientôt. Attention : cet idéal peut idéaliser le Pérou ; c'est une limite discutée par la critique."},
+{id:"e5c",ch:5,cat:"themes",q:"Que dit Zilia de la façon dont les hommes français traitent les femmes ?",o:["Ils les flattent en apparence mais les méprisent, et la société leur refuse un vrai pouvoir","Ils les traitent en égales","Ils leur confient le gouvernement","Ils les écoutent toujours"],e:"Zilia remarque le paradoxe : respect affiché, mépris réel. Cette critique, prolongée dans l'édition de 1752, fait du roman un texte important sur la condition des femmes."},
+{id:"e5d",ch:5,cat:"themes",q:"Quelle critique Zilia (dans un passage ajouté en 1752) fait-elle de l'éducation des filles ?",o:["Enfermées au couvent, on leur apprend surtout à plaire, puis on les marie sans les avoir préparées à penser par elles-mêmes","Elles étudient trop les sciences","Elles voyagent trop","Elles sont mieux instruites que les garçons"],e:"C'est l'un des ajouts majeurs de 1752, souvent donné en annexe dans les éditions scolaires (vérifie sa place dans la tienne). La critique rejoint celles de Poulain de la Barre ou de Mme de Lambert."},
+{id:"e5e",ch:5,cat:"intrigue",q:"Quelle surprise Déterville réserve-t-il à Zilia lors d'une sortie à la campagne ?",o:["Une maison qui lui appartient, achetée avec le trésor du temple","Un billet pour le Pérou","Une bague de fiançailles","Une place à la cour"],e:"Zilia reçoit les clés d'une maison à elle. C'est capital pour la fin : une femme seule, propriétaire, peut vivre libre. Le cadeau rend aussi Zilia… très redevable à Déterville."},
+{id:"e5f",ch:5,cat:"intrigue",q:"Qu'apprend Zilia à la fin de cette partie ?",o:["Qu'Aza va bientôt arriver en France","Que Céline divorce","Que Déterville se marie","Qu'elle doit retourner au couvent"],e:"Déterville a préparé un appartement pour Aza. L'attente est à son comble… avant le retournement de la dernière partie."},
+
+{id:"e6a",ch:6,cat:"intrigue",q:"Où part Déterville au moment de l'arrivée d'Aza ?",o:["À Malte","En Espagne","Au Pérou","En Angleterre"],e:"Déterville est chevalier de l'ordre de Malte. Il s'éloigne pour laisser Zilia à son bonheur. Zilia lui reproche de joindre un chagrin mortel au bonheur qu'il lui préparait."},
+{id:"e6b",ch:6,cat:"personnages",q:"Comment Zilia trouve-t-elle Aza à son arrivée ?",o:["Changé : froid, distant, admirateur des Espagnols","Exactement comme avant","Malade et mourant","Devenu prêtre du Soleil"],e:"Aza, qui a vécu en Espagne, a adopté leurs manières. Zilia, elle, est restée fidèle à leur passé commun… tout en ayant elle aussi beaucoup changé."},
+{id:"e6c",ch:6,cat:"intrigue",q:"Quelle trahison Zilia découvre-t-elle ?",o:["Aza, converti au christianisme, aime une Espagnole et renonce à l'épouser","Céline a volé ses trésors","Déterville a menti sur la mort de sa mère","Les Français la renvoient en Espagne"],e:"Aza invoque aussi la religion chrétienne, qui interdit l'union entre proches parents, comme le prévoyait la coutume inca. Pour Zilia, c'est l'effondrement de ce qui la faisait vivre."},
+{id:"e6d",ch:6,cat:"ecriture",q:"À qui s'adressent les dernières lettres du roman ?",o:["À Déterville","À Aza","À Céline","Au lecteur"],e:"Le changement de destinataire marque la rupture avec Aza. Écrire à un autre, c'est commencer une autre vie."},
+{id:"e6e",ch:6,cat:"intrigue",q:"Que décide Zilia à la fin, face à Déterville qui l'aime toujours ?",o:["Elle refuse de l'épouser et lui offre son amitié","Elle l'épouse","Elle retourne au Pérou avec lui","Elle entre au couvent"],e:"Fin audacieuse pour l'époque : l'héroïne ne se marie pas et ne meurt pas. Elle choisit l'amitié, la liberté et une vie dans sa maison, entre nature, lecture et pensée."},
+{id:"e6f",ch:6,cat:"themes",q:"Quelle expression de la dernière lettre résume la sagesse finale de Zilia ?",o:["« le plaisir d'être »","« la gloire d'aimer »","« le devoir d'obéir »","« la douleur d'exister »"],e:"Le simple plaisir d'exister, de sentir et de penser suffit à fonder une vie heureuse. On y entend déjà les Rêveries de Rousseau (1782)."},
+{id:"e6g",ch:6,cat:"themes",q:"Pourquoi la fin du roman a-t-elle déçu ou choqué une partie des lecteurs du XVIIIe siècle ?",o:["Ils attendaient un mariage, avec Aza ou avec Déterville","Ils trouvaient Zilia trop soumise","Elle meurt de façon trop violente","Le roman n'a pas de fin"],e:"Des « suites » ont été écrites pour marier Zilia (les Lettres d'Aza de Lamarche-Courmont, par exemple). Graffigny, elle, a refusé de changer sa fin en 1752 : c'est un choix délibéré."},
+{id:"e6h",ch:6,cat:"themes",q:"Comment Zilia définit-elle la décence à la fin du roman ?",o:["La véritable décence est dans le cœur, pas dans les conventions sociales","Elle consiste à obéir aux usages","Elle n'existe pas","Elle dépend du rang"],e:"Une femme seule vivant chez elle choque les usages ; Zilia répond que la vertu est intérieure. Elle revendique une autonomie morale."}
+];
+
+/* ===== QUESTIONS DE CONTEXTE ===== */
+const C=[
+{id:"a1",grp:"auteur",ch:0,q:"Où est née Françoise de Graffigny, en 1695 ?",o:["À Nancy, en Lorraine","À Paris","À Lyon","À Lima"],e:"Elle naît Françoise d'Issembourg d'Happoncourt. La Lorraine est alors un duché indépendant, avec une cour à Lunéville."},
+{id:"a2",grp:"auteur",ch:0,q:"Comment se passe son mariage avec François Huguet de Graffigny ?",o:["Très mal : son mari est violent, et elle obtient une séparation","C'est un mariage heureux de cinquante ans","Elle n'a jamais été mariée","Son mari devient roi de Lorraine"],e:"Ses enfants meurent jeunes. Cette expérience éclaire peut-être sa vision du mariage, et la fin de son roman, mais méfie-toi des lectures trop biographiques."},
+{id:"a3",grp:"auteur",ch:0,q:"Chez qui séjourne-t-elle en 1738-1739, au château de Cirey ?",o:["Chez Voltaire et Émilie du Châtelet","Chez Rousseau","Chez Montesquieu","Chez le roi Louis XV"],e:"Le séjour tourne mal : on la soupçonne d'avoir diffusé un texte de Voltaire. Il montre qu'elle fréquente les grands esprits des Lumières."},
+{id:"a4",grp:"auteur",ch:0,q:"Comment Graffigny publie-t-elle les Lettres d'une Péruvienne en 1747 ?",o:["Anonymement, à plus de cinquante ans","Sous son nom, à 20 ans","Sous le nom de Voltaire","Après sa mort"],e:"L'anonymat était fréquent, surtout pour une femme. Le succès est immense, et son nom finit par être connu."},
+{id:"a5",grp:"auteur",ch:0,q:"Quelle pièce de Graffigny triomphe à la Comédie-Française en 1750 ?",o:["Cénie","Le Misanthrope","Zaïre","Le Mariage de Figaro"],e:"Cénie est un grand succès. Sa dernière pièce, La Fille d'Aristide (1758), échoue ; elle meurt la même année, en décembre."},
+{id:"a6",grp:"auteur",ch:0,q:"Que tenait Graffigny à Paris, comme d'autres femmes des Lumières ?",o:["Un salon, où se réunissaient écrivains et penseurs","Une boutique de mode","Une imprimerie clandestine","Une école militaire"],e:"Les salons sont des lieux majeurs de la vie intellectuelle. On y rencontre par exemple le futur philosophe Helvétius, qui épousera sa nièce."},
+{id:"a7",grp:"auteur",ch:0,q:"Quelle source majeure renseigne aujourd'hui les chercheurs sur sa vie ?",o:["Son immense correspondance, notamment avec son ami Devaux","Son journal intime publié en 1747","Une biographie écrite par Voltaire","Les registres de la police"],e:"Des milliers de lettres, publiées dans une grande édition savante : une épistolière de métier, ce qui éclaire la forme de son roman."},
+
+{id:"o1",grp:"oeuvre",ch:0,q:"Quelle est la date de la première édition ?",o:["1747","1721","1761","1789"],e:"1721 : Lettres persanes de Montesquieu ; 1761 : Julie ou la Nouvelle Héloïse de Rousseau ; 1789 : la Révolution."},
+{id:"o2",grp:"oeuvre",ch:0,q:"Qu'apporte l'édition de 1752 ?",o:["Une édition revue et augmentée, avec une « Introduction historique » et des ajouts qui renforcent la critique sociale","Une fin heureuse avec mariage","La suppression des passages critiques","Une traduction en espagnol"],e:"Le programme du bac demande d'inclure ces ajouts de 1752. Graffigny en profite pour développer la partie philosophique… mais garde sa fin."},
+{id:"o3",grp:"oeuvre",ch:0,q:"À quoi sert l'« Introduction historique » ajoutée en 1752 ?",o:["Présenter la civilisation inca et la conquête, pour rendre l'histoire crédible et instruire le lecteur","Raconter la vie de l'autrice","Résumer la fin du roman","Défendre l'Espagne"],e:"Graffigny s'appuie sur des historiens, notamment Garcilaso de la Vega, pour décrire les lois, la religion du Soleil, les quipos."},
+{id:"o4",grp:"oeuvre",ch:0,q:"Pourquoi la numérotation des lettres varie-t-elle selon les éditions ?",o:["L'édition de 1747 compte 38 lettres et celle de 1752 en ajoute ; certaines éditions scolaires mettent les ajouts en annexe","Parce que l'autrice a perdu des lettres","Parce que les imprimeurs se sont trompés","Elle ne varie pas"],e:"Toujours vérifier la numérotation dans TON édition. Ce carnet donne des repères approximatifs."},
+{id:"o5",grp:"oeuvre",ch:0,q:"Comment le roman est-il reçu au XVIIIe siècle ?",o:["Immense succès : de très nombreuses éditions et traductions en Europe","Un échec total","Il est interdit dès sa sortie","Personne ne le lit avant 1900"],e:"Plus d'une centaine d'éditions en un siècle. Le livre retombe ensuite dans l'oubli au XIXe siècle et est redécouvert à la fin du XXe siècle, notamment par la critique féministe."},
+{id:"o6",grp:"oeuvre",ch:0,q:"Que sont les « Lettres d'Aza » de Lamarche-Courmont ?",o:["Une suite écrite par un autre auteur, qui donne la parole à Aza et « corrige » la fin","Les vraies lettres d'Aza retrouvées","Un brouillon de Graffigny","Un opéra"],e:"Plusieurs lecteurs voulaient une autre fin. Ces suites, souvent imprimées avec le roman, montrent combien la fin de Graffigny dérangeait."},
+{id:"o7",grp:"oeuvre",ch:0,q:"Dans quel objet d'étude du bac le roman est-il placé ?",o:["La littérature d'idées du XVIe au XVIIIe siècle","Le roman et le récit du Moyen Âge au XXIe siècle","Le théâtre du XVIIe au XXIe siècle","La poésie du XIXe au XXIe siècle"],e:"C'est un roman, mais on l'étudie pour ses idées : regard critique sur la société, condition des femmes, rapport à l'autre. Tu peux discuter cette tension en dissertation."},
+
+{id:"p1",grp:"perou",ch:0,q:"Quel conquérant espagnol s'empare de l'empire inca à partir de 1532 ?",o:["Francisco Pizarro","Hernán Cortés","Christophe Colomb","Vasco de Gama"],e:"Cortés a conquis l'empire aztèque (Mexique) en 1519-1521. Pizarro, avec quelques centaines d'hommes, profite d'une guerre civile entre héritiers incas."},
+{id:"p2",grp:"perou",ch:0,q:"Quel empereur inca est capturé à Cajamarca en 1532, puis exécuté en 1533 ?",o:["Atahualpa","Moctezuma","Manco Capac","Tupac Amaru"],e:"Les Espagnols exigent une rançon gigantesque en or, puis l'exécutent quand même. Moctezuma est l'empereur aztèque ; Manco Capac, le fondateur légendaire des Incas."},
+{id:"p3",grp:"perou",ch:0,q:"Quelle était la capitale de l'empire inca ?",o:["Cuzco","Lima","Mexico","Quito"],e:"Cuzco abritait le grand temple du Soleil (Coricancha). Lima est fondée par Pizarro en 1535."},
+{id:"p4",grp:"perou",ch:0,q:"Quel astre était au centre de la religion inca ?",o:["Le Soleil (Inti)","La Lune seule","L'étoile Polaire","Aucun : les Incas n'avaient pas de religion"],e:"L'empereur était considéré comme « fils du Soleil ». Les vierges du Soleil, comme Zilia, lui étaient consacrées."},
+{id:"p5",grp:"perou",ch:0,q:"Que sont les quipos (ou quipus) ?",o:["Des cordelettes nouées servant à enregistrer des informations (comptes, recensements…)","Des tablettes d'écriture","Des pièces de monnaie","Des instruments de musique"],e:"On sait qu'ils servaient surtout aux comptes ; leur usage pour des récits est débattu. Le roman en fait une vraie écriture des sentiments : liberté de romancière."},
+{id:"p6",grp:"perou",ch:0,q:"Qui est Garcilaso de la Vega, dont s'inspire Graffigny ?",o:["Un historien né au Pérou d'un conquistador et d'une princesse inca, auteur des « Commentaires royaux » (1609)","Un conquistador","Un pape","Un poète français"],e:"Son récit présente l'empire inca comme une civilisation sage et ordonnée. Traduit en français, il a nourri l'image idéalisée des Incas au XVIIIe siècle."},
+{id:"p7",grp:"perou",ch:0,q:"Qui est Bartolomé de Las Casas ?",o:["Un religieux espagnol qui a dénoncé les violences des conquistadors contre les Amérindiens","Le fondateur de Lima","Un empereur inca","Un philosophe français"],e:"Sa « Très brève relation de la destruction des Indes » (1552) a été très lue en Europe. Elle a contribué à une image très noire de la conquête espagnole."},
+{id:"p8",grp:"perou",ch:0,q:"Quel opéra de Rameau (1735) comprend une partie intitulée « Les Incas du Pérou » ?",o:["Les Indes galantes","Carmen","Les Noces de Figaro","Orphée"],e:"Le Pérou est à la mode dans la France des Lumières. Voltaire situe aussi au Pérou sa tragédie « Alzire » (1736)."},
+{id:"p9",grp:"perou",ch:0,q:"Que reprochent certains historiens à l'image des Incas dans le roman ?",o:["Elle idéalise un empire qui était aussi autoritaire et conquérant","Elle est trop critique envers les Incas","Elle ignore la religion inca","Elle confond Incas et Chinois"],e:"L'Inca vertueux est un « mythe » des Lumières, discuté dès le XVIIIe siècle (Cornelis de Pauw). Le Pérou du roman sert surtout de miroir pour critiquer la France."},
+
+{id:"l1",grp:"lumieres",ch:0,q:"Quel roman de Montesquieu (1721) utilise aussi le regard d'étrangers pour critiquer la France ?",o:["Les Lettres persanes","L'Esprit des lois","Candide","Émile"],e:"Deux Persans, Usbek et Rica, écrivent leurs impressions de Paris. La célèbre question « Comment peut-on être Persan ? » renverse le point de vue."},
+{id:"l2",grp:"lumieres",ch:0,q:"Quelle phrase de Montaigne (« Des cannibales », 1580) résume la critique de l'ethnocentrisme ?",o:["« Chacun appelle barbarie ce qui n'est pas de son usage »","« Je pense donc je suis »","« L'homme est un loup pour l'homme »","« Il faut cultiver notre jardin »"],e:"« Je pense donc je suis » est de Descartes ; « Il faut cultiver notre jardin » de Voltaire (Candide). Montaigne fait de l'Autre un moyen de se juger soi-même."},
+{id:"l3",grp:"lumieres",ch:0,q:"Dans « Des coches », comment Montaigne qualifie-t-il les victoires des conquérants en Amérique ?",o:["De « mécaniques victoires », obtenues pour le commerce des perles et du poivre","De victoires glorieuses","De victoires divines","De victoires inutiles mais justes"],e:"Montaigne dénonce le massacre de peuples entiers par appât du gain. Ce texte est une lecture complémentaire idéale pour le parcours."},
+{id:"l4",grp:"lumieres",ch:0,q:"Quel personnage de Voltaire, dans un conte de 1767, découvre la France avec des yeux neufs ?",o:["L'Ingénu, un Huron","Candide","Zadig","Micromégas"],e:"Candide (1759) et Micromégas (1752) jouent aussi sur le regard décalé, mais l'Ingénu est, comme Zilia, un « sauvage » venu d'Amérique en France."},
+{id:"l5",grp:"lumieres",ch:0,q:"Quel texte de Diderot fait parler un vieux Tahitien contre les Européens ?",o:["Le Supplément au voyage de Bougainville","L'Encyclopédie","Jacques le fataliste","Le Neveu de Rameau"],e:"Écrit vers 1772, il oppose la vie « naturelle » de Tahiti aux lois et à la morale européennes : même dispositif critique que chez Graffigny."},
+{id:"l6",grp:"lumieres",ch:0,q:"Qu'est-ce que le « mythe du bon sauvage » ?",o:["L'idée, souvent idéalisée, que les peuples « naturels » seraient plus vertueux que les Européens","Un récit inca authentique","Une loi coloniale","Une religion amérindienne"],e:"Il sert surtout à critiquer l'Europe ; il dit souvent plus sur les Européens que sur les peuples décrits. À discuter en dissertation."},
+{id:"l7",grp:"lumieres",ch:0,q:"Quel texte de Rousseau (1755) oppose l'homme naturel à la société qui corrompt ?",o:["Le Discours sur l'origine de l'inégalité","Le Contrat social","Les Confessions","Émile"],e:"« Le premier qui, ayant enclos un terrain, s'avisa de dire : Ceci est à moi… » Zilia, en critiquant les classes et l'argent, annonce ces idées."},
+{id:"l8",grp:"lumieres",ch:0,q:"Qu'est-ce que l'Encyclopédie de Diderot et d'Alembert ?",o:["Un immense dictionnaire raisonné des sciences et des arts, publié à partir de 1751","Un roman épistolaire","Un journal de mode","Une loi royale"],e:"Symbole des Lumières : diffuser le savoir pour libérer de l'ignorance et des préjugés. Plusieurs articles citent d'ailleurs le roman de Graffigny."},
+{id:"l9",grp:"lumieres",ch:0,q:"Qui gouverne la France quand paraît le roman ?",o:["Louis XV, monarque absolu","Louis XIV","Napoléon","Louis XVI"],e:"Louis XV règne de 1715 à 1774. La critique doit rester prudente, d'où l'intérêt de faire parler une étrangère naïve."},
+{id:"l10",grp:"lumieres",ch:0,q:"Qu'est-ce que le « relativisme culturel » mis en œuvre par le regard étranger ?",o:["L'idée que nos usages ne sont pas universels : vus d'ailleurs, ils peuvent paraître étranges ou absurdes","L'idée que toutes les cultures sont identiques","Le refus de toute morale","Une technique de traduction"],e:"Attention : relativiser les usages n'empêche pas de juger les injustices. Zilia critique aussi la violence des conquistadors."},
+
+{id:"f1",grp:"femmes",ch:0,q:"Où étaient souvent éduquées les jeunes filles nobles au XVIIIe siècle ?",o:["Au couvent","À l'université","Dans des écoles militaires","À l'étranger"],e:"On y apprend la religion, les bonnes manières, un peu de musique… rarement les sciences ou la philosophie. Zilia en fait la critique."},
+{id:"f2",grp:"femmes",ch:0,q:"Quel auteur affirme dès 1673 que « l'esprit n'a point de sexe » ?",o:["François Poulain de la Barre","Molière","Voltaire","Bossuet"],e:"Dans De l'égalité des deux sexes, il défend l'égale capacité intellectuelle des femmes. Molière, lui, se moquait des « femmes savantes » (1672)."},
+{id:"f3",grp:"femmes",ch:0,q:"Quel traité de Fénelon (1687) porte sur l'instruction des filles ?",o:["De l'éducation des filles","Les Aventures de Télémaque","Les Caractères","Les Maximes"],e:"Fénelon veut instruire les filles… surtout pour en faire de bonnes mères et maîtresses de maison. Un progrès limité, que Zilia dépasse."},
+{id:"f4",grp:"femmes",ch:0,q:"Qu'est-ce que le « droit d'aînesse » qu'on voit à l'œuvre dans le roman ?",o:["L'usage qui réserve l'essentiel de l'héritage au fils aîné","Le droit des femmes à hériter","Le droit de vote des anciens","Le droit d'entrer au couvent"],e:"Les cadets comme Déterville sont souvent destinés à l'armée ou à l'Église, les filles au mariage ou au couvent."},
+{id:"f5",grp:"femmes",ch:0,q:"Quel texte d'Olympe de Gouges (1791) proclame : « La femme naît libre et demeure égale à l'homme en droits » ?",o:["La Déclaration des droits de la femme et de la citoyenne","La Déclaration des droits de l'homme et du citoyen","Le Code civil","Le Contrat social"],e:"Elle répond à la Déclaration de 1789, qui oubliait les femmes. Zilia, qui revendique son indépendance, est une sorte d'ancêtre littéraire de ces combats."},
+{id:"f6",grp:"femmes",ch:0,q:"Pourquoi la fin du roman, où Zilia vit seule, est-elle audacieuse ?",o:["Une femme sans mari, maîtresse de sa maison et de sa vie, sort des modèles de l'époque","Parce qu'elle devient reine","Parce qu'elle part en guerre","Parce qu'elle meurt"],e:"Au XVIIIe siècle, une héroïne finit souvent mariée, au couvent ou morte. Zilia invente une quatrième voie."},
+{id:"f7",grp:"femmes",ch:0,q:"Qui étaient les « salonnières » comme Mme de Tencin, Mme Geoffrin ou Mme de Graffigny ?",o:["Des femmes qui animaient des salons, lieux de conversation intellectuelle","Des religieuses","Des marchandes de tissus","Des espionnes royales"],e:"Les salons donnent aux femmes une influence intellectuelle, sans accès aux institutions (académies, universités) réservées aux hommes."},
+
+{id:"g1",grp:"genre",ch:0,q:"Qu'est-ce qu'un roman épistolaire ?",o:["Un roman composé de lettres","Un roman en vers","Un roman sans dialogue","Un roman historique"],e:"Le XVIIIe siècle adore ce genre : Lettres persanes (1721), Julie ou la Nouvelle Héloïse (1761), Les Liaisons dangereuses (1782)."},
+{id:"g2",grp:"genre",ch:0,q:"Qu'est-ce qu'un roman épistolaire « monophonique » ?",o:["Un roman où une seule personne écrit les lettres","Un roman en musique","Un roman lu à voix haute","Un roman sans destinataire"],e:"Comme les Lettres portugaises (1669). Chez Graffigny, on n'entend que Zilia : son point de vue domine tout le récit."},
+{id:"g3",grp:"genre",ch:0,q:"Quel effet produit la forme épistolaire pour le lecteur ?",o:["Une impression d'intimité et d'authenticité : on lit les pensées de Zilia au moment où elle les vit","Une vision objective et complète des faits","Un récit au passé simple","Un narrateur omniscient"],e:"Mais le lecteur en sait parfois plus que Zilia (sur Déterville par exemple) : c'est l'ironie dramatique."},
+{id:"g4",grp:"genre",ch:0,q:"Pourquoi beaucoup de romans épistolaires prétendaient-ils publier de « vraies » lettres retrouvées ?",o:["Pour paraître authentiques et éviter la méfiance envers le roman, genre jugé frivole","Parce qu'ils étaient vrais","Pour échapper aux impôts","Pour plaire au roi"],e:"L'avertissement de Graffigny joue de cette convention. Le roman doit se donner l'air d'un document pour être pris au sérieux."},
+{id:"g5",grp:"genre",ch:0,q:"Quel roman épistolaire de Laclos (1782) est un des chefs-d'œuvre du genre ?",o:["Les Liaisons dangereuses","Paul et Virginie","Manon Lescaut","La Princesse de Clèves"],e:"Polyphonique (plusieurs correspondants), il montre ce que la forme permet : manipulation, points de vue croisés."},
+{id:"g6",grp:"genre",ch:0,q:"Pourquoi peut-on dire que le roman mêle « roman sentimental » et « littérature d'idées » ?",o:["L'histoire d'amour de Zilia porte en même temps une critique de la société française","Il alterne poèmes et chapitres","Il raconte deux histoires séparées","Il est écrit par deux auteurs"],e:"C'est une piste de dissertation classique : l'intrigue amoureuse rend la critique vivante et touchante."},
+
+{id:"x1",grp:"bac",ch:0,q:"Quel est le titre du parcours associé à l'œuvre au programme ?",o:["« Un nouvel univers s'est offert à mes yeux »","« Défendre et entretenir la liberté »","« Le goût de la science »","« Mensonge et comédie »"],e:"Les autres titres sont ceux des parcours de La Boétie, de Fontenelle et de Corneille (Le Menteur)."},
+{id:"x2",grp:"bac",ch:0,q:"À l'écrit de l'épreuve anticipée (voie générale), que choisit le candidat ?",o:["Un commentaire d'un texte inconnu ou une dissertation sur une œuvre au programme","Un QCM","Une explication linéaire","Un résumé"],e:"4 heures, coefficient 5. La dissertation porte sur l'une des œuvres au programme, avec trois sujets au choix. Vérifie toujours les modalités officielles de ton année."},
+{id:"x3",grp:"bac",ch:0,q:"Comment se déroule la première partie de l'oral ?",o:["Explication linéaire d'un texte de la liste, avec lecture à voix haute, puis question de grammaire (12 min, 12 points)","Exposé libre sur un auteur","Dissertation orale","Récitation d'un poème"],e:"Lecture (2 points), explication (8 points), grammaire (2 points). Préparation : 30 minutes."},
+{id:"x4",grp:"bac",ch:0,q:"Sur quoi porte la deuxième partie de l'oral ?",o:["La présentation d'une œuvre choisie par l'élève parmi celles étudiées, puis un entretien (8 min, 8 points)","Une seconde explication linéaire","Une question d'histoire","Un débat avec un autre candidat"],e:"Si tu choisis les Lettres d'une Péruvienne, prépare une présentation personnelle : pourquoi ce livre ? quel passage t'a marqué ? quels liens avec d'autres lectures ?"},
+{id:"x5",grp:"bac",ch:0,q:"Qu'est-ce qu'une explication linéaire ?",o:["Une analyse qui suit le texte dans l'ordre, mouvement par mouvement, au service d'un projet de lecture","Un résumé du texte","Une analyse par thèmes","Une récitation commentée"],e:"Introduction (situation, lecture, projet de lecture, mouvements), explication au fil du texte, conclusion. Pas de paraphrase : chaque remarque relie un procédé à un sens."}
+];
+
+/* ===== GRAMMAIRE (oral) — phrases authentiques ===== */
+const G=[
+{id:"gr1",grp:"grammaire",ch:0,q:"« Ô ciel ! dans quelle classe dois-je me ranger ? » Quel type d'interrogation ?",o:["Interrogation directe partielle, avec inversion du sujet","Interrogation directe totale","Interrogation indirecte","Ce n'est pas une interrogation"],e:"Partielle : on ne peut pas répondre par oui/non, elle porte sur un élément (« quelle classe »). Directe : point d'interrogation. Sujet « je » inversé (« dois-je »)."},
+{id:"gr2",grp:"grammaire",ch:0,q:"« Avez-vous pû, Monsieur, prévoir sans repentir le chagrin mortel… ? » Quel type d'interrogation ?",o:["Interrogation directe totale, avec inversion du sujet","Interrogation partielle","Interrogation indirecte","Exclamation"],e:"Totale : on pourrait répondre par oui ou non. Le sujet « vous » est inversé. Ici, c'est une question rhétorique qui exprime un reproche. (« pû » : orthographe du XVIIIe siècle.)"},
+{id:"gr3",grp:"grammaire",ch:0,q:"« Heureuse la nation qui n'a que la nature pour guide. » Que marque « ne… que » ?",o:["Une restriction (« seulement »), et non une véritable négation","Une négation totale","Une négation partielle","Une interrogation"],e:"La nation a un guide : la nature, et seulement elle. « ne… que » exprime la restriction (négation dite exceptive). Piège classique à l'oral."},
+{id:"gr4",grp:"grammaire",ch:0,q:"Dans « la nation qui n'a que la nature pour guide », quelle est la nature de « qui n'a que la nature pour guide » ?",o:["Une proposition subordonnée relative, complément de l'antécédent « nation »","Une subordonnée conjonctive complétive","Une subordonnée circonstancielle","Une proposition indépendante"],e:"Introduite par le pronom relatif « qui », sujet de « a ». Elle précise quelle nation est heureuse (relative déterminative)."},
+{id:"gr5",grp:"grammaire",ch:0,q:"« Heureuse la nation… » : comment s'appelle cette construction sans verbe principal ?",o:["Une phrase non verbale (averbale), à valeur exclamative","Une phrase passive","Une phrase interrogative","Une phrase à l'impératif"],e:"L'adjectif mis en tête donne un ton solennel, presque de maxime. Construction typique de l'éloge."},
+{id:"gr6",grp:"grammaire",ch:0,q:"« le chagrin mortel que vous deviez joindre au bonheur que vous me prépariez » : combien de subordonnées relatives ?",o:["Deux, introduites chacune par le pronom relatif « que » (COD)","Une seule","Aucune : ce sont des complétives","Trois"],e:"« que vous deviez joindre… » (antécédent : chagrin) et « que vous me prépariez » (antécédent : bonheur). L'antithèse chagrin/bonheur porte le reproche."},
+{id:"gr7",grp:"grammaire",ch:0,q:"Comment distinguer une subordonnée relative d'une complétive introduite par « que » ?",o:["La relative a un antécédent et « que » y a une fonction ; la complétive complète le verbe et « que » n'a pas de fonction","C'est impossible","La complétive est toujours au subjonctif","La relative est toujours entre virgules"],e:"« Je sais que tu viendras » : complétive (COD de « sais »). « Le livre que tu lis » : relative (antécédent « livre », « que » COD de « lis »)."},
+{id:"gr8",grp:"grammaire",ch:0,q:"« chaque éclaircissement m'a découvert un nouveau malheur » : quelle est la fonction de « m' » ?",o:["Complément d'objet second (à moi)","Sujet","Complément d'objet direct","Complément circonstanciel"],e:"L'éclaircissement découvre (COD : un nouveau malheur) à moi (COS). Le sujet est un nom abstrait : c'est la connaissance elle-même qui agit."},
+{id:"gr9",grp:"grammaire",ch:0,q:"Quels sont les trois types de négation à connaître ?",o:["Totale (ne… pas), partielle (ne… jamais, ne… rien, ne… personne…) et la restriction (ne… que) à distinguer","Simple, double et triple","Directe, indirecte et libre","Active, passive et pronominale"],e:"La négation totale porte sur toute la phrase ; la partielle sur un élément (le temps, la chose, la personne). « ne… que » n'est pas une négation logique."}
+];
+
+/* ===== PARCOURS DE RÉFLEXION ===== */
+const P=[
+{id:"pa",ch:0,t:"Qui est le « barbare » ?",intro:"Un parcours faisable dès le début : Montaigne, Zilia et le regard sur l'autre.",steps:[
+ {q:"Dès la première lettre, Zilia appelle les Espagnols une « nation barbare ». Pourquoi ce choix de mot surprend-il un lecteur de 1747 ?",p:"Le lecteur européen avait l'habitude d'appeler « barbares » ou « sauvages » les peuples d'Amérique. Le mot change de camp.",n:"On peut aussi y voir un jugement moral, pas seulement culturel : ce qui est « barbare », c'est la violence et la cupidité, pas la différence de mœurs.",r:"Le mot « barbare » désigne-t-il plutôt une différence (on ne fait pas comme nous) ou une conduite (on fait le mal) ? Cherche un exemple pour chaque sens."},
+ {q:"Montaigne écrivait : « Chacun appelle barbarie ce qui n'est pas de son usage. » En quoi Zilia applique-t-elle cette idée… y compris contre elle-même ?",p:"Zilia trouve étranges ou ridicules beaucoup d'usages français, comme les Français la trouvent étrange.",n:"Mais elle apprend aussi à reconnaître ses propres erreurs : ce qu'elle prenait pour une superstition (le pouls) était de la médecine. Le relativisme fonctionne dans les deux sens.",r:"As-tu déjà trouvé « bizarre » une coutume avant de la comprendre ? Qu'est-ce qui a changé ton regard ?"},
+ {q:"Zilia admire aussi beaucoup de choses en France. Le roman est-il seulement une critique ?",p:"Non : elle loue la générosité de Déterville, l'amitié de Céline, les arts, la connaissance qu'elle acquiert par les livres.",n:"Le roman vise moins la France que ses défauts : apparences, inégalités, condition des femmes. Admiration et critique vont ensemble.",r:"Une bonne critique doit-elle reconnaître aussi les qualités de ce qu'elle critique ? Pourquoi ?"},
+ {q:"Peut-on tout relativiser ? Zilia juge-t-elle tout de la même façon ?",p:"Non : elle condamne nettement la violence des conquistadors et l'injustice sociale.",n:"Le regard étranger permet de remettre en question les habitudes, pas de renoncer à juger. La difficulté est de distinguer une simple différence d'une véritable injustice.",r:"Propose un critère pour distinguer une coutume « différente » d'une coutume « injuste »."}
+]},
+{id:"pb",ch:3,t:"Un nouvel univers : découvrir, est-ce toujours gagner ?",intro:"Autour du titre du parcours et de l'apprentissage de la langue.",steps:[
+ {q:"Pourquoi la langue française est-elle pour Zilia la clé d'un « nouvel univers » ?",p:"Avec la langue, elle comprend les conversations, lit les livres, accède aux idées : le monde s'ouvre.",n:"La langue lui donne aussi des catégories nouvelles : elle se met à penser comme une Européenne. Est-ce encore son regard, ou déjà un regard français ?",r:"Apprendre une langue étrangère t'a-t-il déjà fait voir les choses autrement ? Un mot sans équivalent en français, par exemple ?"},
+ {q:"Zilia écrit que chaque éclaircissement lui a découvert un nouveau malheur. Comment l'expliquer ?",p:"Comprendre, c'est mesurer sa situation réelle : elle est captive d'une puissance étrangère, loin d'Aza.",n:"C'est un thème ancien : le savoir fait perdre l'innocence. Mais les Lumières ajoutent qu'il vaut mieux voir clair que vivre dans l'illusion.",r:"Vaut-il mieux savoir une vérité douloureuse ou rester dans une illusion heureuse ? Défends un point de vue, puis l'autre."},
+ {q:"Le passage des quipos à l'alphabet change-t-il la Zilia qui écrit ?",p:"Oui : elle gagne en précision et en autonomie, elle peut analyser, argumenter, critiquer.",n:"Mais elle perd un lien avec sa culture : les quipos étaient le langage d'Aza et du Pérou. Gagner une langue peut faire perdre un monde.",r:"Le roman est écrit en français par une Française : la « voix péruvienne » de Zilia est-elle vraiment péruvienne ?"},
+ {q:"Au bout du compte, le « nouvel univers » est-il la France… ou autre chose ?",p:"C'est d'abord la France, sa langue, ses mœurs, ses objets.",n:"C'est peut-être surtout un univers intérieur : la pensée, la lecture, la liberté de juger par soi-même, qui la conduisent à sa décision finale.",r:"Propose ta propre interprétation de la formule en une phrase, avec un exemple tiré du roman."}
+]},
+{id:"pc",ch:5,t:"Les femmes : respectées ou méprisées ?",intro:"Couvent, éducation, mariage, indépendance.",steps:[
+ {q:"Qu'est-ce qui frappe Zilia dans la manière dont les Françaises sont élevées ?",p:"Le couvent leur apprend surtout à plaire et à obéir, peu à penser ; on les marie ensuite sans les y avoir préparées.",n:"Le roman ne dit pas que les Françaises sont sottes : il accuse l'éducation qu'on leur donne. Céline, par exemple, n'est pas bête, mais elle a peu appris.",r:"Quelle différence fais-tu entre « elles ne savent pas » et « on ne leur a pas appris » ? Pourquoi cette nuance compte-t-elle ?"},
+ {q:"Zilia remarque que les hommes flattent les femmes en public et les méprisent en réalité. Pourquoi cette contradiction ?",p:"La galanterie est un jeu social : elle donne aux femmes des compliments au lieu de droits.",n:"On peut y voir un mécanisme plus général : honorer quelqu'un symboliquement peut servir à le tenir à l'écart du pouvoir réel.",r:"Trouve un exemple, dans un autre domaine ou à une autre époque, où des honneurs remplacent des droits."},
+ {q:"Zilia est-elle une héroïne « féministe » ?",p:"On peut le dire : elle critique l'éducation des filles, refuse le mariage et vit libre dans sa maison.",n:"Le mot est anachronique : il n'existe pas au XVIIIe siècle. Et Zilia doit sa liberté au trésor rendu et à la maison offerte par Déterville : son indépendance dépend en partie d'un homme.",r:"Peut-on employer un mot d'aujourd'hui pour un texte d'hier ? Qu'est-ce qu'on y gagne, et qu'est-ce qu'on risque ?"},
+ {q:"En quoi la vie de Graffigny éclaire-t-elle (ou non) ce thème ?",p:"Mariée à un homme violent, séparée, vivant de sa plume et de ses relations, elle connaît la fragilité des femmes seules.",n:"Mais attention à la lecture biographique : un roman n'est pas un témoignage. Graffigny construit un personnage et une argumentation.",r:"Quand tu lis, cherches-tu l'auteur derrière le personnage ? Est-ce utile ou trompeur ?"}
+]},
+{id:"pd",ch:6,t:"Le choix final de Zilia",intro:"Une fin qui a dérangé les lecteurs du XVIIIe siècle.",steps:[
+ {q:"Pourquoi Zilia refuse-t-elle d'épouser Déterville, alors qu'elle l'estime et lui doit tant ?",p:"Elle ne l'aime pas d'amour et refuse un mariage par reconnaissance : ce serait mentir.",n:"Elle reste peut-être aussi fidèle à son ancien amour, même trahi, ou à elle-même : épouser Déterville, ce serait passer d'une dépendance à une autre.",r:"La reconnaissance peut-elle obliger à aimer ? Que doit-on à quelqu'un qui nous a beaucoup donné ?"},
+ {q:"Zilia propose l'amitié à la place de l'amour. Est-ce cruel envers Déterville, ou généreux ?",p:"Cruel, peut-être : Déterville a tout sacrifié et n'obtient pas ce qu'il désire.",n:"Généreux aussi : elle refuse de le tromper et lui offre un lien sincère et durable. L'amitié est une valeur forte des Lumières.",r:"Une amitié entre un homme et une femme qui l'aime est-elle possible ? Qu'en penses-tu ?"},
+ {q:"« Le plaisir d'être » : que veut dire cette formule ?",p:"Le bonheur peut venir de l'existence même : sentir, contempler la nature, penser, sans dépendre d'un autre.",n:"On peut y voir une consolation, une façon de survivre au malheur ; ou une vraie philosophie de la liberté. Les deux lectures sont possibles.",r:"As-tu déjà ressenti un « plaisir d'être » : un moment heureux sans raison particulière ? Décris-le."},
+ {q:"Plusieurs auteurs ont écrit des « suites » pour marier Zilia. Pourquoi Graffigny a-t-elle refusé de changer sa fin ?",p:"Elle voulait une héroïne qui choisit sa vie, contre la convention du mariage final.",n:"Une fin ouverte fait réfléchir davantage qu'une fin heureuse : le lecteur reste avec la question de la liberté des femmes.",r:"Préfères-tu une fin heureuse ou une fin qui fait réfléchir ? Donne l'exemple d'un livre ou d'un film."}
+]},
+{id:"pe",ch:6,t:"Un regard vraiment étranger ?",intro:"Les limites du procédé : un parcours pour nuancer une dissertation.",steps:[
+ {q:"Le Pérou de Zilia est-il le vrai Pérou des Incas ?",p:"Pas vraiment : c'est un Pérou idéalisé, inspiré de Garcilaso de la Vega, présenté comme sage, juste et vertueux.",n:"L'empire inca était aussi un empire conquérant et hiérarchisé. Le roman l'utilise surtout comme contre-modèle pour critiquer la France.",r:"Peut-on critiquer sa propre société en idéalisant une autre ? Quel est le risque ?"},
+ {q:"Zilia pense-t-elle vraiment en Péruvienne ?",p:"Elle est écrite par une Française du XVIIIe siècle, nourrie des idées des Lumières : sa voix est une construction.",n:"C'est justement l'intérêt littéraire : une fiction de regard étranger permet de dire ce qu'une Française ne pouvait pas dire directement.",r:"Un auteur peut-il « parler à la place » de quelqu'un d'une autre culture ? À quelles conditions ?"},
+ {q:"Le roman critique la conquête espagnole. Critique-t-il aussi la France ?",p:"Il critique ses mœurs, ses inégalités, sa condition des femmes, mais épargne largement la France comme puissance.",n:"Les Français y apparaissent même comme des sauveurs face aux Espagnols. On peut y voir une limite : on dénonce plus facilement la colonisation des autres.",r:"Est-il plus facile de critiquer les fautes des autres que les siennes ? Trouve un exemple dans l'actualité ou l'histoire."},
+ {q:"Pour conclure : le regard étranger est-il un instrument de critique ou un miroir déformant ?",p:"C'est un instrument efficace : il rend visibles des absurdités devenues invisibles par l'habitude.",n:"C'est aussi un miroir : il parle plus de l'Europe que de l'Autre. Les deux idées peuvent structurer une dissertation (thèse / nuance).",r:"Rédige une problématique de dissertation à partir de ce parcours."}
+]},
+{id:"pf",ch:6,t:"Roman d'amour ou littérature d'idées ?",intro:"Une question de dissertation classique, traitée pas à pas.",steps:[
+ {q:"Quelles sont les grandes étapes de l'intrigue amoureuse ?",p:"Rapt, séparation, espoir de retrouver Aza, amour de Déterville, trahison d'Aza, refus final du mariage.",n:"L'intrigue amoureuse est simple, mais elle crée le suspense : va-t-elle retrouver Aza ?",r:"Sans l'histoire d'amour, lirais-tu ce livre jusqu'au bout ? Pourquoi ?"},
+ {q:"Où passent les idées dans le roman ?",p:"Dans les observations de Zilia sur la société : classes, argent, apparences, religion, femmes.",n:"Elles passent aussi par l'intrigue elle-même : la fin, le choix de la liberté, est une idée mise en récit.",r:"Trouve un passage où l'émotion et la critique sont mêlées."},
+ {q:"L'amour sert-il à faire passer les idées, ou les idées interrompent-elles l'amour ?",p:"L'amour rend la critique touchante et vivante : on suit une personne, pas un traité.",n:"Certains lecteurs ont trouvé les réflexions trop longues pour un roman ; d'autres, la passion trop envahissante pour un texte d'idées. La tension existe.",r:"Classe le livre : roman, essai, ou autre chose ? Justifie."},
+ {q:"Construis un plan en deux ou trois parties pour le sujet : « Les Lettres d'une Péruvienne sont-elles un roman sentimental ou une œuvre de critique sociale ? »",p:"I. Un roman sentimental (intrigue, émotion, lettres d'amour). II. Une œuvre de critique (regard étranger, société, femmes).",n:"III. Les deux sont indissociables : la critique naît de l'expérience sensible de Zilia, et la fin transforme l'histoire d'amour en choix de liberté.",r:"Pour chaque partie, choisis un exemple précis du livre."}
+]}
+];
+
+/* ===== CARNET : QUESTIONS OUVERTES ===== */
+const R=[
+{id:"r1",ch:0,t:"Avant de lire",q:"Que sais-tu des Incas et de la conquête de l'Amérique ? Qu'attends-tu d'un roman écrit en 1747 par une femme ?",pistes:["Tes cours d'histoire (seconde : les grandes découvertes).","Tes préjugés éventuels sur les « vieux romans »."]},
+{id:"r2",ch:3,t:"Le miroir",q:"Analyse la scène du miroir : que révèle-t-elle de Zilia, et que dit-elle au lecteur français ?",pistes:["L'objet familier devenu étrange.","Le miroir comme symbole du livre lui-même."]},
+{id:"r3",ch:4,t:"Inégalités",q:"Commente la question de Zilia « dans quelle classe dois-je me ranger ? ». Que critique-t-elle ?",pistes:["Naissance, argent, travail.","Sa propre situation d'étrangère."]},
+{id:"r4",ch:5,t:"L'éducation des filles",q:"Résume la critique de l'éducation des filles et rapproche-la d'un autre texte (Poulain de la Barre, Olympe de Gouges…).",pistes:["Couvent, apparences, mariage.","Ce qui a changé depuis, et ce qui reste à discuter."]},
+{id:"r5",ch:6,t:"Le dénouement",q:"La fin est-elle heureuse ? Argumente en deux temps.",pistes:["Perte d'Aza / gain de liberté.","Le « plaisir d'être »."]},
+{id:"r6",ch:6,t:"Écriture d'invention",q:"Écris la réponse de Déterville à la dernière lettre de Zilia (20 lignes).",pistes:["Accepter l'amitié ? Protester ?","Garder le ton du XVIIIe siècle (vouvoiement, politesse)."]},
+{id:"r7",ch:6,t:"Pour l'entretien de l'oral",q:"Prépare ta présentation (3 min) : pourquoi ce livre ? quel passage ? quel lien avec une autre œuvre ou avec aujourd'hui ?",pistes:["Une phrase d'accroche personnelle.","Un passage précis, une idée forte, un lien."]}
+];
+
+/* ===== SUJETS DE DISSERTATION ===== */
+const DS=[
+{t:"Dans quelle mesure le regard de Zilia sur la France est-il un instrument de critique ?",p:["I. Un regard neuf qui rend visibles les absurdités (mœurs, apparences, inégalités).","II. Mais un regard construit et orienté (Pérou idéalisé, voix écrite par une Française, critique sélective).","III. Un regard qui évolue : de la naïveté à la lucidité, jusqu'à un jugement personnel et libre."]},
+{t:"Les Lettres d'une Péruvienne sont-elles davantage un roman sentimental qu'une œuvre de littérature d'idées ?",p:["I. Une intrigue amoureuse qui porte l'émotion (rapt, attente, trahison).","II. Une réflexion critique sur la société et la condition des femmes.","III. L'union des deux : la critique naît de l'expérience sensible, et le dénouement fait de l'amour un choix de liberté."]},
+{t:"« Un nouvel univers s'est offert à mes yeux » : la découverte de l'autre est-elle d'abord une découverte de soi ?",p:["I. Découvrir la France : étonnement, apprentissage, critique.","II. Se découvrir : Zilia mesure ses propres erreurs et change.","III. Inventer une nouvelle façon de vivre : l'autonomie, le « plaisir d'être »."]},
+{t:"Peut-on dire que Zilia conquiert sa liberté ?",p:["I. Une héroïne d'abord captive et dépendante (rapt, couvent, tutelle de Déterville).","II. Une libération par le savoir, la langue et la pensée critique.","III. Une liberté réelle mais limitée (dépendance matérielle initiale, solitude, renoncement à l'amour)."]}
+];
+
+/* ===== FRISE DU ROMAN ===== */
+const F=[
+{ch:1,t:"Le rapt",s:"Les Espagnols attaquent le temple du Soleil, alors que Zilia devait bientôt être unie à Aza. Elle est enlevée et embarquée. Elle écrit à Aza avec ses quipos."},
+{ch:2,t:"Sur le vaisseau français",s:"Le navire espagnol est pris par les Français de Déterville, le « Cacique ». Désespoir et tentative de se jeter à la mer, quipos retirés puis rendus, premiers mots de français, la terre en vue."},
+{ch:3,t:"L'arrivée en France",s:"Le port, le miroir, les vêtements à la française, le voyage jusqu'à Paris. Accueil glacial de Madame Déterville, amitié de Céline, humiliations mondaines, théâtre et opéra. Les quipos s'épuisent : Zilia apprend à écrire en français. « Un nouvel univers s'est offert à mes yeux. »"},
+{ch:4,t:"Le couvent et le regard critique",s:"Au couvent avec Céline pendant que Déterville est à la guerre. Critique des classes, de l'argent, des apparences ; débat avec un religieux. Déclaration d'amour de Déterville, refus de Zilia. Mort de Madame Déterville, procès pour les biens de Céline. Aza est vivant, en Espagne. Les ornements du temple sont rendus à Zilia."},
+{ch:5,t:"Une nouvelle vie",s:"Mariage de Céline. Réflexions sur la nature, la société et la condition des femmes (ajouts de 1752 sur l'éducation des filles). Déterville offre à Zilia une maison achetée avec le trésor du temple. Aza va arriver."},
+{ch:6,t:"Aza et le choix de Zilia",s:"Déterville part pour Malte. Aza arrive, changé, converti, épris d'une Espagnole : il renonce à Zilia. Désespoir, puis lettres à Déterville. Zilia refuse le mariage, offre son amitié et choisit une vie libre : « le plaisir d'être »."}
+];
+
+/* ===== FRISE HISTORIQUE ===== */
+const H=[
+{d:"vers 1200-1438",per:"avant",t:"Naissance puis expansion de l'empire inca autour de Cuzco ; selon la légende, il est fondé par Manco Capac, fils du Soleil."},
+{d:"1492",per:"avant",t:"Christophe Colomb atteint les Antilles pour le compte de l'Espagne."},
+{d:"1519-1521",per:"avant",t:"Hernán Cortés conquiert l'empire aztèque (Mexique)."},
+{d:"1532-1533",per:"avant",t:"Pizarro capture puis exécute l'Inca Atahualpa ; prise de Cuzco.",star:1},
+{d:"1550-1551",per:"avant",t:"Controverse de Valladolid : Las Casas et Sepúlveda débattent de la nature et des droits des Amérindiens."},
+{d:"1552",per:"avant",t:"Las Casas, Très brève relation de la destruction des Indes."},
+{d:"1580-1588",per:"avant",t:"Montaigne, Essais : « Des cannibales », puis « Des coches »."},
+{d:"1609",per:"avant",t:"Garcilaso de la Vega, Commentaires royaux des Incas, source majeure de Graffigny.",star:1},
+{d:"1669",per:"avant",t:"Lettres portugaises (Guilleragues) : roman épistolaire monophonique d'une femme abandonnée."},
+{d:"1673",per:"avant",t:"Poulain de la Barre, De l'égalité des deux sexes : « l'esprit n'a point de sexe »."},
+{d:"1687",per:"avant",t:"Fénelon, De l'éducation des filles."},
+{d:"1695",per:"avant",t:"Naissance de Françoise d'Issembourg d'Happoncourt (future Mme de Graffigny) à Nancy.",star:1},
+{d:"1715",per:"lumieres",t:"Mort de Louis XIV ; début du règne de Louis XV (Régence jusqu'en 1723)."},
+{d:"1721",per:"lumieres",t:"Montesquieu, Lettres persanes : le regard étranger au service de la critique."},
+{d:"1735-1736",per:"lumieres",t:"Rameau, Les Indes galantes (« Les Incas du Pérou ») ; Voltaire, Alzire, tragédie située au Pérou."},
+{d:"1738-1739",per:"lumieres",t:"Graffigny séjourne à Cirey chez Voltaire et Émilie du Châtelet, puis s'installe à Paris.",star:1},
+{d:"1747",per:"lumieres",t:"Publication anonyme des Lettres d'une Péruvienne : succès immédiat.",star:1},
+{d:"1748-1749",per:"lumieres",t:"Montesquieu, L'Esprit des lois ; suites « correctrices » du roman (Lettres d'Aza)."},
+{d:"1750",per:"lumieres",t:"Triomphe de Cénie, comédie de Graffigny, à la Comédie-Française.",star:1},
+{d:"1751",per:"lumieres",t:"Début de la publication de l'Encyclopédie de Diderot et d'Alembert."},
+{d:"1752",per:"lumieres",t:"Édition revue et augmentée des Lettres d'une Péruvienne (Introduction historique, développements critiques).",star:1},
+{d:"1755",per:"lumieres",t:"Rousseau, Discours sur l'origine et les fondements de l'inégalité parmi les hommes."},
+{d:"1758",per:"lumieres",t:"Échec de La Fille d'Aristide ; mort de Graffigny à Paris en décembre.",star:1},
+{d:"1759",per:"apres",t:"Voltaire, Candide (l'épisode de l'Eldorado, en Amérique du Sud)."},
+{d:"1761",per:"apres",t:"Rousseau, Julie ou la Nouvelle Héloïse, immense succès du roman épistolaire."},
+{d:"1767",per:"apres",t:"Voltaire, L'Ingénu : un Huron découvre la France."},
+{d:"vers 1772",per:"apres",t:"Diderot, Supplément au voyage de Bougainville."},
+{d:"1780-1781",per:"apres",t:"Révolte de Túpac Amaru II contre la domination espagnole au Pérou."},
+{d:"1782",per:"apres",t:"Laclos, Les Liaisons dangereuses ; Rousseau, Les Rêveries du promeneur solitaire (posthume)."},
+{d:"1789",per:"apres",t:"Déclaration des droits de l'homme et du citoyen."},
+{d:"1791",per:"apres",t:"Olympe de Gouges, Déclaration des droits de la femme et de la citoyenne."},
+{d:"1821-1824",per:"apres",t:"Indépendance du Pérou."},
+{d:"fin du XXe siècle",per:"apres",t:"Redécouverte du roman par la critique, notamment féministe ; rééditions.",star:1},
+{d:"2025",per:"apres",t:"Le roman entre au programme du bac de français (littérature d'idées).",star:1}
+];
+
+/* ===== VIE DE GRAFFIGNY ===== */
+const V=[
+{d:"1695",t:"Naissance à Nancy, dans la noblesse lorraine, de Françoise d'Issembourg d'Happoncourt."},
+{d:"1712",t:"Mariage avec François Huguet de Graffigny, officier de la cour de Lorraine. Il se révèle violent ; leurs enfants meurent en bas âge."},
+{d:"1723",t:"Séparation d'avec son mari. Elle fréquente la cour de Lunéville."},
+{d:"1738-1739",t:"Après le départ de la cour de Lorraine, séjour difficile à Cirey chez Voltaire et Émilie du Châtelet."},
+{d:"1739",t:"Installation à Paris. Elle vit modestement, grâce à des protections, et entretient une immense correspondance avec son ami lorrain Devaux."},
+{d:"1745",t:"Première publication, une nouvelle dans un recueil collectif."},
+{d:"1747",t:"Lettres d'une Péruvienne, publiées anonymement : succès européen."},
+{d:"1750",t:"Cénie, comédie, triomphe à la Comédie-Française. Son salon accueille écrivains et philosophes."},
+{d:"1751",t:"Sa nièce, qu'elle a élevée, épouse le philosophe Helvétius."},
+{d:"1752",t:"Édition revue et augmentée des Lettres d'une Péruvienne."},
+{d:"1758",t:"Échec de La Fille d'Aristide. Elle meurt à Paris en décembre."}
+];
+
+/* ===== DOCUMENTS (domaine public) ===== */
+const D=[
+{id:"d1",per:"lumieres",st:"pd",t:"Les phrases-clés du roman",a:"Françoise de Graffigny",d:"1747-1752",src:"Lettres d'une Péruvienne (formules relevées dans les éditions actuelles ; numérotation selon le texte de 1747)",x:"Lettre I : la ville du Soleil livrée à la fureur d'une nation barbare.\nLettre XVIII : « un nouvel univers s'est offert à mes yeux » ; « Les objets ont pris une autre forme » ; « chaque éclaircissement m'a découvert un nouveau malheur ».\nLettre XX : « Ô ciel ! dans quelle classe dois-je me ranger ? »\nLettre XXX : « Heureuse la nation qui n'a que la nature pour guide ».\nDernières lettres : « la véritable décence est dans mon cœur » ; « le plaisir d'être ».",l:"Des citations courtes, faciles à mémoriser et à réutiliser en dissertation. Vérifie la numérotation dans ton édition.",q:"Choisis trois de ces citations et montre comment elles dessinent l'évolution de Zilia."},
+{id:"d2",per:"avant",st:"pd",t:"Qui est barbare ?",a:"Montaigne",d:"1580",src:"Essais, I, 31, « Des cannibales » (orthographe modernisée)",x:"Chacun appelle barbarie ce qui n'est pas de son usage.\n\nNous les pouvons donc bien appeler barbares, eu égard aux règles de la raison, mais non pas eu égard à nous, qui les surpassons en toute sorte de barbarie.",l:"La source du retournement qu'opère Zilia dès sa première lettre.",q:"Montaigne distingue deux sens de « barbare ». Lesquels ? Lequel Zilia utilise-t-elle ?"},
+{id:"d3",per:"avant",st:"pd",t:"Mécaniques victoires",a:"Montaigne",d:"1588",src:"Essais, III, 6, « Des coches » (orthographe modernisée)",x:"Tant de villes rasées, tant de nations exterminées, tant de millions de peuples passés au fil de l'épée, et la plus riche et belle partie du monde bouleversée pour la négociation des perles et du poivre : mécaniques victoires.",l:"Une dénonciation de la conquête de l'Amérique (Mexique et Pérou), plus d'un siècle et demi avant Graffigny.",q:"Relève les procédés d'amplification. Pourquoi « mécaniques » ?"},
+{id:"d4",per:"lumieres",st:"pd",t:"Comment peut-on être Persan ?",a:"Montesquieu",d:"1721",src:"Lettres persanes, lettre XXX (Rica à Ibben)",x:"Ah ! ah ! Monsieur est Persan ? C'est une chose bien extraordinaire ! Comment peut-on être Persan ?",l:"Le modèle du regard étranger. Les Parisiens ne se demandent jamais : comment peut-on être Parisien ?",q:"Transpose la question au roman de Graffigny : qu'est-ce qui rend Zilia « extraordinaire » aux yeux des Parisiens ?"},
+{id:"d5",per:"avant",st:"pd",t:"L'esprit n'a point de sexe",a:"François Poulain de la Barre",d:"1673",src:"De l'égalité des deux sexes",x:"L'esprit n'a point de sexe.",l:"Une formule cartésienne : si l'esprit est le même, les différences entre hommes et femmes viennent de l'éducation et des usages.",q:"En quoi cette idée éclaire-t-elle la critique de l'éducation des filles chez Zilia ?"},
+{id:"d6",per:"lumieres",st:"pd",t:"Le premier qui dit « Ceci est à moi »",a:"Jean-Jacques Rousseau",d:"1755",src:"Discours sur l'origine et les fondements de l'inégalité parmi les hommes, seconde partie",x:"Le premier qui, ayant enclos un terrain, s'avisa de dire : Ceci est à moi, et trouva des gens assez simples pour le croire, fut le vrai fondateur de la société civile.",l:"Huit ans après Graffigny, Rousseau fait de la propriété l'origine des inégalités que Zilia observe.",q:"Zilia finit propriétaire d'une maison. Contradiction ? Discute."},
+{id:"d7",per:"apres",st:"pd",t:"La parole du vieux Tahitien",a:"Denis Diderot",d:"vers 1772",src:"Supplément au voyage de Bougainville, II",x:"Pleurez, malheureux Tahitiens ! pleurez ; mais que ce soit de l'arrivée, et non du départ de ces hommes ambitieux et méchants.",l:"Comme Zilia, un « sauvage » juge les Européens. Mais ici, c'est une accusation directe.",q:"Compare le ton du vieillard et celui de Zilia. Lequel te semble le plus efficace ?"},
+{id:"d8",per:"apres",st:"pd",t:"La femme naît libre",a:"Olympe de Gouges",d:"1791",src:"Déclaration des droits de la femme et de la citoyenne, article premier",x:"La femme naît libre et demeure égale à l'homme en droits. Les distinctions sociales ne peuvent être fondées que sur l'utilité commune.",l:"Quarante-quatre ans après Graffigny, la critique de la condition des femmes devient revendication politique.",q:"Repère la négation restrictive dans la seconde phrase (utile pour l'oral !). Que signifie-t-elle ?"},
+{id:"d9",per:"avant",st:"sum",t:"Les Commentaires royaux",a:"Garcilaso de la Vega, dit l'Inca",d:"1609",src:"Commentaires royaux des Incas (résumé)",x:"Fils d'un conquistador et d'une princesse inca, Garcilaso décrit l'empire de ses ancêtres maternels : la religion du Soleil, les lois des Incas, l'organisation de l'empire, les quipos, les vierges du Soleil. Il présente une civilisation ordonnée et sage, dont la conquête est une tragédie.",l:"La source principale de l'Introduction historique et de l'image des Incas dans le roman.",q:"Pourquoi un auteur métis, entre deux mondes, a-t-il pu idéaliser le monde perdu de sa mère ?"},
+{id:"d10",per:"avant",st:"sum",t:"La destruction des Indes",a:"Bartolomé de Las Casas",d:"1552",src:"Très brève relation de la destruction des Indes (résumé)",x:"Le dominicain Las Casas, témoin de la colonisation, décrit pour le roi d'Espagne les massacres, l'asservissement et les pillages commis par les conquistadors, et défend la dignité des Amérindiens.",l:"Traduit dans toute l'Europe, ce texte a nourri la vision très noire de la conquête espagnole qu'on retrouve chez Graffigny.",q:"Ce texte a aussi été utilisé par les rivaux de l'Espagne (France, Angleterre). Une dénonciation peut-elle servir des intérêts politiques ?"}
+];
+
+/* ===================== LIBELLÉS ===================== */
+const MAX=CFG.units.length-1;
+const QTYPES=[["chap","Une étape précise du roman"],["lus","Toutes les étapes déjà lues"],["livre","Le livre entier"],["ctx","Contexte de l'œuvre"],["trans","Personnages, intrigue, idées, écriture"],["gram","Grammaire pour l'oral du bac"],["mix","Grand mélange (livre + contexte)"],["err","Mes erreurs à revoir"]];
+const CVIEWS=[["roman","Frise des étapes du roman"],["histoire","Frise historique (1200-2025)"],["vie","La vie de Graffigny"],["docs","Documents et textes complémentaires"]];
+const ALLC=C.concat(G);
+const VERSION=CFG.version;
+const uLabel=c=>(CFG.units.find(u=>u.v===c)||{l:""}).l;
+const uShort=c=>CFG.unitName+" "+c;
+
+/* ===================== ÉTAT ET STOCKAGE ===================== */
+const KEY=CFG.key;
+const blank=()=>({lvl:0,res:{},wrong:[],refl:{},pa:{},pr:{},qsel:{type:"ctx",sub:"all",n:10},rsel:{mode:"parcours",p:"pa",r:"all"},csel:{v:"roman",per:"all",dper:"all"}});
+function load(){
+  try{const s=JSON.parse(localStorage.getItem(KEY));if(s){const b=blank();return Object.assign(b,s,{qsel:Object.assign(b.qsel,s.qsel),rsel:Object.assign(b.rsel,s.rsel),csel:Object.assign(b.csel,s.csel)})}}catch(e){}
+  return blank();
+}
+function save(){try{localStorage.setItem(KEY,JSON.stringify(S))}catch(e){}}
+let S=load();save();
+let tab="quiz",run=null;
+const app=document.getElementById("app");
+const $=s=>document.querySelector(s);
+function shuffle(a){a=a.slice();for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a}
+const words=t=>(t.trim().match(/\S+/g)||[]).length;
+const plural=(n,w)=>n+" "+w+(n>1?"s":"");
+
+/* ===================== BARRE DE LECTURE ET ONGLETS ===================== */
+const lvlSel=$("#lvl");
+CFG.units.forEach(u=>{const o=document.createElement("option");o.value=u.v;o.textContent=u.l+(u.v===MAX?" — livre terminé":"");lvlSel.appendChild(o)});
+lvlSel.value=S.lvl;
+lvlSel.onchange=()=>{S.lvl=+lvlSel.value;save();run=null;show()};
+document.querySelectorAll("nav button").forEach(b=>b.onclick=()=>{tab=b.dataset.t;run=null;document.querySelectorAll("nav button").forEach(x=>x.classList.toggle("on",x===b));show();window.scrollTo(0,0)});
+function show(){if(tab==="quiz")run?renderQ():quizHome();else if(tab==="refl")reflHome();else if(tab==="ctx")ctxHome();else if(tab==="bac")bacHome();else parents()}
+
+/* ===================== QUIZ ===================== */
+function subFor(t){
+  if(t==="chap"){const a=[];for(let c=1;c<=MAX;c++)a.push([String(c),uLabel(c)+(c>S.lvl?" 🔒":""),c>S.lvl]);return{label:"Étape",opts:a}}
+  if(t==="ctx")return{label:"Thème du contexte",opts:[["all","Tout le contexte",false]].concat(Object.keys(CTX).filter(k=>k!=="grammaire").map(k=>[k,CTX[k],false]))};
+  if(t==="trans")return{label:"Angle",opts:Object.keys(CATS).map(k=>[k,CATS[k],false])};
+  return null;
+}
+function pool(t,s){
+  const L=S.lvl,B2=B.filter(q=>q.ch<=L),C2=C.filter(q=>q.ch<=L);
+  switch(t){
+    case"chap":return +s<=L?B.filter(q=>q.ch===+s):[];
+    case"lus":return B2;
+    case"livre":return L>=MAX?B.slice():[];
+    case"ctx":return C2.filter(q=>s==="all"||q.grp===s);
+    case"trans":return B2.filter(q=>q.cat===s);
+    case"gram":return G.slice();
+    case"mix":return B2.concat(C2);
+    case"err":return B2.concat(C2,G).filter(q=>S.wrong.includes(q.id));
+  }
+  return[];
+}
+function emptyMsg(t){
+  if(t==="livre")return"Ce quiz se débloque quand tu as terminé le livre (règle « J'ai lu jusqu'à » sur la dernière étape).";
+  if(S.lvl===0&&(t==="chap"||t==="lus"||t==="trans"))return"Indique d'abord, en haut de la page, jusqu'où tu as lu.";
+  if(t==="chap")return"Cette étape n'est pas encore débloquée.";
+  if(t==="err")return"Aucune erreur à revoir pour l'instant. Bravo !";
+  return"Aucune question disponible pour ce choix.";
+}
+function bar(lbl,qs){const ok=qs.filter(x=>S.res[x.id]&&S.res[x.id].ok).length;return`<div class="prog-row"><div class="lbl"><span>${lbl}</span><span>${ok}/${qs.length}</span></div><div class="bar"><i style="width:${qs.length?Math.round(100*ok/qs.length):0}%"></i></div></div>`}
+function progressCard(){
+  let h=`<div class="card"><h2>Ma progression</h2><details open><summary>Étape par étape</summary><div class="cols">`;
+  for(let c=1;c<=MAX;c++)h+=bar(uShort(c)+(c>S.lvl?" 🔒":""),B.filter(q=>q.ch===c));
+  h+=`</div></details><details><summary>Contexte</summary><div class="cols">`+Object.keys(CTX).map(k=>bar(CTX[k],ALLC.filter(q=>q.grp===k))).join("")+`</div></details><p class="small">Une question compte comme maîtrisée quand ta dernière réponse était juste.</p></div>`;
+  return h;
+}
+function quizHome(){
+  const q=S.qsel;
+  let h="";
+  h+=`<div class="card"><h2>Choisis ton quiz</h2><div class="form">
+  <label>Type de quiz<select id="qt">${QTYPES.map(([v,l])=>`<option value="${v}">${l}</option>`).join("")}</select></label>
+  <label id="qsw"><span id="qsl"></span><select id="qs"></select></label>
+  <label>Nombre de questions<select id="qn"><option value="10">10 questions</option><option value="20">20 questions</option><option value="0">Toutes les questions</option></select></label>
+  </div><p class="small" id="qinfo"></p><button class="btn primary" id="qgo">Commencer</button></div>`;
+  h+=progressCard();
+  app.innerHTML=h;
+  const qt=$("#qt"),qs=$("#qs"),qn=$("#qn");
+  qt.value=q.type;qn.value=String(q.n);
+  const fillSub=()=>{
+    const sf=subFor(qt.value);
+    if(!sf){$("#qsw").style.display="none";return}
+    $("#qsw").style.display="";$("#qsl").textContent=sf.label;
+    qs.innerHTML=sf.opts.map(([v,l,d])=>`<option value="${v}"${d?" disabled":""}>${l}</option>`).join("");
+    let want=q.sub;
+    if(!sf.opts.some(o=>o[0]===want&&!o[2])){const f=sf.opts.find(o=>!o[2]);want=f?f[0]:sf.opts[0][0]}
+    qs.value=want;
+  };
+  const upd=()=>{
+    q.type=qt.value;q.sub=subFor(q.type)?qs.value:"";q.n=+qn.value;save();
+    const p=pool(q.type,q.sub);
+    $("#qinfo").textContent=p.length?plural(p.length,"question")+" disponible"+(p.length>1?"s":"")+" pour ce choix"+(q.n&&p.length>q.n?" (tirées au hasard)":"")+".":emptyMsg(q.type);
+    $("#qgo").disabled=!p.length;
+  };
+  qt.onchange=()=>{fillSub();upd()};qs.onchange=upd;qn.onchange=upd;$("#qgo").onclick=start;
+  fillSub();upd();
+}
+function start(){
+  const q=S.qsel;let list=shuffle(pool(q.type,q.sub));if(q.n)list=list.slice(0,q.n);if(!list.length)return;
+  const sf=subFor(q.type),so=sf&&sf.opts.find(o=>o[0]===q.sub);
+  const title=QTYPES.find(x=>x[0]===q.type)[1]+(so?" — "+so[1]:"");
+  run={title,list:list.map(x=>({q:x,order:shuffle([0,1,2,3]),pick:null})),i:0,score:0};
+  renderQ();window.scrollTo(0,0);
+}
+const tagsOf=q=>q.grp?`<span class="tag">${CTX[q.grp]}</span>`:`<span class="tag">${uShort(q.ch)}</span><span class="tag">${CATS[q.cat]}</span>`;
+function renderQ(){
+  if(run.i>=run.list.length)return end();
+  const it=run.list[run.i],q=it.q,ans=it.pick!==null;
+  let h=`<div class="top"><button class="btn" onclick="quit()">← Choisir un autre quiz</button><span class="small">${run.title} · ${run.i+1}/${run.list.length} · score ${run.score}</span></div>`;
+  h+=`<div class="card">${tagsOf(q)}<div class="q">${q.q}</div>`;
+  it.order.forEach((oi,k)=>{
+    let c="btn opt",mark="";
+    if(ans){
+      if(oi===0){c+=" ok";mark=`<span class="mk">✓ ${it.pick===0?"ta réponse — bonne réponse":"la bonne réponse"}</span>`}
+      else if(oi===it.pick){c+=" ko";mark=`<span class="mk">✗ ta réponse</span>`}
+    }
+    h+=`<button class="${c}"${ans?" disabled":""} onclick="pick(${oi})">${"ABCD"[k]}. ${q.o[oi]}${mark}</button>`;
+  });
+  if(ans){const ok=it.pick===0;h+=`<div class="expl"><span class="${ok?"verdict-ok":"verdict-ko"}">${ok?"✓ Bonne réponse !":"✗ Pas tout à fait."}</span> ${q.e}</div>
+  <details class="flag"><summary>Tu penses que cette question contient une erreur ? Signale-la</summary><textarea id="flagtxt" placeholder="Explique ce qui te semble faux (avec la page du livre si possible)…" style="min-height:70px"></textarea><button class="btn" onclick="flag()">Enregistrer le signalement</button> <span class="small" id="flagok"></span></details>
+  <p style="text-align:right;margin:14px 0 0"><button class="btn primary" onclick="next()">${run.i+1<run.list.length?"Question suivante →":"Voir mon résultat"}</button></p>`}
+  else h+=`<p class="kbd">Astuce clavier : touches A à D (ou 1 à 4) pour répondre, Entrée pour continuer.</p>`;
+  app.innerHTML=h+`</div>`;
+}
+function pick(oi){
+  const it=run.list[run.i];if(it.pick!==null)return;it.pick=oi;
+  const q=it.q,ok=oi===0;if(ok)run.score++;
+  const r=S.res[q.id]||{n:0,good:0};r.n++;if(ok)r.good++;r.ok=ok;S.res[q.id]=r;
+  S.wrong=S.wrong.filter(x=>x!==q.id);if(!ok)S.wrong.push(q.id);save();
+  renderQ();const ex=app.querySelector(".expl");if(ex&&ex.scrollIntoView)ex.scrollIntoView({block:"nearest",behavior:"smooth"});
+}
+function flag(){
+  const it=run.list[run.i],t=$("#flagtxt").value.trim();
+  S.flags=S.flags||[];
+  S.flags.push({id:it.q.id,q:it.q.q,attendu:it.q.o[0],choisi:it.q.o[it.pick],com:t,date:new Date().toLocaleDateString("fr-FR")});
+  save();$("#flagok").textContent="Merci, c'est noté (visible dans l'onglet Mode d'emploi).";
+}
+function exportFlags(){
+  let out="Signalements — carnet '+CFG.title+' ("+VERSION+")\n\n";
+  (S.flags||[]).forEach((f,i)=>{out+=(i+1)+". ["+f.id+"] "+f.date+"\nQuestion : "+f.q+"\nRéponse attendue par le carnet : "+f.attendu+"\nRéponse choisie : "+f.choisi+"\nCommentaire : "+(f.com||"(aucun)")+"\n\n"});
+  showText(out,"Mes signalements");
+}
+function next(){run.i++;renderQ();window.scrollTo(0,0)}
+function quit(){run=null;quizHome();window.scrollTo(0,0)}
+function end(){
+  const n=run.list.length,s=run.score,p=s/n;
+  const msg=p===1?"Parfait !":p>=.7?"Très bien : quelques points à revoir.":p>=.4?"Pas mal, mais relis les passages concernés.":"Il vaut sans doute mieux relire avant de réessayer.";
+  const miss=run.list.filter(it=>it.pick!==0);
+  let h=`<div class="card" style="text-align:center"><h2>${run.title}</h2><div class="score">${s} / ${n}</div><p>${msg}</p><button class="btn primary" onclick="again()">Recommencer</button> <button class="btn" onclick="quit()">Choisir un autre quiz</button></div>`;
+  if(miss.length)h+=`<div class="card"><h2>À revoir</h2>${miss.map(it=>`<div class="miss"><b>${it.q.q}</b><br><span class="small">Bonne réponse :</span> ${it.q.o[0]}<br><span class="small">${it.q.e}</span></div>`).join("")}</div>`;
+  app.innerHTML=h;
+}
+function again(){run={title:run.title,list:shuffle(run.list.map(it=>({q:it.q,order:shuffle([0,1,2,3]),pick:null}))),i:0,score:0};renderQ();window.scrollTo(0,0)}
+document.addEventListener("keydown",e=>{
+  if(tab!=="quiz"||!run||run.i>=run.list.length)return;
+  const tg=e.target.tagName;if(tg==="TEXTAREA"||tg==="SELECT"||tg==="INPUT")return;
+  const it=run.list[run.i],k=e.key.toLowerCase();
+  let idx="1234".indexOf(k);if(idx<0)idx="abcd".indexOf(k);
+  if(it.pick===null&&idx>=0&&k.length===1)pick(it.order[idx]);
+  else if(it.pick!==null&&e.key==="Enter"&&tg!=="BUTTON"){e.preventDefault();next()}
+});
+
+/* ===================== RÉFLEXION ===================== */
+const gateTxt=ch=>ch>=MAX?"après la fin du livre":"après l'étape "+ch;
+function reflHome(){
+  const r=S.rsel;
+  app.innerHTML=`<div class="card"><h2>Réfléchir sur le livre</h2><div class="form">
+  <label>Type de réflexion<select id="rm"><option value="parcours">Parcours guidés (réflexion progressive)</option><option value="carnet">Carnet de questions ouvertes</option></select></label>
+  <label><span id="rsl"></span><select id="rs"></select></label></div>
+  <p class="small" id="rinfo"></p><button class="btn" id="rexp">📋 Copier toutes mes réponses</button></div><div id="rbody"></div>`;
+  const rm=$("#rm"),rs=$("#rs");rm.value=r.mode;
+  const fill=()=>{
+    if(rm.value==="parcours"){
+      $("#rsl").textContent="Parcours";
+      rs.innerHTML=P.map(p=>`<option value="${p.id}"${p.ch>S.lvl?" disabled":""}>${p.t}${p.ch>S.lvl?" 🔒 ("+gateTxt(p.ch)+")":""}</option>`).join("");
+      let w=r.p;if(!P.some(p=>p.id===w&&p.ch<=S.lvl)){const f=P.find(p=>p.ch<=S.lvl);w=f?f.id:P[0].id}rs.value=w;
+      $("#rinfo").textContent="Chaque parcours avance pas à pas : tu écris ta réponse, puis tu découvres une piste à discuter, et une nouvelle question.";
+    }else{
+      $("#rsl").textContent="Question";
+      rs.innerHTML=`<option value="all">Toutes les questions disponibles</option>`+R.map(q=>`<option value="${q.id}"${q.ch>S.lvl?" disabled":""}>${q.t}${q.ch>S.lvl?" 🔒":""}</option>`).join("");
+      rs.value=(r.r==="all"||R.some(q=>q.id===r.r&&q.ch<=S.lvl))?r.r:"all";
+      $("#rinfo").textContent="Des questions ouvertes, sans piste fournie : à toi d'argumenter avec des exemples précis du livre.";
+    }
+  };
+  const draw=()=>{
+    r.mode=rm.value;if(r.mode==="parcours")r.p=rs.value;else r.r=rs.value;save();
+    if(r.mode==="parcours"){const p=P.find(x=>x.id===rs.value);if(p&&p.ch<=S.lvl)renderParcours(p);else $("#rbody").innerHTML=`<div class="card locked">Aucun parcours disponible pour l'instant.</div>`}
+    else renderCarnet(rs.value);
+  };
+  rm.onchange=()=>{fill();draw()};rs.onchange=draw;$("#rexp").onclick=exportAll;
+  fill();draw();
+}
+function renderParcours(p){
+  const ans=S.pa[p.id]||(S.pa[p.id]=[]),rev=S.pr[p.id]||(S.pr[p.id]=[]);
+  let h=`<div class="card"><h2>${p.t}</h2><p>${p.intro}</p><p class="small">Écris d'abord ta propre réponse (quelques phrases suffisent), puis découvre une piste. Les pistes ne sont pas « la » bonne réponse : ce sont des idées à discuter, nuancer ou contester.</p></div>`;
+  for(let k=0;k<p.steps.length;k++){
+    const s=p.steps[k];
+    h+=`<div class="card step"><div class="small">Étape ${k+1} sur ${p.steps.length}</div><h3>${s.q}</h3><textarea data-k="${k}" placeholder="Ta réponse…"></textarea><div class="small" id="pw-${k}"></div>`;
+    if(rev[k])h+=`<div class="piste"><p><b>Une piste possible…</b> ${s.p}</p><p><b>Mais on peut aussi penser…</b> ${s.n}</p><p class="relance"><b>Et toi ?</b> ${s.r}</p><p class="small">Tu peux compléter ou modifier ta réponse ci-dessus : changer d'avis en réfléchissant, c'est bon signe.</p></div>`;
+    else h+=`<div class="actions"><button class="btn primary" data-rev="${k}">Voir une piste</button><button class="btn ghost" data-help="${k}">Je bloque, montre-moi une piste</button></div><p class="small" id="ph-${k}">Écris au moins 5 mots pour débloquer la piste.</p>`;
+    h+=`</div>`;
+    if(!rev[k])break;
+  }
+  const done=p.steps.every((_,k)=>rev[k]);
+  if(done)h+=`<div class="card"><h3>Parcours terminé</h3><p>Relis ta première réponse puis ta dernière : ta façon de voir a-t-elle bougé ? Si oui, qu'est-ce qui l'a fait bouger ?</p><button class="btn" id="preset">Recommencer ce parcours (efface mes réponses)</button></div>`;
+  const body=$("#rbody");body.innerHTML=h;
+  body.querySelectorAll("textarea").forEach(t=>{
+    const k=+t.dataset.k;t.value=ans[k]||"";
+    const upd=()=>{ans[k]=t.value;save();const n=words(t.value);$("#pw-"+k).textContent=n?plural(n,"mot"):"";const b=body.querySelector(`[data-rev="${k}"]`);if(b){b.disabled=n<5;const ph=$("#ph-"+k);if(ph)ph.style.display=n<5?"":"none"}};
+    t.oninput=upd;upd();
+  });
+  body.querySelectorAll("[data-rev],[data-help]").forEach(b=>b.onclick=()=>{
+    const k=+(b.dataset.rev!==undefined?b.dataset.rev:b.dataset.help);rev[k]=true;save();renderParcours(p);
+    const el=body.querySelectorAll(".step")[k];if(el&&el.scrollIntoView)el.scrollIntoView({block:"start",behavior:"smooth"});
+  });
+  const pr=$("#preset");if(pr)pr.onclick=()=>{askOK("Effacer tes réponses à ce parcours ?",()=>{S.pa[p.id]=[];S.pr[p.id]=[];save();renderParcours(p)})};
+}
+function renderCarnet(sel){
+  let h="";
+  R.filter(r=>sel==="all"||r.id===sel).forEach(r=>{
+    const lk=r.ch>S.lvl;
+    h+=`<div class="card"><span class="tag">${r.ch===0?"Avant ou pendant la lecture":r.ch>=MAX?"Fin du livre":"À partir de l'étape "+r.ch}</span><h3>${r.t}</h3>`;
+    if(lk)h+=`<p class="locked">🔒 Disponible ${gateTxt(r.ch)}.</p>`;
+    else h+=`<p>${r.q}</p><details><summary>Des pistes pour démarrer</summary><ul class="pistes">${r.pistes.map(x=>`<li>${x}</li>`).join("")}</ul></details><textarea data-id="${r.id}" placeholder="Ta réponse…"></textarea><div class="small" id="wc-${r.id}"></div>`;
+    h+=`</div>`;
+  });
+  const body=$("#rbody");body.innerHTML=h;
+  body.querySelectorAll("textarea").forEach(t=>{
+    const id=t.dataset.id;t.value=S.refl[id]||"";
+    const upd=()=>{S.refl[id]=t.value;save();const n=words(t.value);$("#wc-"+id).textContent=n?plural(n,"mot"):""};
+    t.oninput=upd;upd();
+  });
+}
+function exportAll(){
+  let out=CFG.title+" — Mes réflexions\n"+new Date().toLocaleDateString("fr-FR")+"\n\n";
+  P.forEach(p=>{const a=S.pa[p.id]||[];if(a.some(x=>x&&x.trim())){out+="######## Parcours : "+p.t+" ########\n\n";p.steps.forEach((s,k)=>{if(a[k]&&a[k].trim())out+="Q"+(k+1)+". "+s.q+"\n→ "+a[k].trim()+"\n\n"})}});
+  const rs=R.filter(r=>(S.refl[r.id]||"").trim());
+  if(rs.length){out+="######## Carnet de questions ouvertes ########\n\n";rs.forEach(r=>{out+="== "+r.t+" ==\n"+r.q+"\n\n"+S.refl[r.id].trim()+"\n\n"})}
+  showText(out,"Mes réflexions");
+}
+
+/* ===================== CONTEXTE ===================== */
+function ctxHome(){
+  const c=S.csel;
+  app.innerHTML=`<div class="card"><h2>Comprendre le contexte</h2><div class="form">
+  <label>Afficher<select id="cv">${CVIEWS.map(([v,l])=>`<option value="${v}">${l}</option>`).join("")}</select></label>
+  <label id="cpw">Période<select id="cp"><option value="all">Toutes les périodes</option>${Object.keys(PER).map(k=>`<option value="${k}">${PER[k]}</option>`).join("")}</select></label></div></div><div id="cbody"></div>`;
+  const cv=$("#cv"),cp=$("#cp");cv.value=c.v;
+  const draw=()=>{
+    c.v=cv.value;const usesPer=c.v==="histoire"||c.v==="docs";
+    $("#cpw").style.display=usesPer?"":"none";
+    if(usesPer)cp.value=c.v==="histoire"?c.per:c.dper;
+    save();
+    const body=$("#cbody");
+    if(c.v==="roman")body.innerHTML=frRoman();
+    else if(c.v==="histoire")body.innerHTML=frHist(c.per);
+    else if(c.v==="vie")body.innerHTML=frVie();
+    else body.innerHTML=docs(c.dper);
+  };
+  cv.onchange=draw;cp.onchange=()=>{if(c.v==="histoire")c.per=cp.value;else c.dper=cp.value;draw()};
+  draw();
+}
+function frRoman(){
+  let h=`<div class="card"><h2>Les étapes du roman</h2><p class="small">Les numéros de lettres sont approximatifs : ils changent selon les éditions (38 lettres en 1747, davantage en 1752 ; les éditions scolaires donnent souvent les ajouts de 1752 en annexe). Vérifie dans ton édition. Les étapes non lues restent cachées.</p><div class="tl">`;
+  F.forEach(f=>{
+    if(f.ch>S.lvl)h+=`<div class="tl-item locked"><div class="tl-date">${uShort(f.ch)}</div><div class="locked">🔒 À découvrir quand tu l'auras lue.</div></div>`;
+    else h+=`<div class="tl-item"><div class="tl-date">${uLabel(f.ch)}</div><div>${f.s}</div></div>`;
+  });
+  return h+`</div><p class="small">Fils rouges à suivre : les quipos puis l'écriture en français ; les objets du temple (rapt, restitution, maison) ; les destinataires des lettres.</p></div>`;
+}
+function frHist(per){
+  let h=`<div class="card"><h2>De 1870 à aujourd'hui</h2><p class="small">● Point plein et mention « lien avec le roman » : événement directement lié au livre ou à son auteur.</p><div class="tl">`;
+  let last="";
+  H.filter(x=>(per==="all"||x.per===per)&&!(x.ch&&x.ch>S.lvl)).forEach(x=>{
+    if(x.per!==last){h+=`<div class="tl-per">${PER[x.per]}</div>`;last=x.per}
+    h+=`<div class="tl-item${x.star?" star":""}"><div class="tl-date">${x.d}${x.star?`<span class="badge lien">lien avec le roman</span>`:""}</div><div>${x.t}</div></div>`;
+  });
+  return h+`</div></div>`;
+}
+function frVie(){
+  return`<div class="card"><h2>Françoise de Graffigny (1695-1758)</h2><p class="small">Une femme des Lumières : un mariage malheureux, une vie difficile et souvent précaire, puis la gloire littéraire à plus de cinquante ans.</p><div class="tl">`+V.map(x=>`<div class="tl-item"><div class="tl-date">${x.d}</div><div>${x.t}</div></div>`).join("")+`</div></div>`;
+}
+function docs(per){
+  const order=Object.keys(PER);
+  let h=`<div class="card small">Tous ces textes sont anciens et appartiennent au domaine public. Les extraits courts sont cités (orthographe parfois modernisée) ; les ouvrages longs sont <b>résumés</b>. Ce sont de bons textes complémentaires pour le parcours.</div>`;
+  const list=D.filter(d=>per==="all"||d.per===per).sort((a,b)=>order.indexOf(a.per)-order.indexOf(b.per));
+  if(!list.length)return h+`<div class="card locked">Aucun document pour cette période.</div>`;
+  list.forEach(d=>{
+    h+=`<div class="card"><span class="tag">${PER[d.per]}</span><h3>${d.t}<span class="badge ${d.st}">${d.st==="pd"?"texte cité":"résumé"}</span></h3><div class="doc-meta">${d.a} · ${d.d}<br>${d.src}</div><blockquote>${d.x}</blockquote><p><b>Pourquoi ce document ?</b> ${d.l}</p><p class="relance"><b>À toi de réfléchir :</b> ${d.q}</p></div>`;
+  });
+  return h;
+}
+
+/* ===================== MODE D'EMPLOI ===================== */
+function bacHome(){
+  let h=`<div class="card"><h2>L'œuvre au programme</h2><p><b>Objet d'étude :</b> la littérature d'idées du XVIe au XVIIIe siècle.<br><b>Parcours :</b> « Un nouvel univers s'est offert à mes yeux ».<br><b>Édition :</b> le programme demande d'inclure les éléments de l'édition augmentée de 1752, dont l'Introduction historique.</p><p class="small">Source : programme national (Bulletin officiel). Les modalités ci-dessous sont celles de la voie générale ; vérifie toujours avec ton professeur.</p></div>
+<div class="card"><h2>L'épreuve anticipée de français</h2><h3>Écrit (4 h, coefficient 5)</h3><p>Au choix : <b>commentaire</b> d'un texte inconnu, ou <b>dissertation</b> sur une des œuvres au programme (trois sujets proposés).</p><h3>Oral (coefficient 5 ; 30 min de préparation, 20 min de passage)</h3><ul><li><b>Partie 1 (12 points, 12 min)</b> : lecture à voix haute (2 pts) et explication linéaire (8 pts) d'un texte de ta liste, puis question de grammaire (2 pts).</li><li><b>Partie 2 (8 points, 8 min)</b> : présentation d'une œuvre que tu choisis, puis entretien avec l'examinateur.</li></ul></div>
+<div class="card"><h2>S'entraîner à la dissertation</h2><p class="small">Cherche d'abord ta propre problématique et ton plan, puis compare avec la piste proposée : ce n'est pas le seul plan possible.</p>`;
+  DS.forEach((d,i)=>{h+=`<div class="miss"><b>Sujet ${i+1}.</b> ${d.t}<details><summary>Voir une piste de plan</summary><ul class="pistes">${d.p.map(x=>`<li>${x}</li>`).join("")}</ul></details></div>`});
+  h+=`</div>
+<div class="card"><h2>Méthode de l'explication linéaire</h2><ol><li><b>Introduction</b> : situer l'extrait (où en est l'intrigue, qui écrit à qui), lire le texte, poser un <b>projet de lecture</b> (une question), annoncer les <b>mouvements</b> du texte.</li><li><b>Explication</b> : suivre le texte, mouvement par mouvement. Chaque remarque = une citation + un procédé + une interprétation. Pas de paraphrase.</li><li><b>Conclusion</b> : répondre au projet de lecture, puis ouvrir (lien avec le parcours, Montesquieu, Montaigne…).</li></ol><p class="small">Réflexes pour ce roman : qui est le destinataire ? quel est l'état d'esprit de Zilia ? où est le regard étranger (étonnement, mots péruviens, comparaison) ? où est la critique ? Pense aussi à la ponctuation expressive (exclamations, interrogations) et aux antithèses.</p></div>
+<div class="card"><h2>Préparer l'entretien (partie 2)</h2><ul><li>Pourquoi as-tu choisi ce livre ? Donne une raison personnelle et précise.</li><li>Quel passage t'a le plus marqué, et pourquoi ?</li><li>Le dénouement te paraît-il heureux ?</li><li>En quoi le regard de Zilia est-il un outil de critique ?</li><li>Quel lien fais-tu avec une autre œuvre (Lettres persanes, Des cannibales, L'Ingénu) ou avec le monde actuel ?</li><li>Zilia est-elle une héroïne moderne ?</li></ul><p class="small">L'examinateur cherche une lecture personnelle, argumentée et appuyée sur des exemples. Le carnet de réflexion (onglet Réflexion) sert à t'y préparer.</p></div>
+<div class="card"><h2>Grammaire</h2><p>Le quiz « Grammaire pour l'oral du bac » propose des questions sur des phrases tirées du roman et des textes complémentaires (interrogation, négation, subordonnées). Vérifie avec ton professeur les notions exactes au programme de ton année.</p></div>`;
+  app.innerHTML=h;
+}
+function parents(){
+  const ids=Object.keys(S.res),tot=ids.reduce((s,i)=>s+S.res[i].n,0),good=ids.reduce((s,i)=>s+S.res[i].good,0);
+  const nr=Object.values(S.refl).filter(v=>v&&v.trim()).length;
+  const np=P.filter(p=>p.steps.every((_,k)=>(S.pr[p.id]||[])[k])).length;
+  app.innerHTML=`<div class="card"><h2>Comment l'utiliser</h2><ul>
+<li><b>En haut de la page</b>, indique jusqu'à quelle étape tu as lu : ce qui dévoile la suite reste caché. Si tu as fini le livre, choisis la dernière étape.</li>
+<li><b>Quiz</b> : par étape, sur le contexte (Graffigny, Incas, Lumières, femmes, roman épistolaire, bac) et en grammaire pour l'oral. Les erreurs sont mémorisées.</li>
+<li><b>Réflexion</b> : des parcours guidés (tu écris, puis tu découvres une piste, une nuance et une relance) et un carnet de questions ouvertes. Les pistes ne sont jamais « la » bonne réponse.</li>
+<li><b>Contexte</b> : frises et textes complémentaires (Montaigne, Montesquieu, Rousseau, Diderot, Olympe de Gouges…).</li>
+<li><b>Préparer le bac</b> : format de l'épreuve, sujets de dissertation avec pistes de plan, méthode de l'explication linéaire, entretien.</li>
+<li>⚠️ <b>Numérotation des lettres</b> : elle varie selon les éditions. Ce carnet raisonne par étapes ; vérifie toujours les numéros dans ton édition.</li>
+</ul></div>
+<div class="card"><h2>Statistiques</h2><p>${plural(tot,"réponse")} au quiz, ${tot?Math.round(100*good/tot):0} % de bonnes réponses.<br>${np} parcours terminé${np>1?"s":""} sur ${P.length} · ${nr} question${nr>1?"s":""} du carnet rédigée${nr>1?"s":""} sur ${R.length}.</p></div>
+<div class="card"><h2>Signalements d'erreurs</h2>${(S.flags||[]).length?`<p class="small">${plural(S.flags.length,"signalement")}. Copie-les et transmets-les pour la version suivante.</p><ul class="small">${S.flags.map(f=>`<li><b>${f.q}</b><br>Réponse choisie : ${f.choisi}${f.com?"<br>« "+f.com+" »":""}</li>`).join("")}</ul><button class="btn" onclick="exportFlags()">📋 Copier les signalements</button> <button class="btn ghost" onclick="askOK('Effacer les signalements ?',()=>{S.flags=[];save();parents()})">Effacer</button>`:`<p class="small">Aucun pour l'instant. Après chaque réponse, un lien « Signale-la » permet de noter une question qui semble fausse ou mal numérotée.</p>`}</div>
+<div class="card"><h2>Contenu de cette version</h2><p class="small">${B.length} questions sur le livre (${MAX} étapes) · ${C.length} questions de contexte · ${G.length} questions de grammaire · ${P.length} parcours de réflexion · ${R.length} questions ouvertes · ${DS.length} sujets de dissertation · 3 frises · ${D.length} documents.</p>
+<h3>Historique des versions</h3><ul class="small"><li><b>v1</b> — Première version, construite sur le modèle du carnet « À l'ouest rien de nouveau » v2.1.</li><li><b>v1.1</b> — Compatibilité iPad / iPhone : l'outil est aussi publié en page web ; confirmations et export des réponses intégrés à la page (bouton « Copier ») ; mode sombre amélioré.</li></ul></div>
+<div class="card"><h2>Données</h2><p class="small">Tout est enregistré uniquement dans le navigateur de cet appareil : rien n'est envoyé sur internet. Changer de navigateur ou d'ordinateur repart de zéro. Sur un ordinateur partagé, les autres utilisateurs peuvent lire les réflexions.</p><button class="btn" onclick="resetAll()">Tout effacer</button></div>`;
+}
+function resetAll(){askOK("Effacer toute la progression et les réflexions ?",()=>{S=blank();save();lvlSel.value=0;tab="quiz";document.querySelectorAll("nav button").forEach(x=>x.classList.toggle("on",x.dataset.t==="quiz"));show()})}
+
+show();
+
+</script>
+<script>if("serviceWorker" in navigator){addEventListener("load",function(){navigator.serviceWorker.register("sw.js").catch(function(){})})}</script>
+</body>
+</html>

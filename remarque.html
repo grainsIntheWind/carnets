@@ -1,0 +1,818 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow, noarchive">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob:; font-src 'self'; connect-src 'self'; media-src 'self'; manifest-src 'self'; worker-src 'self'; object-src 'none'; base-uri 'self'; form-action 'none'">
+<meta name="referrer" content="no-referrer">
+<link rel="manifest" href="manifest-remarque.json">
+<link rel="apple-touch-icon" href="remarque-180.png">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="À l'ouest">
+<meta name="theme-color" content="#5d6337">
+<title>Carnet À l'ouest</title>
+<style>
+:root{--bg:#f3eee3;--card:#fbf8f1;--ink:#2a2823;--muted:#6d675b;--line:#d9d0bd;--accent:#5d6337;--accent-ink:#fff;--ok:#3f6b3a;--ok-bg:#e3eedc;--ko:#9a3b26;--ko-bg:#f6e1da;--lock:#a39c8c}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#1d1c19;--card:#26241f;--ink:#ece6d8;--muted:#a79f8e;--line:#3c3931;--accent:#9aa266;--accent-ink:#1d1c19;--ok:#9cc58f;--ok-bg:#24321f;--ko:#e59b84;--ko-bg:#3a2520;--lock:#6c665a;color-scheme:dark}}
+:root[data-theme="dark"]{--bg:#1d1c19;--card:#26241f;--ink:#ece6d8;--muted:#a79f8e;--line:#3c3931;--accent:#9aa266;--accent-ink:#1d1c19;--ok:#9cc58f;--ok-bg:#24321f;--ko:#e59b84;--ko-bg:#3a2520;--lock:#6c665a;color-scheme:dark}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.55 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
+.wrap{max-width:780px;margin:0 auto;padding:20px 16px 60px}
+header{display:flex;justify-content:space-between;align-items:flex-end;gap:10px;flex-wrap:wrap}
+header h1{font-family:Georgia,"Times New Roman",serif;font-weight:normal;font-size:1.7rem;margin:0}
+header p{margin:4px 0 0;color:var(--muted);font-size:.92rem}
+.ver{font-size:.8rem;color:var(--muted);border:1px solid var(--line);border-radius:20px;padding:2px 10px}
+.readbar{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin:14px 0 0;padding:10px 14px;background:var(--card);border:1px solid var(--line);border-radius:10px}
+.readbar label{font-weight:600}
+nav{display:flex;gap:4px;margin:14px 0 6px;border-bottom:1px solid var(--line);overflow-x:auto}
+nav button{background:none;border:none;border-bottom:3px solid transparent;padding:10px 12px;font:inherit;color:var(--muted);cursor:pointer;white-space:nowrap}
+nav button.on{color:var(--ink);border-color:var(--accent);font-weight:600}
+.card{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:18px;margin:14px 0}
+h2{font-family:Georgia,serif;font-weight:normal;font-size:1.25rem;margin:0 0 10px}
+h3{font-size:1.02rem;margin:4px 0 8px}
+select{font:inherit;padding:8px 10px;border:1px solid var(--line);border-radius:8px;background:var(--bg);color:var(--ink);max-width:100%}
+.form{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:12px;margin:8px 0}
+.form label{display:flex;flex-direction:column;gap:4px;font-size:.86rem;color:var(--muted)}
+.btn{font:inherit;border:1px solid var(--line);background:var(--bg);color:var(--ink);padding:9px 14px;border-radius:8px;cursor:pointer}
+.btn:hover:not(:disabled){border-color:var(--accent)}
+.btn.primary{background:var(--accent);color:var(--accent-ink);border-color:var(--accent)}
+.btn:disabled{color:var(--lock);cursor:not-allowed;opacity:.6}
+.btn.ghost{background:none;border-color:transparent;color:var(--muted);text-decoration:underline;padding:9px 6px}
+.small{font-size:.86rem;color:var(--muted)}
+.cols{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));column-gap:18px}
+.bar{height:8px;background:var(--line);border-radius:4px;overflow:hidden;margin-top:4px}
+.bar i{display:block;height:100%;background:var(--accent)}
+.prog-row{margin:8px 0}
+.prog-row .lbl{display:flex;justify-content:space-between;font-size:.88rem}
+.tag{display:inline-block;font-size:.78rem;padding:2px 8px;border-radius:20px;background:var(--bg);border:1px solid var(--line);color:var(--muted);margin:0 6px 4px 0}
+.q{font-family:Georgia,serif;font-size:1.2rem;margin:12px 0 16px}
+.opt{display:block;width:100%;text-align:left;margin:8px 0;padding:12px 14px}
+.opt:disabled{color:var(--ink);opacity:1;cursor:default}
+.opt.ok{background:var(--ok-bg);border-color:var(--ok)}
+.opt.ko{background:var(--ko-bg);border-color:var(--ko)}
+.opt.ok,.opt.ko{border-width:2px}
+.mk{display:block;font-size:.82rem;font-weight:700;margin-top:4px}
+.opt.ok .mk{color:var(--ok)}.opt.ko .mk{color:var(--ko)}
+details.flag{margin-top:12px}details.flag .btn{margin-top:6px}
+.expl,.piste{border-left:4px solid var(--accent);padding:10px 14px;background:var(--bg);border-radius:0 8px 8px 0;margin-top:14px}
+.piste p{margin:6px 0}
+.relance{color:var(--accent)}
+.verdict-ok{color:var(--ok);font-weight:700}.verdict-ko{color:var(--ko);font-weight:700}
+.top{display:flex;justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap}
+.score{font-family:Georgia,serif;font-size:2.4rem;margin:6px 0}
+textarea{width:100%;min-height:120px;font:inherit;padding:10px;border:1px solid var(--line);border-radius:8px;background:var(--bg);color:var(--ink);resize:vertical}
+details summary{cursor:pointer;color:var(--accent);font-size:.92rem;margin:6px 0}
+ul.pistes{margin:6px 0 10px;padding-left:20px;color:var(--muted)}
+.locked{color:var(--lock);font-style:italic}
+.miss{border-top:1px solid var(--line);padding:10px 0}
+.kbd{font-size:.8rem;color:var(--muted);margin:12px 0 0}
+.actions{display:flex;gap:6px;flex-wrap:wrap;align-items:center;margin:10px 0 0}
+.tl{position:relative;margin:6px 0 0 6px;padding-left:22px;border-left:2px solid var(--line)}
+.tl-item{position:relative;margin:0 0 16px}
+.tl-item:before{content:"";position:absolute;left:-30px;top:5px;width:12px;height:12px;border-radius:50%;background:var(--card);border:2px solid var(--accent)}
+.tl-item.star:before{background:var(--accent)}
+.tl-item.locked:before{border-color:var(--lock)}
+.tl-date{font-weight:600;font-size:.88rem;color:var(--accent)}
+.tl-per{font-family:Georgia,serif;font-size:1.05rem;margin:18px 0 8px -22px;padding-left:22px}
+.badge{display:inline-block;font-size:.74rem;padding:1px 8px;border-radius:20px;border:1px solid currentColor;margin-left:6px;vertical-align:middle}
+.badge.pd{color:var(--ok)}.badge.res{color:var(--ko)}.badge.lien{color:var(--accent)}
+blockquote{margin:10px 0;padding:10px 14px;border-left:4px solid var(--line);font-family:Georgia,serif;white-space:pre-line;background:var(--bg);border-radius:0 8px 8px 0}
+.doc-meta{font-size:.86rem;color:var(--muted)}
+footer{margin-top:30px;font-size:.82rem;color:var(--muted)}
+
+.askov{position:fixed;inset:0;z-index:50;background:rgba(20,20,40,.45);display:flex;align-items:center;justify-content:center;padding:16px}
+.askbox{background:var(--card,#fff);color:var(--ink,#1e1b4b);border-radius:18px;padding:20px;max-width:420px;width:100%;box-shadow:0 20px 50px rgba(0,0,0,.3);display:flex;flex-direction:column;gap:12px;font-size:1.05rem}
+.askbox.wide{max-width:640px}.askbox p{margin:0;font-weight:700}.askbox .askmsg{font-weight:400;font-size:.9rem;opacity:.8}
+.askbox textarea{width:100%;min-height:220px;font:inherit;font-size:.9rem;padding:10px;border-radius:10px;border:1px solid var(--line,#ccd);background:var(--bg,#f6f6fa);color:inherit}
+.askbtns{display:flex;gap:10px;justify-content:flex-end;flex-wrap:wrap}
+.askbtns button{font:inherit;font-weight:700;border-radius:12px;padding:10px 18px;cursor:pointer;border:1px solid var(--line,#ccd);background:var(--bg,#f1f2f8);color:inherit}
+.askbtns .askyes{background:var(--accent,#22c55e);border-color:var(--accent,#22c55e);color:var(--accent-ink,#fff)}
+</style>
+</head>
+<body>
+<div class="wrap">
+<header>
+  <div><h1>À l'ouest rien de nouveau</h1><p>Carnet de lecture — Erich Maria Remarque (1929)</p></div>
+  <span class="ver">version 2.2</span>
+</header>
+<div class="readbar"><label for="lvl">📖 J'ai lu jusqu'au :</label><select id="lvl"></select><span class="small">Le carnet cache tout ce qui dévoile la suite.</span></div>
+<nav>
+  <button data-t="quiz" class="on">Quiz</button>
+  <button data-t="refl">Réflexion</button>
+  <button data-t="ctx">Contexte de l'œuvre</button>
+  <button data-t="par">Mode d'emploi</button>
+</nav>
+<main id="app"></main>
+<footer>Usage familial. Le texte du roman n'est pas reproduit : les questions et résumés sont des reformulations. Les extraits cités proviennent de textes du domaine public ; les œuvres encore protégées (Remarque, Camus, Zweig, Jünger) sont seulement résumées. Fonctionne sans connexion internet.</footer>
+</div>
+<script>
+/* ---- boîtes de dialogue et copie intégrées (compatibles iPad / iPhone / pages publiées) ---- */
+function askOK(msg,yes){const d=document.createElement("div");d.className="askov";d.innerHTML='<div class="askbox" role="dialog" aria-modal="true"><p></p><div class="askbtns"><button type="button" class="askno">Annuler</button><button type="button" class="askyes">Confirmer</button></div></div>';d.querySelector("p").textContent=msg;document.body.appendChild(d);d.querySelector(".askno").onclick=()=>d.remove();d.querySelector(".askyes").onclick=()=>{d.remove();yes()};d.querySelector(".askyes").focus()}
+function showText(txt,title){const d=document.createElement("div");d.className="askov";d.innerHTML='<div class="askbox wide" role="dialog" aria-modal="true"><b></b><textarea readonly></textarea><p class="askmsg">Appuie sur « Copier », puis colle le texte dans un message, des notes ou un e-mail.</p><div class="askbtns"><button type="button" class="askno">Fermer</button><button type="button" class="askyes">Copier</button></div></div>';d.querySelector("b").textContent=title||"Texte à copier";const ta=d.querySelector("textarea");ta.value=txt;document.body.appendChild(d);d.querySelector(".askno").onclick=()=>d.remove();d.querySelector(".askyes").onclick=()=>{const m=d.querySelector(".askmsg");const fb=()=>{ta.focus();ta.select();try{ta.setSelectionRange(0,txt.length)}catch(e){}m.textContent="Le texte est sélectionné : utilise « Copier » de ton appareil."};try{navigator.clipboard.writeText(txt).then(()=>{m.textContent="✓ Copié !"},fb)}catch(e){fb()}}}
+
+/* ===================== QUESTIONS SUR LE LIVRE (par chapitre) ===================== */
+const B=[
+{id:"b01a",ch:1,cat:"personnages",q:"Qui raconte l'histoire ?",o:["Paul Bäumer, un jeune soldat, à la première personne","Un narrateur extérieur qui sait tout","Le professeur Kantorek","Un officier français"],e:"Récit à la première personne : on voit la guerre à travers les yeux et les pensées de Paul, comme un témoignage. Garde l'œil ouvert : quelque chose change à la toute dernière page."},
+{id:"b01b",ch:1,cat:"personnages",q:"Quel âge ont Paul et ses camarades de classe ?",o:["Environ 19 ans","Environ 15 ans","Environ 25 ans","Environ 30 ans"],e:"Ils sont partis directement du lycée, sans métier ni famille à eux. Paul y reviendra souvent : c'est ce qui rend sa génération si fragile."},
+{id:"b01c",ch:1,cat:"intrigue",q:"Pourquoi les soldats reçoivent-ils une double ration au début du roman ?",o:["La cuisine avait prévu pour 150 hommes, mais seuls 80 environ sont revenus","C'est un jour de fête nationale","Ils ont gagné une bataille","Le cuisinier s'est trompé"],e:"Le roman s'ouvre sur un « bonheur » (manger à sa faim) qui repose sur la mort ou la blessure de près de la moitié de la compagnie. Ce contraste donne le ton du livre."},
+{id:"b01d",ch:1,cat:"personnages",q:"Qui a poussé la classe de Paul à s'engager volontairement ?",o:["Leur professeur, Kantorek","Le caporal Himmelstoss","Le père de Paul","Kat"],e:"Kantorek multipliait les discours patriotiques en classe ; ceux qui hésitaient passaient pour des lâches. Il écrit même aux élèves partis au front des lettres pleines de grands mots."},
+{id:"b01e",ch:1,cat:"personnages",q:"Qui est Joseph Behm ?",o:["Le camarade qui ne voulait pas s'engager, et qui fut l'un des premiers tués","Un officier","Le fils de Kantorek","Un soldat français"],e:"Behm avait cédé à la pression du groupe. Sa mort, très tôt, est pour Paul le moment où la confiance dans les adultes s'effondre."},
+{id:"b01f",ch:1,cat:"themes",q:"Selon Paul, qu'est-ce que la guerre a détruit chez lui et ses camarades vis-à-vis des adultes ?",o:["Leur confiance dans l'autorité et le savoir des aînés","Leur goût pour le sport","Leur appétit","Leur sens de l'humour"],e:"Les adultes parlaient de patrie et de devoir ; la première mort vue de près a fait s'écrouler ces idées. Les jeunes se sentent seuls : c'est la rupture entre générations."},
+{id:"b01g",ch:1,cat:"intrigue",q:"Que convoite Müller lors de la visite à Kemmerich, amputé, à l'hôpital ?",o:["Ses belles bottes en cuir","Sa montre","Ses lettres","Sa ration de pain"],e:"Choquant ? Paul explique qu'au front un objet utile compte, et que Kemmerich ne pourra plus s'en servir. Suis ces bottes : elles vont passer de main en main."},
+{id:"b01h",ch:1,cat:"personnages",q:"Quel âge a Stanislaus Katczinsky, dit « Kat », et quelle est sa qualité principale ?",o:["Environ 40 ans ; incroyablement débrouillard","Environ 20 ans ; excellent tireur","Environ 60 ans ; ancien officier","Environ 30 ans ; poète"],e:"Kat est le chef officieux du groupe : il a du « flair » pour la nourriture, les abris, le danger. Pour Paul, il devient une figure presque paternelle."},
+{id:"b01i",ch:1,cat:"personnages",q:"Quel est le métier civil de Detering ?",o:["Paysan","Serrurier","Tourbier (il extrait la tourbe)","Cordonnier"],e:"Detering pense sans cesse à sa ferme et à sa femme. Tjaden est serrurier, Haie Westhus tourbier, Kat cordonnier : des hommes ordinaires arrachés à leur vie."},
+{id:"b01j",ch:1,cat:"personnages",q:"Quel paradoxe amuse les camarades chez Tjaden ?",o:["C'est le plus maigre du groupe, mais le plus gros mangeur","C'est le plus jeune, mais il a des enfants","Il est caporal mais refuse de commander","Il est français"],e:"Petit détail comique, typique du début : l'humour et la nourriture occupent une grande place dans la vie des soldats."},
+{id:"b01k",ch:1,cat:"themes",q:"Pourquoi Paul décrit-il sans gêne les latrines en plein air où les soldats bavardent et jouent aux cartes ?",o:["Au front, le corps et ses besoins ne sont plus un sujet de honte : c'est même un moment de détente","Pour choquer le lecteur sans raison","Parce que c'est interdit","Pour se moquer des officiers"],e:"La guerre change le rapport au corps et à la pudeur. Ce passage presque joyeux montre une vie réduite à l'essentiel : manger, dormir, être ensemble."},
+
+{id:"b02a",ch:2,cat:"personnages",q:"Avant la guerre, quelle passion avait Paul ?",o:["Il écrivait des poèmes et avait commencé une pièce de théâtre","Il faisait de la boxe","Il voulait devenir officier","Il réparait des moteurs"],e:"Paul était un lycéen rêveur et sensible. Le contraste avec le soldat qu'il est devenu rend sa transformation encore plus frappante."},
+{id:"b02b",ch:2,cat:"themes",q:"Pourquoi Paul pense-t-il que les soldats plus âgés sont moins « perdus » que les jeunes ?",o:["Ils ont déjà une vie (métier, femme, enfants) qui les attend ; les jeunes n'ont rien derrière eux","Ils sont mieux armés","Ils sont tous officiers","Ils ne vont jamais au combat"],e:"Pour les jeunes, la guerre a pris la place de tout : sans racines, ils ne savent pas ce qu'ils deviendraient après. C'est l'idée de « génération perdue »."},
+{id:"b02c",ch:2,cat:"personnages",q:"Quel était le métier de Himmelstoss avant la guerre ?",o:["Facteur","Professeur","Boucher","Médecin"],e:"Simple facteur dans la vie civile, il devient à la caserne un caporal qui abuse de son petit pouvoir. L'uniforme peut transformer un homme ordinaire en tyran."},
+{id:"b02d",ch:2,cat:"themes",q:"Qu'est-ce que l'instruction à la caserne a surtout appris à Paul et ses camarades ?",o:["Obéir sans réfléchir : un bouton bien astiqué y comptait plus que tous les livres de philosophie","À se servir parfaitement de toutes les armes","À commander des hommes","La géographie de la France"],e:"Paul résume ses semaines d'instruction avec amertume : on y brise l'individu pour en faire un exécutant. Leurs années de lycée ne pèsent plus rien."},
+{id:"b02e",ch:2,cat:"intrigue",q:"Comment Himmelstoss traitait-il les recrues pendant l'instruction ?",o:["Il les humiliait par des corvées et des exercices absurdes, répétés sans fin","Il les protégeait comme un père","Il les laissait faire ce qu'ils voulaient","Il leur apprenait à lire"],e:"Refaire son lit encore et encore, ramper dans la boue, nettoyer avec une brosse à dents… Ces humiliations visent à briser la volonté. Paul dit qu'elles les ont pourtant endurcis."},
+{id:"b02f",ch:2,cat:"intrigue",q:"Que fait Paul juste après la mort de Kemmerich ?",o:["Il apporte les bottes de Kemmerich à Müller","Il écrit au Kaiser","Il déserte","Il va à l'église"],e:"Un geste qui peut sembler froid, mais qui suit la logique du front : les vivants ont besoin de ce que les morts laissent."},
+{id:"b02g",ch:2,cat:"themes",q:"En sortant de l'hôpital après la mort de Kemmerich, que ressent Paul, à sa propre surprise ?",o:["Une force de vie, une envie de vivre presque physique","Une envie de mourir","De la colère contre Müller","Rien du tout"],e:"Face à la mort, le corps réagit par un élan vital. Ce paradoxe revient dans tout le roman : plus la mort est proche, plus la vie se fait sentir."},
+
+{id:"b03a",ch:3,cat:"personnages",q:"Qui arrive en renfort au début du chapitre ?",o:["De jeunes recrues, encore moins aguerries que Paul","Des soldats américains","Des officiers de cavalerie","Des prisonniers russes"],e:"À peine plus âgés qu'eux, Paul et ses camarades se sentent déjà des « anciens ». Au front, l'expérience vieillit plus vite que les années."},
+{id:"b03b",ch:3,cat:"intrigue",q:"Que réussit à rapporter Kat, alors que tout le monde a faim ?",o:["Du pain et de la viande (de cheval)","Du chocolat et du champagne","Des oranges","Rien, il revient bredouille"],e:"Personne ne sait comment il fait. Le « système Kat » repose sur l'expérience, le flair et le troc : une forme d'intelligence que l'école n'enseigne pas."},
+{id:"b03c",ch:3,cat:"themes",q:"Selon Kat, pourquoi des hommes comme Himmelstoss deviennent-ils tyranniques ?",o:["Donner un peu de pouvoir à quelqu'un qui n'en avait pas l'amène souvent à en abuser, et l'armée l'y encourage","Parce qu'ils sont nés méchants","Parce qu'ils ont faim","Parce que les recrues le méritent"],e:"Kat ne parle pas de méchanceté mais de mécanique : c'est le système qui fabrique de petits tyrans. Une réflexion sur le pouvoir qui dépasse la guerre."},
+{id:"b03d",ch:3,cat:"themes",q:"Quelle solution Kropp propose-t-il, en plaisantant, pour régler les guerres ?",o:["Que ministres et généraux se battent eux-mêmes, en caleçon, avec des gourdins, dans une arène","Tirer à pile ou face","Que tous les soldats fassent grève","Que les rois se marient entre eux"],e:"Derrière l'humour, une critique : ceux qui décident des guerres ne sont pas ceux qui en meurent."},
+{id:"b03e",ch:3,cat:"personnages",q:"Pourquoi Tjaden déteste-t-il particulièrement Himmelstoss ?",o:["Himmelstoss l'a humilié à cause de son incontinence nocturne au lieu de chercher à l'aider","Himmelstoss lui a volé sa ration","Himmelstoss a insulté sa mère","Himmelstoss l'a fait renvoyer du lycée"],e:"Himmelstoss avait inventé une « méthode » cruelle : obliger deux soldats souffrant du même trouble à partager des lits superposés. Tjaden ne l'a jamais pardonné."},
+{id:"b03f",ch:3,cat:"intrigue",q:"Comment les camarades s'étaient-ils vengés de Himmelstoss, la veille de partir au front ?",o:["En le guettant la nuit, un drap sur la tête, pour le rosser","En le dénonçant à un officier","En volant son courrier","En l'enfermant dans une cave"],e:"Une revanche de collégiens, comique et un peu cruelle : elle montre qu'ils sont encore très jeunes… et que la violence subie se transmet."},
+
+{id:"b04a",ch:4,cat:"intrigue",q:"Quelle mission occupe Paul et ses camarades, la nuit, près des lignes ?",o:["Poser des barbelés","Attaquer une tranchée française","Garder un pont","Transporter des blessés"],e:"Une corvée nocturne sous le feu de l'artillerie. Kat y sent le danger avant tout le monde."},
+{id:"b04b",ch:4,cat:"themes",q:"Comment Paul décrit-il la terre pour le soldat sous les obus ?",o:["Comme une protectrice, presque une mère","Comme une ennemie","Comme une matière sans importance","Comme un trésor à conquérir"],e:"Le soldat s'y colle, s'y enfonce, lui doit la vie. Passage lyrique : la terre devient la seule chose sûre."},
+{id:"b04c",ch:4,cat:"themes",q:"Qu'arrive-t-il aux soldats dès qu'ils entrent dans la zone du front, selon Paul ?",o:["Un instinct animal prend le dessus : ils réagissent avant même de penser","Ils deviennent plus bavards","Ils s'endorment","Ils n'ont plus jamais peur"],e:"Se jeter à terre au bon moment, sans réfléchir, sauve la vie. Paul parle d'hommes devenus des bêtes : c'est le thème de la déshumanisation."},
+{id:"b04d",ch:4,cat:"intrigue",q:"Quel bruit bouleverse les soldats, en particulier Detering, pendant le bombardement ?",o:["Les hurlements des chevaux blessés","Les cris des officiers","Les sirènes","Le chant des oiseaux"],e:"Detering, paysan, aime les bêtes : leur souffrance lui paraît la pire injustice, elles n'ont rien demandé. Retiens cette sensibilité."},
+{id:"b04e",ch:4,cat:"intrigue",q:"Où Paul et ses camarades se réfugient-ils pendant le bombardement nocturne ?",o:["Dans un cimetière, parmi les tombes et les cercueils retournés par les obus","Dans une église","Dans une ferme","Dans un tunnel"],e:"Les vivants se cachent parmi les morts que les obus déterrent : la frontière entre vivants et morts s'efface."},
+{id:"b04f",ch:4,cat:"intrigue",q:"Pendant l'attaque au gaz, quel est le réflexe vital ?",o:["Mettre son masque au plus vite et éviter les creux où le gaz stagne","Courir à découvert","Allumer un feu","Se cacher au fond d'un trou d'obus"],e:"Le gaz, plus lourd que l'air, s'accumule dans les trous. Les recrues qui ôtent leur masque trop tôt en meurent : l'expérience est une question de survie."},
+{id:"b04g",ch:4,cat:"themes",q:"Face à une jeune recrue très gravement blessée, que propose Kat ?",o:["D'abréger ses souffrances, persuadé qu'il ne survivra pas","De l'abandonner","De le porter jusqu'en Allemagne","De le soigner lui-même"],e:"Ils n'ont finalement pas le temps d'agir. La scène pose une question morale terrible : la guerre impose des choix qu'aucune règle ordinaire ne prévoit."},
+
+{id:"b05a",ch:5,cat:"intrigue",q:"Comment Tjaden se débarrasse-t-il des poux ?",o:["Il les jette dans un couvercle de boîte de cirage chauffé sur une bougie","Il se rase entièrement","Il se baigne dans la rivière","Il demande un médicament au médecin"],e:"La vermine fait partie du quotidien du soldat. Le roman montre la guerre aussi à travers ces détails très concrets."},
+{id:"b05b",ch:5,cat:"personnages",q:"Comment Tjaden accueille-t-il Himmelstoss, arrivé au front ?",o:["Il l'insulte ouvertement et refuse de lui obéir","Il lui serre la main","Il lui offre à manger","Il demande à changer de compagnie"],e:"Au front, l'autorité de la caserne pèse moins lourd. Tjaden écope d'une petite sanction, mais savoure sa revanche."},
+{id:"b05c",ch:5,cat:"themes",q:"Quand les camarades se demandent ce qu'ils feraient à la paix, que répond Haie Westhus ?",o:["Il préférerait rester dans l'armée plutôt que de retourner à son dur travail de tourbier","Il veut devenir écrivain","Il veut émigrer en Amérique","Il veut devenir professeur"],e:"Pour un ouvrier, l'armée offre nourriture et sécurité : ce rêve modeste en dit long sur la dureté de la vie civile."},
+{id:"b05d",ch:5,cat:"themes",q:"Et Paul, que dit-il de son avenir après la guerre ?",o:["Il est incapable de l'imaginer","Il veut devenir général","Il veut s'installer en France","Il veut redevenir élève"],e:"Les plus âgés ont des projets simples ; Paul, lui, ne voit rien. La guerre a effacé son avenir."},
+{id:"b05e",ch:5,cat:"themes",q:"En parodiant les questions de leurs anciens professeurs, à quelle conclusion arrivent Paul et ses camarades ?",o:["Le savoir scolaire ne leur sert à rien au front et ne les prépare à aucune vie","L'école était la meilleure préparation à la guerre","Il faut retourner au lycée au plus vite","Kantorek avait raison"],e:"Dates, poèmes à réciter… tout cela paraît dérisoire face à ce qu'ils vivent. Le roman questionne ce que l'école transmet vraiment."},
+{id:"b05f",ch:5,cat:"intrigue",q:"Que font Kat et Paul, une nuit, à l'écart des autres ?",o:["Ils volent une oie et la font rôtir ensemble","Ils désertent","Ils écrivent à leurs familles","Ils espionnent les Français"],e:"Moment calme et presque tendre : Paul se sent plus proche de Kat que de n'importe qui. La camaraderie est le grand refuge."},
+
+{id:"b06a",ch:6,cat:"intrigue",q:"En montant au front avant l'offensive, que découvrent les soldats, empilé contre une école ?",o:["Des cercueils neufs, en grand nombre","Des caisses de munitions","Des sacs de courrier","Des vivres"],e:"Les soldats plaisantent, mais tous comprennent : ces cercueils sont pour eux. L'humour noir aide à tenir."},
+{id:"b06b",ch:6,cat:"intrigue",q:"Pendant la longue attente, quels animaux envahissent l'abri ?",o:["Des rats","Des serpents","Des chiens errants","Des corbeaux"],e:"Des rats énormes s'attaquent au pain. La tranchée est un lieu de saleté et de misère, pas seulement de combat."},
+{id:"b06c",ch:6,cat:"intrigue",q:"Que se passe-t-il chez certaines jeunes recrues après des jours de bombardement dans l'abri ?",o:["Elles font des crises de panique et veulent sortir en courant, au risque de mourir","Elles s'endorment profondément","Elles chantent pour se donner du courage","Elles désertent sans être vues"],e:"Enfermés sous les obus sans pouvoir agir, les hommes craquent. Les anciens doivent les retenir, parfois par la force."},
+{id:"b06d",ch:6,cat:"themes",q:"Que deviennent les soldats pendant l'assaut, selon Paul ?",o:["Des sortes de bêtes qui tuent par instinct, pour ne pas être tuées","Des héros réfléchis","Des machines disciplinées","Des spectateurs"],e:"La peur et la rage les transforment. Paul ne cherche ni à excuser ni à glorifier : il décrit ce que la guerre fait aux hommes."},
+{id:"b06e",ch:6,cat:"personnages",q:"Comment Himmelstoss se comporte-t-il au moment de l'attaque ?",o:["Le caporal autrefois si dur est paralysé par la peur, et Paul doit le forcer à sortir","Il mène l'assaut en héros","Il s'enfuit vers l'arrière","Il est fait prisonnier"],e:"Celui qui terrorisait les recrues découvre à son tour la peur. Ensuite, il se reprend au combat : Remarque évite les portraits tout d'une pièce."},
+{id:"b06f",ch:6,cat:"intrigue",q:"Que deviennent les jeunes recrues pendant l'offensive ?",o:["Faute d'expérience, elles meurent en grand nombre","Elles remplacent les officiers","Elles restent à l'arrière","Elles gagnent la bataille"],e:"Paul, à peine plus âgé, se sent impuissant face à ces garçons qui ne savent pas se protéger."},
+{id:"b06g",ch:6,cat:"personnages",q:"Quel camarade est mortellement blessé au dos pendant l'offensive ?",o:["Haie Westhus","Kat","Tjaden","Kropp"],e:"Haie, le grand tourbier qui rêvait de rester dans l'armée, est le premier du petit groupe à tomber."},
+{id:"b06h",ch:6,cat:"intrigue",q:"Combien d'hommes de la compagnie restent à la fin de l'offensive ?",o:["32","80","120","5"],e:"Sur 150. Au chapitre 1, ils étaient revenus 80 : ce chiffre qui fond fait comprendre le massacre mieux qu'un discours."},
+
+{id:"b07a",ch:7,cat:"intrigue",q:"Pendant le repos, que font Paul et deux camarades une nuit ?",o:["Ils traversent un canal à la nage pour rendre visite à de jeunes Françaises, avec de la nourriture","Ils volent un avion","Ils vont au cinéma","Ils rentrent en Allemagne à pied"],e:"Un moment de douceur… et de tristesse pour Paul, qui cherche un réconfort que la guerre lui a pris. « L'ennemi » a ici un visage aimable."},
+{id:"b07b",ch:7,cat:"intrigue",q:"Pendant sa permission, dans quel état Paul trouve-t-il sa mère ?",o:["Gravement malade (atteinte d'un cancer)","En pleine forme","Partie en ville","Remariée"],e:"Paul cache à sa mère la réalité du front : ils s'aiment mais ne peuvent plus vraiment se parler. Détail troublant : la mère de Remarque est morte d'un cancer en 1917."},
+{id:"b07c",ch:7,cat:"themes",q:"Pourquoi Paul se sent-il étranger chez lui ?",o:["Les civils ne peuvent pas comprendre ce qu'il a vécu, et il ne retrouve plus le jeune homme qu'il était","Sa maison a été détruite","Ses parents ont déménagé","Il a oublié sa langue"],e:"Il voudrait retrouver l'émotion de ses livres d'adolescent, en vain. Il comprend qu'il appartient désormais au front."},
+{id:"b07d",ch:7,cat:"themes",q:"Que font les hommes âgés que Paul rencontre à la brasserie ?",o:["Ils lui expliquent avec assurance comment percer le front, sans rien savoir de la réalité","Ils l'écoutent raconter en silence","Ils le traitent de lâche","Ils lui offrent du travail"],e:"C'est le fossé entre le front et l'arrière : la propagande donne aux civils une image fausse de la guerre, et Paul n'a pas les mots pour la corriger."},
+{id:"b07e",ch:7,cat:"personnages",q:"Dans quelle situation Paul retrouve-t-il Kantorek à la caserne ?",o:["Mobilisé à son tour comme réserviste, il est drillé sans pitié par Mittelstaedt, un ancien élève devenu son supérieur","Il est devenu colonel","Il fait un discours aux recrues","Il est en prison"],e:"Revanche ironique : le donneur de leçons subit ce qu'il a imposé. Mais la scène reproduit aussi l'humiliation dont les élèves avaient souffert."},
+{id:"b07f",ch:7,cat:"intrigue",q:"Que dit Paul à la mère de Kemmerich, qui veut savoir comment son fils est mort ?",o:["Il ment : il affirme que son fils est mort sur le coup, sans souffrir","Il lui dit toute la vérité","Il refuse de lui parler","Il lui dit que son fils a déserté"],e:"Un mensonge par pitié, qu'il jure sans hésiter : les serments n'ont plus de poids face à la vérité de la guerre."},
+
+{id:"b08a",ch:8,cat:"themes",q:"En voyant les prisonniers russes du camp voisin, que comprend Paul ?",o:["Ce sont des hommes comme lui : seul un ordre en a fait des ennemis","Ils sont plus dangereux que les Français","Ils méritent d'être maltraités","Ils vont gagner la guerre"],e:"Paul se dit qu'un ordre a fait d'eux des ennemis, et qu'un autre pourrait en faire des amis. Cette pensée le trouble profondément."},
+{id:"b08b",ch:8,cat:"intrigue",q:"Dans quel état sont les prisonniers russes ?",o:["Affamés, ils fouillent les déchets et troquent leurs affaires contre un peu de nourriture","Bien nourris et joyeux","Armés et menaçants","Ils travaillent comme officiers"],e:"Paul voit en eux des paysans ordinaires, doux et silencieux, réduits à la misère. La guerre frappe aussi ceux qui ne combattent plus."},
+{id:"b08c",ch:8,cat:"intrigue",q:"Que fait Paul pour les prisonniers russes ?",o:["Il partage avec eux des cigarettes et une partie des galettes préparées par sa mère","Il les aide à s'évader","Il les dénonce","Il leur apprend l'allemand"],e:"De petits gestes, mais des gestes humains : la compassion résiste à la logique de la guerre."},
+{id:"b08d",ch:8,cat:"personnages",q:"Quelle nouvelle apportent son père et sa sœur lors de leur visite au camp ?",o:["Sa mère doit être opérée","La guerre est finie","Kantorek est mort","Leur maison a brûlé"],e:"Le père s'inquiète aussi du coût de l'opération : la guerre appauvrit les familles de l'arrière. Paul ne peut rien faire."},
+
+{id:"b09a",ch:9,cat:"intrigue",q:"Que se passe-t-il lors de la revue des troupes par le Kaiser ?",o:["On prête aux soldats des uniformes neufs pour faire bonne impression, puis on les leur reprend","Le Kaiser décore Paul","Les soldats refusent de défiler","Le Kaiser annonce la paix"],e:"L'image officielle de l'armée est une mise en scène. Les soldats sont aussi déçus par l'empereur, qui leur paraît un homme ordinaire."},
+{id:"b09b",ch:9,cat:"themes",q:"Dans la discussion sur les causes de la guerre, quelle idée ressort ?",o:["Les gens simples des deux camps n'ont pas voulu cette guerre et n'y gagnent rien","Les Français sont seuls responsables","La guerre rend les hommes meilleurs","Il faut croire les journaux"],e:"Tjaden demande naïvement comment un pays peut en « offenser » un autre. Ces questions simples font apparaître l'absurdité de la situation."},
+{id:"b09c",ch:9,cat:"intrigue",q:"Que se passe-t-il pour Paul, seul dans un trou d'obus pendant une patrouille ?",o:["Il poignarde un soldat français qui y tombe, puis le voit agoniser pendant des heures","Il est fait prisonnier","Il trouve un trésor","Il s'endort"],e:"La scène la plus célèbre du roman : pour la première fois, Paul tue un homme de près et le regarde mourir."},
+{id:"b09d",ch:9,cat:"personnages",q:"Qui était Gérard Duval, le soldat français tué par Paul ?",o:["Un typographe (ouvrier imprimeur), marié et père d'une petite fille","Un officier de carrière","Un paysan sans famille","Un médecin"],e:"Paul trouve ses papiers, des lettres, une photo. Il lui demande pardon et promet d'écrire à sa famille. L'ennemi a un nom."},
+{id:"b09e",ch:9,cat:"themes",q:"Que montre la scène avec Duval sur la notion d'« ennemi » ?",o:["L'ennemi est un homme comme Paul ; la guerre et les ordres les ont dressés l'un contre l'autre","Les Français sont cruels","Tuer est sans conséquence","Paul est un héros"],e:"Paul pense que, sans armes, ils auraient pu être frères. Mais revenu parmi les siens, il doute de tenir ses promesses : la guerre reprend le dessus."},
+{id:"b09f",ch:9,cat:"intrigue",q:"Comment Kat et Albert aident-ils Paul après cette nuit ?",o:["Ils le rassurent et lui montrent des tireurs d'élite qui se vantent de leurs tirs : au front, tuer est la règle","Ils le dénoncent","Ils l'envoient à l'hôpital","Ils se moquent de lui"],e:"Leur réconfort est sincère mais terrible : il consiste à rendre « normal » ce que Paul a fait. Paul se calme… et c'est peut-être cela le plus inquiétant."},
+
+{id:"b10a",ch:10,cat:"intrigue",q:"Quelle mission agréable le groupe obtient-il au début du chapitre ?",o:["Garder un dépôt de vivres dans un village évacué","Escorter le Kaiser","Partir en Suisse","Former des recrues"],e:"Festins et confort : une parenthèse de bonheur, comme une île au milieu de la guerre, avant que tout bascule."},
+{id:"b10b",ch:10,cat:"intrigue",q:"Qu'arrive-t-il à Paul et Albert Kropp lors de l'évacuation du village ?",o:["Ils sont blessés tous les deux ; Kropp sera amputé d'une jambe","Ils sont faits prisonniers","Ils désertent","Ils sont promus"],e:"Kropp, désespéré, dit qu'il ne veut pas vivre infirme. L'hôpital montre une autre face de la guerre."},
+{id:"b10c",ch:10,cat:"intrigue",q:"Dans le train sanitaire, comment Paul évite-t-il d'être séparé de Kropp ?",o:["Il fait monter le thermomètre pour simuler de la fièvre et être débarqué avec lui","Il soudoie le médecin","Il se cache sous un lit","Il saute du train"],e:"Une ruse de camarade : rester ensemble compte plus que tout, même plus que le confort."},
+{id:"b10d",ch:10,cat:"themes",q:"À l'hôpital, quelle réflexion se fait Paul devant tous ces blessés ?",o:["Si un seul hôpital contient autant de souffrance, toute la culture du monde paraît impuissante et mensongère","Que la médecine va tout guérir","Qu'il veut devenir médecin","Que les blessés exagèrent"],e:"À quoi servent des siècles de pensée si l'on peut provoquer de telles souffrances ? Une critique directe d'une civilisation qui a rendu ce massacre possible."},
+{id:"b10e",ch:10,cat:"intrigue",q:"Que se passe-t-il pour Paul une fois guéri ?",o:["Après une courte convalescence chez lui, il repart au front","Il est réformé définitivement","Il devient infirmier","Il est envoyé en Russie"],e:"Il revoit sa mère, plus malade encore ; la séparation est déchirante. Il sait qu'il retourne vers le danger."},
+
+{id:"b11a",ch:11,cat:"intrigue",q:"D'après le roman, qu'est-ce qui rend la situation des soldats allemands désespérée en 1918 ?",o:["Les chars, l'arrivée des Américains et la faim : l'adversaire a toujours plus d'hommes et de matériel","La cavalerie russe","Le manque de lettres","La neige"],e:"Paul décrit des soldats affamés, malades et épuisés face à un adversaire toujours mieux équipé. L'usure est totale."},
+{id:"b11b",ch:11,cat:"themes",q:"Comment Paul décrit-il l'état intérieur des soldats en 1918 ?",o:["Insensibles et vides, ils ne pensent plus qu'à survivre d'un jour à l'autre","Pleins d'espoir","Enthousiastes à l'idée de vaincre","Impatients d'attaquer"],e:"Des soldats qui ne pensent plus, comme engourdis. C'est une forme de protection : tout ressentir serait insupportable."},
+{id:"b11c",ch:11,cat:"personnages",q:"Pourquoi Detering déserte-t-il ?",o:["La vue d'un cerisier en fleurs lui rappelle tant sa ferme qu'il part, sans réfléchir, vers chez lui","Il a peur de Himmelstoss","On lui a promis de l'argent","Il veut rejoindre les Français"],e:"Un élan du cœur, pas un calcul. Il est rattrapé, et l'on n'entend plus parler de lui : la nostalgie peut être punie comme un crime."},
+{id:"b11d",ch:11,cat:"personnages",q:"Comment meurt Müller ?",o:["Touché au ventre par une fusée éclairante tirée de très près","Dans une attaque au gaz","En désertant","Écrasé par un char"],e:"Les morts s'enchaînent si vite que Paul les rapporte presque sans commentaire, comme engourdi."},
+{id:"b11e",ch:11,cat:"personnages",q:"À qui reviennent les bottes de Kemmerich après la mort de Müller ?",o:["À Paul, qui prévoit de les léguer ensuite à Tjaden","À Kat","À la mère de Kemmerich","Elles se perdent dans la boue"],e:"Kemmerich → Müller → Paul → (Tjaden). Les bottes survivent à leurs propriétaires : objet banal, elles comptent les morts."},
+{id:"b11f",ch:11,cat:"personnages",q:"Lequel de ces camarades meurt pendant l'attaque où tombe aussi le lieutenant Bertinck ?",o:["Leer","Tjaden","Kropp","Himmelstoss"],e:"Paul se demande à quoi ont servi les bonnes notes de Leer en mathématiques : ce que l'école leur a appris paraît dérisoire face à la mort."},
+{id:"b11g",ch:11,cat:"personnages",q:"Comment meurt Kat ?",o:["Blessé à la jambe et porté par Paul vers les secours, il est touché à la tête par un éclat en chemin, sans que Paul s'en aperçoive","Dans une attaque au gaz","Fusillé","De maladie"],e:"Paul croit sauver son ami et découvre qu'il porte un mort. Il perd la personne qui comptait le plus pour lui."},
+
+{id:"b12a",ch:12,cat:"intrigue",q:"Au dernier chapitre, quelle est la situation de Paul ?",o:["Il est le dernier, parmi ses camarades de classe partis ensemble, encore au front","Il est rentré chez lui","Il est officier","Il est prisonnier"],e:"Il a respiré un peu de gaz et obtient quelques jours de repos. On parle d'armistice."},
+{id:"b12b",ch:12,cat:"themes",q:"Comment Paul envisage-t-il l'avenir dans ses dernières pensées ?",o:["Sans espoir, mais aussi sans peur : on ne peut plus rien lui prendre, et la vie continue en lui","Avec un grand enthousiasme","Avec le projet de devenir écrivain","Avec la certitude de la victoire"],e:"Paul pense que sa génération sera incomprise et égarée après la guerre. Pourtant, une forme de calme s'installe en lui."},
+{id:"b12c",ch:12,cat:"intrigue",q:"Quand Paul meurt-il ?",o:["En octobre 1918, quelques semaines avant l'armistice","Le jour de l'armistice","En 1916, à Verdun","Après la guerre"],e:"Un jour si calme que le communiqué de l'armée se contente d'indiquer qu'il n'y a rien de nouveau à l'ouest."},
+{id:"b12d",ch:12,cat:"intrigue",q:"Qu'est-ce qui change dans la narration aux toutes dernières lignes ?",o:["Le récit passe à la troisième personne : quelqu'un d'autre raconte la mort de Paul","Paul s'adresse directement au lecteur","Le récit devient un poème","On lit une lettre de Kat"],e:"Paul ne peut pas raconter sa propre mort. Ce changement de voix crée un choc : le « je » se tait, l'histoire continue sans lui."},
+{id:"b12e",ch:12,cat:"themes",q:"Pourquoi le titre devient-il profondément ironique à la fin ?",o:["La mort d'un jeune homme ne compte pas : pour l'armée, ce jour-là, il ne s'est « rien passé »","Parce que la guerre était finie","Parce que Paul a eu une médaille","Parce que l'histoire se passe à l'est"],e:"Pour l'histoire officielle, une mort est un détail. Le roman fait l'inverse : il donne un visage à l'un de ces millions de morts."},
+{id:"b12f",ch:12,cat:"themes",q:"Quel thème résume le mieux le roman dans son ensemble ?",o:["Une génération détruite par la guerre, même ceux qui y survivent","La gloire des héros","La victoire de l'Allemagne","L'aventure exotique"],e:"Camaraderie, peur, fossé avec l'arrière, perte des repères : tout converge vers l'idée d'une jeunesse sacrifiée."}
+];
+
+/* ===================== QUESTIONS DE CONTEXTE ===================== */
+const C=[
+{id:"o01",grp:"oeuvre",ch:0,q:"En quelle année le roman paraît-il en livre ?",o:["1929","1918","1922","1939"],e:"Publié d'abord en feuilleton dans un journal berlinois fin 1928, il paraît en livre fin janvier 1929, dix ans après la guerre."},
+{id:"o02",grp:"oeuvre",ch:0,q:"Dans quelle langue le roman a-t-il été écrit ?",o:["En allemand","En français","En anglais","En néerlandais"],e:"Titre original : « Im Westen nichts Neues ». Tu lis une traduction (en français dès 1929)."},
+{id:"o03",grp:"oeuvre",ch:0,q:"Où le roman a-t-il d'abord été publié ?",o:["En feuilleton, épisode par épisode, dans un grand journal berlinois","Dans un journal de tranchée en 1917","Directement en film","Sur des affiches"],e:"La Vossische Zeitung le publie à la fin de 1928. Le succès est tel que la sortie du livre devient un événement."},
+{id:"o04",grp:"oeuvre",ch:0,q:"Que signifie à l'origine l'expression « À l'ouest rien de nouveau » ?",o:["Une formule des communiqués militaires : rien d'important à signaler sur le front ouest","Un proverbe allemand","Une chanson de soldats","Un journal de tranchée"],e:"Les bulletins de l'armée résumaient ainsi les journées sans grande offensive. Le roman donne à cette formule un sens très ironique."},
+{id:"o05",grp:"oeuvre",ch:0,q:"Dans son court avertissement au début du livre, comment Remarque présente-t-il son roman ?",o:["Ni comme une accusation ni comme une confession, mais comme le récit d'une génération détruite par la guerre, même ceux qui ont échappé aux obus","Comme des aventures héroïques","Comme un manuel d'histoire","Comme le journal intime authentique d'un soldat"],e:"L'avertissement annonce que la guerre ne tue pas seulement les corps. Dit-il vrai ? On en discute dans l'onglet Réflexion."},
+{id:"o06",grp:"oeuvre",ch:0,q:"Le roman est-il une autobiographie ?",o:["Non : c'est une fiction, nourrie de l'expérience de Remarque et des récits d'autres soldats","Oui, c'est le journal de Remarque recopié","Oui, Paul Bäumer a vraiment existé","Non, Remarque n'a jamais été soldat"],e:"Remarque a connu le front et l'hôpital, mais moins longtemps que Paul. Ses adversaires le lui ont reproché ; beaucoup d'anciens soldats ont au contraire jugé le livre très juste."},
+{id:"o07",grp:"oeuvre",ch:0,q:"Pourquoi le roman connaît-il un succès immense dès 1929 ?",o:["Des millions d'anciens soldats et de familles s'y reconnaissent, après dix ans de silence ou de récits héroïques","Parce qu'il était obligatoire à l'école","Parce qu'il est très court","Parce que l'auteur était déjà célèbre"],e:"Il dépasse très vite le million d'exemplaires en Allemagne et il est traduit dans de nombreuses langues. Il déclenche aussi de violentes polémiques."},
+{id:"o08",grp:"oeuvre",ch:0,q:"Quel succès a eu la première adaptation au cinéma, en 1930 ?",o:["Elle a reçu l'Oscar du meilleur film","Elle a été interdite dans le monde entier","Elle n'est jamais sortie","Elle a été tournée par d'anciens poilus"],e:"Film américain de Lewis Milestone. Une adaptation allemande d'Edward Berger (2022) a reçu quatre Oscars, dont celui du meilleur film international. Ces films s'écartent parfois du livre."},
+{id:"o09",grp:"oeuvre",ch:0,q:"Quel roman français, publié pendant la guerre, raconte aussi la vie des soldats dans les tranchées ?",o:["« Le Feu » d'Henri Barbusse (prix Goncourt 1916)","« Les Misérables »","« Germinal »","« Le Petit Prince »"],e:"« Le Feu » montre la guerre côté français, comme « Les Croix de bois » de Roland Dorgelès (1919). Les soldats des deux camps y vivent la même horreur."},
+{id:"o10",grp:"oeuvre",ch:0,q:"Quel écrivain allemand, ancien combattant lui aussi, a donné une vision beaucoup plus héroïque de la guerre ?",o:["Ernst Jünger, dans « Orages d'acier » (1920)","Thomas Mann","Bertolt Brecht","Franz Kafka"],e:"Jünger décrit la guerre comme une épreuve qui forge les hommes. Comparer les deux livres montre qu'une même guerre peut être racontée de façons opposées."},
+{id:"o11",grp:"oeuvre",ch:0,q:"Comment le livre est-il reçu en Allemagne à sa sortie ?",o:["Immense succès populaire, mais violentes attaques des nationalistes, qui l'accusent de salir l'armée","Indifférence totale","Unanimement célébré par tous les partis","Interdit dès sa sortie"],e:"Le roman devient un enjeu politique : pour les uns, un témoignage juste ; pour les nationalistes, une trahison des soldats morts. Ce conflit annonce 1933."},
+
+{id:"a01",grp:"auteur",ch:0,q:"Qui a écrit « À l'ouest rien de nouveau » ?",o:["Erich Maria Remarque","Ernst Jünger","Henri Barbusse","Thomas Mann"],e:"Erich Maria Remarque (1898-1970), écrivain allemand, ancien soldat de la Première Guerre mondiale."},
+{id:"a02",grp:"auteur",ch:0,q:"Où et quand Remarque est-il né ?",o:["À Osnabrück, en Allemagne, en 1898","À Paris en 1900","À Vienne en 1889","À Berlin en 1910"],e:"Il naît dans une famille modeste ; son père est relieur. Il a 16 ans quand la guerre éclate."},
+{id:"a03",grp:"auteur",ch:0,q:"Quel était le nom de naissance de l'auteur ?",o:["Erich Paul Remark","Paul Bäumer","Ernst Kramer","Erich Duval"],e:"Il adopte « Maria » (en hommage à sa mère) et l'orthographe « Remarque », à la française, en rappel d'ancêtres. Les nazis répandront plus tard une fausse rumeur sur son nom."},
+{id:"a04",grp:"auteur",ch:0,q:"Que faisait Remarque quand il est mobilisé, fin 1916, à 18 ans ?",o:["Il étudiait pour devenir instituteur","Il était journaliste","Il était officier de carrière","Il travaillait aux États-Unis"],e:"Comme Paul, il est arraché aux études. Il sera brièvement instituteur après la guerre."},
+{id:"a05",grp:"auteur",ch:0,q:"Que lui arrive-t-il en juillet 1917, en Flandre ?",o:["Il est blessé par des éclats d'obus et passe le reste de la guerre à l'hôpital","Il est fait prisonnier par les Français","Il est décoré par le Kaiser","Il déserte"],e:"Son expérience du front est assez courte, mais il recueille à l'hôpital les récits de nombreux soldats, qui nourriront le roman."},
+{id:"a06",grp:"auteur",ch:7,q:"Quel drame familial vit Remarque en 1917, qui fait écho au roman ?",o:["Sa mère meurt d'un cancer","Son père est tué au front","Sa maison est bombardée","Son frère déserte"],e:"Comme la mère de Paul dans le roman, la mère de Remarque était atteinte d'un cancer. La fiction puise dans la vie de l'auteur."},
+{id:"a07",grp:"auteur",ch:0,q:"Que fait Remarque dans les années 1920, avant le succès ?",o:["Des petits métiers (instituteur, vendeur de pierres tombales, organiste…), puis journaliste","Il est député","Il reste dans l'armée","Il vit de ses rentes"],e:"Comme beaucoup d'anciens combattants, il cherche sa place. Il racontera plus tard cette période dans d'autres romans."},
+{id:"a08",grp:"auteur",ch:0,q:"Quel est le titre de la suite du roman, publiée en 1931 ?",o:["« Après » (Der Weg zurück), sur le difficile retour des soldats","« Orages d'acier »","« Le Feu »","« Le Grand Meaulnes »"],e:"Le titre allemand signifie « Le chemin du retour » : comment revenir à la vie civile après le front ? Une question que Paul se pose déjà."},
+{id:"a09",grp:"auteur",ch:0,q:"Que devient Remarque après l'arrivée des nazis au pouvoir ?",o:["Installé en Suisse, il est déchu de la nationalité allemande en 1938, puis s'exile aux États-Unis","Il devient ministre","Il est emprisonné en Allemagne","Il s'engage dans l'armée allemande"],e:"Il vit à Porto Ronco, au bord du lac Majeur, puis part aux États-Unis en 1939 ; il en deviendra citoyen en 1947."},
+{id:"a10",grp:"auteur",ch:0,q:"Que subit sa sœur Elfriede en 1943 ?",o:["Elle est condamnée à mort par un tribunal nazi et exécutée pour des propos jugés « défaitistes »","Elle devient actrice à Hollywood","Elle rejoint son frère en Suisse","Elle écrit un roman sur la guerre"],e:"Selon des témoignages, le juge aurait évoqué son frère, hors d'atteinte. Remarque lui dédiera en 1952 « L'Étincelle de vie », roman sur un camp de concentration."},
+{id:"a11",grp:"auteur",ch:0,q:"Où et quand Remarque meurt-il ?",o:["En Suisse, à Locarno, en 1970","À Berlin en 1945","À New York en 1939","À Osnabrück en 1918"],e:"Il a écrit toute sa vie, notamment sur l'exil et la Seconde Guerre mondiale."},
+{id:"a12",grp:"auteur",ch:0,q:"Quelle fausse rumeur les nazis ont-ils répandue sur Remarque ?",o:["Que son vrai nom était « Kramer » (Remark à l'envers) et qu'il était juif, pour le discréditer","Qu'il était français","Qu'il était officier","Qu'il n'avait pas écrit le livre"],e:"Une rumeur mensongère et antisémite : elle montre comment la propagande fabrique de faux « ennemis intérieurs »."},
+
+{id:"v01",grp:"avant",ch:0,q:"Quelle guerre de 1870-1871 laisse une profonde rancœur entre la France et l'Allemagne ?",o:["La guerre franco-prussienne : la France perd l'Alsace et une partie de la Lorraine","La guerre de Crimée","La guerre de Cent Ans","Les guerres napoléoniennes"],e:"L'annexion de l'Alsace-Moselle nourrit en France un désir de « revanche » pendant plus de quarante ans."},
+{id:"v02",grp:"avant",ch:0,q:"Où l'Empire allemand est-il proclamé en janvier 1871 ?",o:["Dans la galerie des Glaces du château de Versailles","À Berlin","À Strasbourg","À Vienne"],e:"Une humiliation pour la France. En 1919, le traité de paix sera signé… dans la même galerie des Glaces. Les symboles comptent beaucoup dans cette histoire."},
+{id:"v03",grp:"avant",ch:0,q:"Quels systèmes d'alliances divisent l'Europe avant 1914 ?",o:["La Triple-Alliance (Allemagne, Autriche-Hongrie, Italie) et la Triple-Entente (France, Royaume-Uni, Russie)","L'OTAN et le pacte de Varsovie","L'Union européenne et la Russie","Aucune alliance n'existe"],e:"Ces alliances devaient garantir la paix par l'équilibre ; en 1914, elles entraînent au contraire tout le continent dans la guerre."},
+{id:"v04",grp:"avant",ch:0,q:"Qu'appelle-t-on le nationalisme, très fort dans l'Europe d'avant 1914 ?",o:["L'exaltation de sa nation, souvent présentée comme supérieure aux autres","Le désir de supprimer les frontières","L'amour de la nature","Une religion"],e:"Écoles, journaux et discours exaltent la patrie dans tous les pays. Kantorek est un produit de cette éducation."},
+{id:"v05",grp:"avant",ch:0,q:"Pourquoi appelle-t-on les Balkans la « poudrière de l'Europe » avant 1914 ?",o:["Les rivalités entre peuples et grandes puissances y provoquent crises et guerres (1912-1913)","On y fabriquait toute la poudre européenne","C'était une région déserte","Parce qu'il y faisait très chaud"],e:"L'Autriche-Hongrie et la Russie s'y disputent l'influence ; la Serbie veut rassembler les Slaves du Sud. Une étincelle peut tout faire exploser."},
+{id:"v06",grp:"avant",ch:0,q:"Quel événement du 28 juin 1914 déclenche la crise ?",o:["L'assassinat de l'archiduc François-Ferdinand, héritier d'Autriche-Hongrie, à Sarajevo","L'invasion de la Belgique","L'assassinat de Jaurès","Le naufrage du Titanic"],e:"L'auteur de l'attentat, Gavrilo Princip, est un jeune nationaliste serbe de Bosnie. Un mois plus tard, l'Europe est en guerre."},
+{id:"v07",grp:"avant",ch:0,q:"Pourquoi un attentat dans les Balkans provoque-t-il une guerre européenne en quelques jours ?",o:["Par le jeu des alliances : chaque déclaration de guerre entraîne celle des alliés","Parce que tous les pays voulaient la guerre depuis toujours","Parce que l'archiduc était roi de France","Par hasard"],e:"Autriche contre Serbie, Russie pour la Serbie, Allemagne pour l'Autriche, France pour la Russie, Royaume-Uni après l'invasion de la Belgique : on parle d'« engrenage »."},
+{id:"v08",grp:"avant",ch:0,q:"Qui est Jean Jaurès, assassiné à Paris le 31 juillet 1914 ?",o:["Un dirigeant socialiste qui luttait pour empêcher la guerre","Un général français","Le président de la République","Un espion allemand"],e:"Jaurès voulait mobiliser les travailleurs européens contre la guerre. Son assassinat, trois jours avant l'entrée en guerre de la France, symbolise l'échec du pacifisme."},
+{id:"v09",grp:"avant",ch:0,q:"Qu'est-ce que l'« Union sacrée » proclamée en France en août 1914 ?",o:["L'appel à l'union de tous les Français, quelles que soient leurs opinions, face à l'ennemi","Une alliance religieuse","Un traité avec l'Allemagne","Un mariage royal"],e:"L'Allemagne connaît le même phénomène : l'empereur déclare ne plus connaître de partis, seulement des Allemands. Dans les deux pays, les oppositions se taisent."},
+{id:"v10",grp:"avant",ch:0,q:"Comment les historiens décrivent-ils aujourd'hui l'état d'esprit des Européens en août 1914 ?",o:["Un mélange de résolution, de résignation et, surtout dans les villes, d'enthousiasme","Un enthousiasme général et joyeux partout","Un refus massif de partir","Une totale indifférence"],e:"L'image des soldats partant « la fleur au fusil » est en partie un mythe : dans les campagnes surtout, la nouvelle est accueillie avec inquiétude. Presque tous croient à une guerre courte."},
+{id:"v11",grp:"avant",ch:0,q:"Quelle loi française de 1913 témoigne de la course aux armements ?",o:["La loi des trois ans, qui allonge le service militaire","La loi sur l'école gratuite","La loi de séparation des Églises et de l'État","La loi sur les congés payés"],e:"Toutes les grandes puissances augmentent leurs armées et leurs budgets militaires. La guerre est préparée avant d'être déclarée."},
+
+{id:"g01",grp:"guerre",ch:0,q:"Quelles sont les dates de la Première Guerre mondiale ?",o:["1914-1918","1912-1916","1914-1920","1939-1945"],e:"La guerre commence en août 1914 ; les combats s'arrêtent le 11 novembre 1918 ; la paix avec l'Allemagne est signée à Versailles le 28 juin 1919."},
+{id:"g02",grp:"guerre",ch:0,q:"Qu'appelle-t-on le « front occidental » (ou front de l'Ouest) ?",o:["La ligne de combats entre l'Allemagne et les Alliés (France, Royaume-Uni, Belgique…), de la mer du Nord à la Suisse","La frontière entre l'Allemagne et la Russie","Les combats en Italie","La guerre sur l'Atlantique"],e:"Pour les Allemands, l'Ouest, c'est la France et la Belgique. Le front s'étire sur environ 700 km. À l'Est, l'Allemagne combat la Russie."},
+{id:"g03",grp:"guerre",ch:0,q:"Quelle bataille de septembre 1914 arrête l'avancée allemande vers Paris ?",o:["La Marne","Verdun","La Somme","Waterloo"],e:"Après la Marne, chaque camp tente de déborder l'autre jusqu'à la mer, puis les armées s'enterrent : c'est la fin de la guerre de mouvement."},
+{id:"g04",grp:"guerre",ch:0,q:"Pourquoi les soldats s'enterrent-ils dans des tranchées à partir de la fin 1914 ?",o:["La guerre de mouvement a échoué, et mitrailleuses et artillerie rendent les attaques à découvert meurtrières","Parce que l'hiver était trop froid","Uniquement pour se cacher des avions","Pour économiser les munitions"],e:"Les lignes de tranchées se font face, séparées par le « no man's land ». C'est le décor principal du roman."},
+{id:"g05",grp:"guerre",ch:0,q:"Quelle armée utilise la première les gaz de combat à grande échelle, à Ypres en 1915 ?",o:["L'armée allemande","L'armée française","L'armée britannique","L'armée américaine"],e:"Le 22 avril 1915, près d'Ypres (Belgique), l'armée allemande libère du chlore. Les deux camps utiliseront ensuite les gaz. Le masque devient vital."},
+{id:"g06",grp:"guerre",ch:0,q:"Quelle bataille de 1916, qui dure environ dix mois, devient le symbole de la guerre pour les Français ?",o:["Verdun","La Marne","Austerlitz","Stalingrad"],e:"De février à décembre 1916, plus de 300 000 soldats français et allemands y meurent. Par rotation, la plupart des régiments français y passent."},
+{id:"g07",grp:"guerre",ch:0,q:"Que se passe-t-il le 1er juillet 1916, premier jour de la bataille de la Somme ?",o:["L'armée britannique y vit la journée la plus meurtrière de son histoire, avec près de 20 000 tués","Les Américains débarquent","L'armistice est signé","Les Russes prennent Berlin"],e:"La bataille dure jusqu'en novembre pour quelques kilomètres gagnés. Elle résume l'absurdité de la guerre d'usure."},
+{id:"g08",grp:"guerre",ch:0,q:"Qu'apparaît-il pour la première fois sur un champ de bataille en septembre 1916, dans la Somme ?",o:["Les chars d'assaut britanniques","Les avions","Les mitrailleuses","Les fusils"],e:"Encore lents et peu fiables, ils deviennent en 1918 une arme décisive : Paul les décrit avec effroi à la fin du roman."},
+{id:"g09",grp:"guerre",ch:0,q:"Quels sont les deux grands tournants de l'année 1917 ?",o:["L'entrée en guerre des États-Unis et la révolution en Russie","La fin de la guerre et le traité de Versailles","L'invention des gaz et l'entrée en guerre de l'Italie","La prise de Paris et la chute de Londres"],e:"Les États-Unis apportent hommes et matériel aux Alliés ; la Russie révolutionnaire sort de la guerre (traité de Brest-Litovsk, mars 1918)."},
+{id:"g10",grp:"guerre",ch:0,q:"Que se passe-t-il dans l'armée française au printemps 1917, après l'échec de l'offensive du Chemin des Dames ?",o:["Des mutineries : des soldats refusent de monter à l'assaut","Une grande victoire","La désertion de tous les officiers","Le passage des soldats dans le camp allemand"],e:"Ils ne refusent pas de défendre le pays, mais les attaques inutiles. La « Chanson de Craonne », chantée en cachette, exprime ce désespoir (voir l'onglet Contexte)."},
+{id:"g11",grp:"guerre",ch:0,q:"Pourquoi la population allemande souffre-t-elle de la faim pendant la guerre ?",o:["À cause du blocus maritime britannique, qui empêche les importations de nourriture","Parce que les soldats mangent tout","Parce que la France bombarde les champs","Parce que le Kaiser interdit le pain"],e:"L'hiver 1916-1917 est surnommé l'« hiver des rutabagas ». Dans le roman, Paul découvre pendant sa permission une famille privée de tout."},
+{id:"g12",grp:"guerre",ch:0,q:"Que se passe-t-il sur le front ouest en 1918 ?",o:["Une dernière grande offensive allemande au printemps, puis une contre-offensive alliée qui fait reculer l'Allemagne","Rien, le front reste immobile","Les Allemands prennent Paris","Les Français envahissent Berlin"],e:"Libérée du front russe, l'Allemagne tente le tout pour le tout, puis s'épuise face aux Alliés renforcés par les Américains."},
+{id:"g13",grp:"guerre",ch:0,q:"Que se passe-t-il en Allemagne le 9 novembre 1918 ?",o:["L'empereur Guillaume II abdique et la république est proclamée","Hitler prend le pouvoir","L'armistice est signé","Le Kaiser déclare la guerre à la Russie"],e:"Mutineries et révolution éclatent dans le pays. Deux jours plus tard, les représentants de la nouvelle république signent l'armistice."},
+{id:"g14",grp:"guerre",ch:0,q:"Où l'armistice du 11 novembre 1918 est-il signé ?",o:["Dans un wagon, à Rethondes, en forêt de Compiègne","Au château de Versailles","À Berlin","À Verdun"],e:"L'armistice (arrêt des combats) est signé à l'aube dans un wagon. Retiens ce wagon : il reviendra en 1940."},
+{id:"g15",grp:"guerre",ch:0,q:"Combien de soldats environ sont morts pendant la Première Guerre mondiale ?",o:["Environ 10 millions","Environ 1 million","Environ 3 millions","Environ 50 millions"],e:"Dont environ 1,4 million de Français et 2 millions d'Allemands. Des millions d'autres reviennent blessés ou mutilés."},
+{id:"g16",grp:"guerre",ch:0,q:"Comment surnommait-on les soldats français de 14-18 ?",o:["Les poilus","Les grognards","Les tommies","Les sammies"],e:"« Tommies » : Britanniques ; « sammies » : Américains ; « grognards » : soldats de Napoléon. Paul est dans le camp d'en face."},
+{id:"g17",grp:"guerre",ch:0,q:"Quels pays forment le camp de l'Allemagne (les « Empires centraux ») ?",o:["L'Autriche-Hongrie, l'Empire ottoman et la Bulgarie","La France, le Royaume-Uni et la Russie","L'Italie, le Japon et l'Espagne","Les États-Unis et le Canada"],e:"Face à eux, les Alliés : France, Royaume-Uni, Russie (jusqu'en 1917), Italie (à partir de 1915), États-Unis (à partir de 1917)…"},
+{id:"g18",grp:"guerre",ch:0,q:"Qu'appelle-t-on les « gueules cassées » ?",o:["Les soldats revenus défigurés par leurs blessures","Les déserteurs","Les soldats punis","Les prisonniers de guerre"],e:"Les blessures au visage, causées surtout par les éclats d'obus, ont marqué des milliers de survivants : la guerre détruit aussi ceux qui en reviennent."},
+{id:"g19",grp:"guerre",ch:0,q:"Qu'est-ce que la « guerre totale » ?",o:["Une guerre qui mobilise toute la société : soldats, économie, usines, civils, propagande","Une guerre qui touche tous les pays du monde","Une guerre qui ne s'arrête jamais","Une guerre sans armes à feu"],e:"Les États mobilisent les hommes, l'industrie, les femmes à l'usine, la presse (censure et « bourrage de crâne »)."},
+{id:"g20",grp:"guerre",ch:0,q:"Comment appelait-on les troubles psychiques graves (tremblements, mutisme, cauchemars) causés par les combats ?",o:["L'« obusite » (shell shock en anglais)","La grippe espagnole","Le mal du pays","La fièvre des tranchées"],e:"Longtemps soupçonnés de simulation, ces soldats étaient parfois maltraités. On parle aujourd'hui de stress post-traumatique."},
+
+{id:"e01",grp:"entre",ch:0,q:"Où et quand est signé le traité de paix avec l'Allemagne ?",o:["À Versailles, dans la galerie des Glaces, le 28 juin 1919","À Rethondes le 11 novembre 1918","À Berlin en 1920","À Genève en 1925"],e:"Là même où l'Empire allemand avait été proclamé en 1871, et cinq ans jour pour jour après l'attentat de Sarajevo."},
+{id:"e02",grp:"entre",ch:0,q:"Que fait reconnaître à l'Allemagne l'article 231 du traité de Versailles ?",o:["Sa responsabilité, avec ses alliés, dans les pertes et dommages causés par la guerre","Sa victoire","Le droit de garder son armée","Son entrée immédiate à la SDN"],e:"Il sert de base aux réparations. En Allemagne, le traité est vécu comme un « diktat », une paix imposée ; les nazis exploiteront ce ressentiment."},
+{id:"e03",grp:"entre",ch:0,q:"Qu'est-ce que la légende du « coup de poignard dans le dos » ?",o:["L'idée fausse que l'armée allemande n'a pas été vaincue mais trahie par l'arrière (révolutionnaires, socialistes, Juifs…)","Le récit d'un assassinat réel","Une stratégie militaire française","Le titre d'un roman de Remarque"],e:"Ce mensonge, répandu par des militaires et des nationalistes, permet de nier la défaite. Le roman de Remarque, qui montre une armée épuisée en 1918, le contredit."},
+{id:"e04",grp:"entre",ch:0,q:"Comment s'appelle le régime démocratique allemand né après la guerre ?",o:["La république de Weimar","Le IIIe Reich","L'Empire allemand","La RDA"],e:"Fragile, attaquée par l'extrême gauche et l'extrême droite, elle doit assumer la défaite. C'est sous cette république que paraît le roman."},
+{id:"e05",grp:"entre",ch:0,q:"Que se passe-t-il en Allemagne en 1923 ?",o:["Une hyperinflation : la monnaie ne vaut plus rien, les prix changent plusieurs fois par jour","Une victoire militaire","Le retour de l'empereur","L'arrivée de Hitler au pouvoir"],e:"Les économies de la classe moyenne sont anéanties. La même année, la France et la Belgique occupent la Ruhr, et Hitler rate un coup d'État à Munich."},
+{id:"e06",grp:"entre",ch:0,q:"Pourquoi la France occupe-t-elle la Ruhr, région industrielle allemande, en 1923 ?",o:["Pour se payer en charbon et en production, car l'Allemagne ne verse pas les réparations prévues","Pour l'annexer définitivement","Pour aider les ouvriers allemands","Pour y installer des colonies"],e:"L'occupation renforce la colère allemande. Les relations franco-allemandes sont alors au plus bas."},
+{id:"e07",grp:"entre",ch:0,q:"Quels ministres, l'un français, l'autre allemand, reçoivent ensemble le prix Nobel de la paix en 1926 ?",o:["Aristide Briand et Gustav Stresemann","Clemenceau et Guillaume II","De Gaulle et Adenauer","Jaurès et Bismarck"],e:"Après les accords de Locarno (1925), l'Allemagne entre à la Société des Nations (SDN). C'est le moment de l'espoir, juste avant le roman."},
+{id:"e08",grp:"entre",ch:0,q:"Que prévoit le pacte Briand-Kellogg, signé en 1928, l'année où le roman paraît en feuilleton ?",o:["Les signataires renoncent à la guerre comme moyen de régler leurs différends","Une alliance militaire contre l'URSS","La création de l'euro","Le désarmement total de la France"],e:"Plus de soixante pays finissent par le signer. Un idéal sincère, sans moyen de le faire respecter : onze ans plus tard, la guerre revient."},
+{id:"e09",grp:"entre",ch:0,q:"Quelle crise, partie des États-Unis en octobre 1929, frappe durement l'Allemagne ?",o:["La grande crise économique (krach de Wall Street) : faillites et chômage de masse","Une épidémie","Une guerre civile","Une sécheresse"],e:"Vers 1932, l'Allemagne compte environ six millions de chômeurs. La misère favorise les partis extrêmes, en particulier les nazis."},
+{id:"e10",grp:"entre",ch:0,q:"Que construisent presque toutes les communes françaises après la guerre ?",o:["Un monument aux morts, portant les noms des soldats tués","Un musée de la guerre","Un arc de triomphe","Une caserne"],e:"Quelques-uns, rares, sont ouvertement pacifistes. Celui de ta commune porte sans doute des noms de jeunes gens de l'âge de Paul."},
+{id:"e11",grp:"entre",ch:0,q:"D'où vient l'expression « génération perdue » ?",o:["D'une remarque de l'écrivaine Gertrude Stein, reprise par Hemingway en 1926 pour désigner la jeunesse marquée par la guerre","D'un discours du Kaiser","D'un manuel scolaire allemand","D'un film de 2022"],e:"L'expression s'applique parfaitement à Paul et ses camarades ; Remarque en reprend l'idée dès son avertissement."},
+{id:"e12",grp:"entre",ch:0,q:"Quelle attitude domine chez beaucoup d'anciens combattants français dans les années 1920-1930 ?",o:["Un pacifisme fort : « plus jamais ça »","Le désir de recommencer la guerre","L'indifférence","Le souhait d'émigrer en Allemagne"],e:"En Allemagne aussi, beaucoup d'anciens soldats deviennent pacifistes, tandis que d'autres rejoignent des groupes nationalistes et violents. Une même expérience mène à des choix opposés."},
+
+{id:"n01",grp:"nazisme",ch:0,q:"Quel a été le parcours d'Adolf Hitler pendant la Première Guerre mondiale ?",o:["Simple soldat puis caporal dans l'armée bavaroise, sur le front ouest","Général autrichien","Il n'a pas combattu","Officier de marine"],e:"Comme Paul, il a connu le front ouest. Mais il en tire une conclusion opposée : la guerre comme idéal, la défaite comme trahison à venger."},
+{id:"n02",grp:"nazisme",ch:0,q:"Sur quel sentiment le parti nazi s'appuie-t-il pour séduire les Allemands ?",o:["L'humiliation de la défaite et du traité de Versailles, et la recherche de boucs émissaires","Le désir de paix avec la France","La nostalgie de la république","L'amitié avec la Pologne"],e:"Les nazis promettent de laver l'humiliation, désignent les Juifs et les communistes comme coupables, et exaltent la guerre."},
+{id:"n03",grp:"nazisme",ch:0,q:"Que se passe-t-il à Berlin en décembre 1930 lors des projections du film tiré du roman ?",o:["Des militants nazis, menés par Goebbels, perturbent les séances (boules puantes, souris lâchées dans la salle) ; le film est ensuite interdit","Le film triomphe sans incident","Hitler assiste à la première et applaudit","Remarque monte sur scène"],e:"La violence de rue fait reculer l'État : signe de la faiblesse de la république de Weimar face aux nazis."},
+{id:"n04",grp:"nazisme",ch:0,q:"Quel score obtient le parti nazi aux élections de septembre 1930 ?",o:["Environ 18 %, contre moins de 3 % en 1928","Plus de 50 %","Moins de 1 %","Environ 90 %"],e:"La crise économique fait exploser son audience. En juillet 1932, il atteint environ 37 % et devient le premier parti."},
+{id:"n05",grp:"nazisme",ch:0,q:"Quand Hitler devient-il chancelier ?",o:["Le 30 janvier 1933","Le 11 novembre 1918","Le 1er septembre 1939","En 1923"],e:"Il est nommé légalement par le président Hindenburg, puis détruit la démocratie en quelques mois."},
+{id:"n06",grp:"nazisme",ch:0,q:"Que font les nazis de ce livre le 10 mai 1933 ?",o:["Ils le brûlent publiquement lors d'autodafés","Ils le rendent obligatoire","Ils l'utilisent comme propagande","Ils en commandent une suite"],e:"Dans plusieurs villes, des étudiants brûlent des milliers de livres jugés « non allemands ». Une formule spéciale accuse Remarque de trahir les soldats (voir les documents)."},
+{id:"n07",grp:"nazisme",ch:0,q:"Quel poète allemand avait écrit en 1821 : « Là où l'on brûle des livres, on finit par brûler des hommes » ?",o:["Heinrich Heine","Goethe","Remarque","Schiller"],e:"Heine, d'origine juive, faisait partie des auteurs brûlés en 1933. Sa phrase figure aujourd'hui sur le mémorial de l'autodafé, à Berlin."},
+{id:"n08",grp:"nazisme",ch:0,q:"Pourquoi les nazis détestaient-ils particulièrement ce roman ?",o:["Il montre une guerre sans gloire et une armée épuisée, à l'opposé du culte du soldat héroïque qu'ils voulaient imposer","Parce qu'il est écrit en français","Parce qu'il fait l'éloge de la France","Parce qu'il critique l'Angleterre"],e:"Un régime qui prépare une nouvelle guerre ne peut tolérer un livre qui en montre l'horreur et l'absurdité."},
+{id:"n09",grp:"nazisme",ch:0,q:"Quand commence la Seconde Guerre mondiale en Europe ?",o:["Le 1er septembre 1939, avec l'invasion de la Pologne par l'Allemagne","Le 11 novembre 1938","Le 6 juin 1944","Le 30 janvier 1933"],e:"La France et le Royaume-Uni déclarent la guerre à l'Allemagne le 3 septembre. Vingt et un ans seulement après l'armistice de 1918."},
+{id:"n10",grp:"nazisme",ch:0,q:"Où Hitler fait-il signer l'armistice à la France vaincue, le 22 juin 1940 ?",o:["À Rethondes, dans le même wagon que l'armistice de 1918","À Versailles","À Berlin","À Vichy"],e:"Une revanche symbolique soigneusement mise en scène : pour les nazis, l'histoire de 1914-1918 n'était pas « terminée »."},
+{id:"n11",grp:"nazisme",ch:0,q:"Quel est le bilan humain approximatif de la Seconde Guerre mondiale ?",o:["Plus de 60 millions de morts, en majorité des civils","Environ 10 millions de morts, surtout des soldats","Environ 1 million","Il n'y a pas d'estimation"],e:"Contrairement à 14-18, les civils sont les premières victimes : bombardements, massacres, et la Shoah, extermination d'environ six millions de Juifs d'Europe."},
+{id:"n12",grp:"nazisme",ch:0,q:"Quel roman de Remarque, publié en 1954, raconte la Seconde Guerre mondiale vue par un soldat allemand ?",o:["« Un temps pour vivre, un temps pour mourir »","« À l'ouest rien de nouveau »","« Orages d'acier »","« Le Feu »"],e:"Un soldat en permission dans une Allemagne bombardée découvre les crimes du régime. Remarque prolonge, une génération plus tard, les questions de son premier roman."},
+
+{id:"u01",grp:"universel",ch:9,q:"Quelle idée universelle le roman porte-t-il à travers Gérard Duval et les prisonniers russes ?",o:["L'« ennemi » est un être humain comme soi","Les étrangers sont dangereux","Il faut toujours obéir","La guerre est un jeu"],e:"Il est plus facile de faire la guerre à un ennemi sans visage. Mais reconnaître l'humanité de l'autre ne veut pas dire que toutes les causes se valent."},
+{id:"u02",grp:"universel",ch:3,q:"Quelle injustice le roman souligne-t-il entre ceux qui décident des guerres et ceux qui les font ?",o:["Les décideurs, souvent âgés, ne sont pas ceux qui meurent : ce sont surtout des jeunes","Les soldats décident de tout","Les généraux meurent les premiers","Il n'y en a aucune"],e:"Kropp le dit en plaisantant, Paul le pense gravement. La question reste ouverte : qui doit décider d'une guerre, et qui en paie le prix ?"},
+{id:"u03",grp:"universel",ch:1,q:"Quels mots le roman met-il en question, en les confrontant à la réalité du front ?",o:["Les grands mots comme « patrie », « héroïsme », « devoir », quand ils servent à pousser des jeunes à la mort","Le vocabulaire technique des armes","Les mots français","Les noms de lieux"],e:"Le roman ne dit pas que ces mots sont vides en eux-mêmes ; il montre ce qui arrive quand on les utilise sans savoir ce qu'ils coûtent."},
+{id:"u04",grp:"universel",ch:0,q:"Quelle souffrance, longtemps ignorée, le roman aide-t-il à comprendre chez les anciens combattants ?",o:["Les traumatismes psychiques durables, qu'on appelle aujourd'hui stress post-traumatique","Les maladies de peau","La fatigue des yeux","Le mal de dos"],e:"Le roman montre des hommes « détruits » même sans blessure visible. Cette réalité est aujourd'hui reconnue, chez les soldats comme chez les victimes de catastrophes ou d'attentats."},
+{id:"u05",grp:"universel",ch:7,q:"Quelle expérience, que beaucoup de gens connaissent, Paul vit-il pendant sa permission ?",o:["Ne pas pouvoir partager une expérience forte avec ceux qui ne l'ont pas vécue","S'ennuyer en vacances","Se disputer avec ses amis","Rater un examen"],e:"Ce décalage touche aussi des réfugiés, des malades, des personnes revenues d'une épreuve. Le roman parle à bien d'autres situations que la guerre."},
+{id:"u06",grp:"universel",ch:12,q:"Que nous apprend le titre sur la différence entre l'Histoire officielle et les vies individuelles ?",o:["Une mort qui ne compte pas dans un bilan peut être tout un monde pour une personne et ses proches","Les communiqués disent toujours tout","Les individus ne comptent jamais","Il n'y a pas de différence"],e:"Derrière chaque chiffre, il y a des Paul. La littérature redonne un visage à ce que les statistiques effacent."},
+{id:"u07",grp:"universel",ch:0,q:"Quel geste accomplissent François Mitterrand et Helmut Kohl près de Verdun, le 22 septembre 1984 ?",o:["Ils se tiennent la main devant l'ossuaire de Douaumont, en signe de réconciliation franco-allemande","Ils signent un traité de défense contre l'URSS","Ils inaugurent un musée de l'armement","Ils échangent des médailles militaires"],e:"Soixante-dix ans après 1914, les anciens « ennemis héréditaires » sont devenus partenaires. Lire Remarque en France fait aussi partie de cette réconciliation."},
+{id:"u08",grp:"universel",ch:0,q:"Quel traité, signé en 1963 par de Gaulle et Adenauer, scelle l'amitié franco-allemande ?",o:["Le traité de l'Élysée","Le traité de Versailles","Le traité de Brest-Litovsk","Le pacte Briand-Kellogg"],e:"Il organise une coopération régulière, notamment pour la jeunesse (Office franco-allemand pour la jeunesse). La construction européenne est née en partie du souvenir des deux guerres."},
+{id:"u09",grp:"universel",ch:12,q:"Le poète anglais Wilfred Owen, qui dénonçait la guerre dans ses poèmes, est tué le 4 novembre 1918. Quel écho avec le roman ?",o:["Comme Paul, il meurt quelques jours avant l'armistice","Il était le modèle de Kat","Il a traduit le roman","Il a survécu jusqu'en 1970"],e:"Sa famille aurait appris sa mort le jour même de l'armistice. La fiction de Remarque rejoint ici des destins bien réels."},
+{id:"u10",grp:"universel",ch:0,q:"Pourquoi ce roman allemand est-il étudié dans les collèges français ?",o:["Il fait comprendre la guerre de l'intérieur et montre que les soldats des deux camps ont vécu la même chose","Parce qu'il raconte une victoire française","Parce qu'il est obligatoire en Allemagne","Parce qu'il est très court"],e:"Lire « l'autre camp » aide à dépasser les récits nationaux. Ce n'est pas nier les responsabilités : c'est comprendre ce que la guerre fait aux hommes."}
+];
+
+/* ===================== PARCOURS DE RÉFLEXION PROGRESSIVE ===================== */
+/* q = question ; p = une piste possible ; n = une autre façon de voir ; r = relance */
+const P=[
+{id:"pg",ch:0,t:"Pourquoi brûler un livre ?",intro:"Un parcours faisable avant même d'avoir fini le roman : il part de l'autodafé de 1933 pour réfléchir au pouvoir des livres.",steps:[
+ {q:"En 1933, les nazis brûlent publiquement le livre de Remarque. Pourquoi brûler, plutôt que simplement interdire ?",p:"Brûler est un spectacle : on montre à tous ce qu'il est désormais interdit de penser, et on fait participer la foule.",n:"C'est aussi un aveu : on ne brûle que ce qu'on craint. Le geste reconnaît malgré lui la force du livre.",r:"Que ressens-tu en imaginant des étudiants qui applaudissent un feu de livres ? Pourquoi, d'après toi, ce sont des étudiants qui l'ont fait ?"},
+ {q:"Qu'est-ce qui, dans ce roman, pouvait gêner un régime qui préparait une nouvelle guerre ?",p:"Il montre la guerre sans gloire, la peur, un ennemi humain : difficile ensuite d'exalter le sacrifice.",n:"Il contredit aussi le mythe d'une armée allemande « invaincue » et trahie par l'arrière : le roman montre des soldats épuisés et dépassés en 1918. Ce n'est peut-être pas seulement le pacifisme qui dérangeait, mais la vérité historique.",r:"Pourquoi les régimes autoritaires s'intéressent-ils autant à ce que lisent les jeunes ?"},
+ {q:"Heine avait écrit en 1821 : « Là où l'on brûle des livres, on finit par brûler des hommes. » Que penses-tu de cette phrase, après 1933 ?",p:"Elle semble prophétique : quelques années plus tard, le régime nazi persécute ses opposants et organise l'extermination des Juifs d'Europe.",n:"Prudence pourtant : rapprocher deux événements ne veut pas dire que l'un a causé l'autre. La phrase dit plutôt qu'un pouvoir qui ne supporte pas les idées finit souvent par ne plus supporter les personnes.",r:"Existe-t-il aujourd'hui des façons moins visibles de « brûler des livres » ? Sont-elles vraiment comparables, ou faut-il garder des différences ?"},
+ {q:"Remarque est déchu de sa nationalité, sa sœur est exécutée en 1943. Qu'est-ce que cela dit du prix de la parole libre ?",p:"Que dire ou écrire certaines choses peut coûter très cher, à soi et à ses proches.",n:"Mais aussi que Remarque a continué d'écrire en exil : la parole libre a un coût, et elle peut aussi être une forme de résistance.",r:"La liberté d'expression a-t-elle des limites, selon toi ? Où les placerais-tu, et qui devrait en décider ?"}
+]},
+{id:"pe",ch:6,t:"La camaraderie",intro:"Ce qui unit Paul et ses camarades, et ce que cela coûte.",steps:[
+ {q:"Qu'est-ce qui unit Paul, Kat, Kropp, Tjaden… alors qu'ils sont très différents (âge, métier, caractère) ?",p:"Le danger partagé et la survie : ils dépendent les uns des autres.",n:"Mais il y a aussi des moments de joie (l'oie, les repas, les blagues) : la camaraderie n'est pas seulement utile, elle rend la vie supportable.",r:"Cite une scène où la camaraderie passe par un geste simple plutôt que par des mots."},
+ {q:"Paul se sent plus proche de ses camarades que de sa propre famille. Est-ce triste ou beau ?",p:"C'est beau : il a trouvé des liens d'une force rare.",n:"C'est aussi triste : cela montre qu'il ne peut plus partager l'essentiel avec ceux qu'il aimait avant. La camaraderie remplit peut-être un vide creusé par la guerre.",r:"Peut-on être plus proche d'amis que de sa famille ? Dans quelles circonstances ?"},
+ {q:"La camaraderie protège-t-elle de la guerre ?",p:"En partie : Kat sauve des vies, l'amitié aide à tenir le coup.",n:"Mais elle rend aussi chaque perte plus douloureuse. Plus on s'attache, plus on a à perdre.",r:"Faut-il s'attacher aux autres même quand on risque de les perdre ? Pourquoi ?"},
+ {q:"Existe-t-il aujourd'hui des situations qui créent ce genre de lien ?",p:"Des épreuves partagées : un sport d'équipe, un internat, une situation difficile vécue ensemble.",n:"Il faut se méfier des comparaisons trop rapides : la guerre est une expérience extrême, et la comparer à un match peut sembler déplacé. La ressemblance est peut-être dans le mécanisme, pas dans l'intensité.",r:"Qu'est-ce qui fait, selon toi, la différence entre un groupe de copains et une vraie camaraderie ?"}
+]},
+{id:"pd",ch:7,t:"Les adultes et l'autorité",intro:"Kantorek, Himmelstoss, le Kaiser, les hommes de la brasserie… et Kat.",steps:[
+ {q:"Kantorek, Himmelstoss, les hommes de la brasserie : quel point commun entre ces adultes ?",p:"Ils parlent de la guerre ou décident pour les jeunes, sans la vivre au front comme eux.",n:"Pourtant ils ne se ressemblent pas : Kantorek est sincère, Himmelstoss abuse de son pouvoir, les hommes de la brasserie sont surtout ignorants. Les mettre dans le même sac serait peut-être injuste.",r:"Classe ces personnages du plus responsable au moins responsable. Sur quoi te bases-tu ?"},
+ {q:"Que ressens-tu quand Kantorek, mobilisé à son tour, est ridiculisé par son ancien élève Mittelstaedt ?",p:"On peut y voir une revanche juste : le donneur de leçons subit ce qu'il a imposé.",n:"Mais c'est aussi une petite vengeance qui reproduit ce que les élèves reprochaient à Himmelstoss : humilier quelqu'un parce qu'on a le pouvoir.",r:"La vengeance répare-t-elle une injustice ? Que pense Paul de cette scène, d'après toi ?"},
+ {q:"Selon Kat, le pouvoir transforme les hommes. Es-tu d'accord ?",p:"Le roman le montre avec Himmelstoss : facteur ordinaire, il devient tyran quand on lui donne des galons.",n:"Mais au front, Himmelstoss change encore… Le pouvoir n'explique peut-être pas tout : la peur, la situation, le regard des autres comptent aussi.",r:"As-tu vu quelqu'un changer en obtenant un peu de pouvoir (délégué, capitaine d'équipe…) ? Et toi, comment crois-tu que tu réagirais ?"},
+ {q:"Les jeunes doivent-ils obéir aux adultes ? Que dit le roman, et qu'en penses-tu ?",p:"Le roman montre les dangers de la confiance aveugle : la classe de Paul a suivi Kantorek.",n:"Mais il ne dit pas que les adultes ont toujours tort : Kat, plus âgé, est celui qui les protège. La vraie question serait plutôt : à qui faire confiance, et pourquoi ?",r:"Quels critères utilises-tu pour décider si un adulte (ou une source d'information) mérite ta confiance ?"}
+]},
+{id:"pc",ch:9,t:"Qu'est-ce qu'un ennemi ?",intro:"Des jeunes Françaises du canal à Gérard Duval, en passant par les prisonniers russes.",steps:[
+ {q:"Avant la scène du trou d'obus, comment Paul parle-t-il des soldats d'en face ?",p:"Plutôt comme d'une menace lointaine, presque sans visage : des tirs, des attaques, une masse.",n:"Pourtant les jeunes Françaises du canal et les prisonniers russes montraient déjà que « l'ennemi » pouvait être des gens comme les autres.",r:"Pourquoi est-il plus facile de se battre contre quelqu'un qu'on ne voit pas ?"},
+ {q:"Qu'est-ce qui bouleverse Paul face à Gérard Duval : le fait de tuer, ou autre chose ?",p:"Peut-être de découvrir qui était Duval : un nom, un métier, une femme, une fille. L'ennemi devient une personne.",n:"Il y a aussi le temps : Paul le voit mourir longuement. Tuer à distance et tuer de près, ce n'est pas la même expérience.",r:"Pourquoi, selon toi, les guerres modernes cherchent-elles de plus en plus à frapper de loin ? Qu'est-ce que cela change pour ceux qui combattent ?"},
+ {q:"Paul promet d'écrire à la famille Duval, puis doute de tenir sa promesse. Est-il hypocrite ?",p:"On pourrait le croire : une fois revenu parmi ses camarades, il reprend vite les habitudes du front.",n:"On peut aussi y voir de la lucidité : la guerre ne laisse pas de place aux sentiments qu'il a éprouvés dans le trou d'obus. Ce n'est pas qu'il ment, c'est que la guerre reprend le dessus.",r:"As-tu déjà pris une résolution sous le coup d'une émotion forte, puis senti qu'elle s'effaçait ? Qu'est-ce qui l'efface ?"},
+ {q:"Alors : être « ennemi », est-ce une nature ou une situation ?",p:"Le roman suggère plutôt une situation : un ordre, une frontière, un uniforme.",n:"Attention cependant : il existe des agresseurs et des agressés, et les historiens étudient les responsabilités de chaque pays. Dire que les soldats se ressemblent ne veut pas dire que toutes les causes se valent.",r:"Comment concilier ces deux idées : « l'ennemi est un homme comme moi » et « certaines guerres sont plus justes que d'autres » ?"}
+]},
+{id:"pa",ch:12,t:"Pourquoi Remarque a-t-il écrit ce livre ?",intro:"La question de départ semble simple ; la réponse l'est moins. À faire une fois le livre terminé.",steps:[
+ {q:"Le livre paraît dix ans après la fin de la guerre. Pourquoi, à ton avis, Remarque attend-il dix ans pour raconter ?",p:"Peut-être parce qu'il faut du temps pour mettre des mots sur ce qu'on a vécu : beaucoup d'anciens combattants se sont tus pendant des années.",n:"On peut aussi y voir un lien avec l'époque : vers 1928, l'Allemagne se dispute sur le sens de cette guerre (héroïque ? inutile ? trahie ?). Écrire, c'est aussi prendre part à ce débat.",r:"Faut-il raconter tout de suite, ou attendre d'avoir du recul ? Qu'est-ce qu'on gagne et qu'est-ce qu'on perd dans chaque cas ?"},
+ {q:"Dans son avertissement, Remarque dit que son livre n'est ni une accusation ni une confession. Pourquoi prendre cette précaution ?",p:"Il veut peut-être éviter qu'on lise son roman comme un pamphlet politique : il dit seulement « voici ce que nous avons vécu ».",n:"Mais un témoignage peut accuser sans le dire : montrer un professeur qui pousse ses élèves vers la mort, c'est déjà porter un jugement.",r:"Peut-on raconter une guerre de façon neutre ? Trouve une scène où Remarque semble juger, et une où il se contente de montrer."},
+ {q:"Beaucoup de lecteurs disent : « il a écrit ce livre pour dénoncer la guerre ». Formule ta propre réponse : es-tu d'accord ?",p:"C'est la lecture la plus courante, et elle s'appuie sur de nombreuses scènes (Duval, l'hôpital, les recrues).",n:"Pourtant le livre contient très peu de discours contre la guerre : il décrit surtout. Il y a une différence entre dénoncer (dire que c'est mal) et montrer (laisser le lecteur conclure). Remarque a aussi expliqué, en substance, qu'écrire l'avait aidé à se libérer de souvenirs qui l'oppressaient : un motif plus personnel.",r:"Un livre qui montre est-il plus fort ou moins fort qu'un livre qui dénonce ? Pourquoi ?"},
+ {q:"Pour qui Remarque écrit-il, d'après toi ?",p:"Pour sa génération, peut-être : des millions d'anciens soldats qui pouvaient s'y reconnaître.",n:"Mais aussi pour ceux qui ne l'ont pas vécue (familles, plus jeunes), et même pour l'ancien ennemi : le livre a eu un immense succès en France.",r:"Et toi, aujourd'hui : as-tu l'impression que ce livre s'adresse aussi à toi ? En quoi ?"},
+ {q:"Dix ans après la parution, une nouvelle guerre mondiale commence. Le livre a-t-il « échoué » ?",p:"On peut le penser : un roman n'a pas empêché Hitler ni la guerre de 1939.",n:"Mais les nazis l'ont jugé assez dangereux pour le brûler, et il est encore lu près d'un siècle plus tard. L'effet d'un livre se mesure peut-être lecteur par lecteur plutôt qu'à l'échelle de l'Histoire.",r:"À quoi sert la littérature face à la violence ? Donne l'exemple d'un livre, d'un film ou d'une chanson qui a changé ton regard sur quelque chose."}
+]},
+{id:"pb",ch:12,t:"Paul est-il un héros ?",intro:"Un roman de guerre… sans héros au sens habituel ?",steps:[
+ {q:"Avant de penser au livre : qu'est-ce qu'un héros, pour toi ?",p:"On pense souvent à quelqu'un de courageux, qui accomplit des exploits ou se sacrifie pour les autres.",n:"Mais ces définitions viennent souvent de récits de guerre glorieux… exactement ceux que Remarque met en doute.",r:"D'où vient ton image du héros : films, jeux vidéo, livres, histoire ?"},
+ {q:"Paul accomplit-il des actions héroïques dans le roman ? Cherche des exemples.",p:"Il porte Kat blessé, il reste avec Kropp à l'hôpital, il veille Duval mourant : ce sont des gestes de courage et de fidélité.",n:"Ce ne sont pas des exploits militaires : le roman ne montre presque jamais de victoire ou de médaille. Son courage est discret, tourné vers les autres.",r:"Le courage de Paul ressemble-t-il à celui des héros que tu connais ? En quoi est-il différent ?"},
+ {q:"Paul tue un homme (Duval). Cela change-t-il ton regard sur lui ?",p:"On peut penser qu'il n'a pas eu le choix : c'était lui ou l'autre.",n:"Le roman ne l'excuse pas tout à fait : Paul lui-même se sent coupable. Remarque laisse le lecteur avec cette contradiction : on peut être victime de la guerre et y faire du mal.",r:"Peut-on être à la fois victime et coupable ? Trouve un autre exemple, dans l'histoire ou dans la vie, où les deux se mêlent."},
+ {q:"Pourquoi Remarque fait-il mourir Paul quelques semaines avant l'armistice, un jour « sans rien de nouveau » ?",p:"Pour souligner l'absurdité : sa mort ne sert à rien, elle ne change pas l'issue de la guerre.",n:"On peut aussi y voir un geste de mémoire : le livre transforme un mort anonyme en personne. Le vrai « héros » du livre serait alors le soldat ordinaire.",r:"Si tu devais résumer qui est Paul en une phrase, sans le mot « héros », que dirais-tu ?"}
+]},
+{id:"pf",ch:12,t:"Une génération perdue ?",intro:"De Paul en 1918 à sa génération en 1933.",steps:[
+ {q:"Que veut dire, pour toi, « génération perdue » ?",p:"Une génération dont l'avenir a été volé : des jeunes morts, ou revenus incapables de reprendre une vie normale.",n:"« Perdue » peut aussi vouloir dire « égarée » : des gens qui ne savent plus où est leur place, qui ont perdu leurs repères.",r:"Lequel des deux sens te semble le plus juste pour Paul ? Pourquoi ?"},
+ {q:"Pendant sa permission, pourquoi Paul ne retrouve-t-il pas sa vie d'avant ?",p:"Parce qu'il a changé : ce qu'il a vécu le sépare de ceux qui sont restés.",n:"Mais les autres aussi ont changé : la faim, l'inquiétude, la maladie de sa mère. Le fossé n'est peut-être pas seulement entre lui et eux, mais entre deux expériences de la guerre.",r:"Que faudrait-il, selon toi, pour qu'un soldat puisse vraiment « rentrer » ?"},
+ {q:"Remarque dit que la guerre a détruit même ceux qui ont échappé aux obus. Est-ce exagéré ?",p:"Pas vraiment : on sait aujourd'hui que beaucoup d'anciens combattants ont souffert de traumatismes durables.",n:"Mais beaucoup ont aussi reconstruit une vie, fondé une famille, travaillé. « Détruit » décrit peut-être une blessure intérieure plus qu'une vie ratée.",r:"As-tu entendu, dans ta famille ou autour de toi, des récits de personnes ayant vécu une guerre ? Qu'en disaient-elles, ou que taisaient-elles ?"},
+ {q:"La génération de Paul a environ 35 ans en 1933. Quel lien fais-tu avec la suite de l'histoire ?",p:"Certains historiens pensent que la brutalité vécue pendant la guerre a rendu la violence plus « normale » dans la société d'après-guerre.",n:"Cette idée est discutée : beaucoup d'anciens combattants sont devenus pacifistes, en France comme en Allemagne. La même expérience a mené des gens vers des choix opposés.",r:"Pourquoi deux personnes ayant vécu la même chose peuvent-elles en tirer des conclusions opposées ?"}
+]}
+];
+
+/* ===================== CARNET : QUESTIONS OUVERTES ===================== */
+const R=[
+{id:"r0",ch:0,t:"Avant de lire",q:"Que sais-tu déjà de la guerre de 14-18 ? Comment imagines-tu la vie d'un soldat de ton âge ou presque ? (Tu reliras ta réponse à la fin du livre.)",pistes:["Ce que tu as vu en cours d'histoire, dans des films, au monument aux morts de ta commune.","Les mots qui te viennent : héros ? victime ? courage ? peur ?"]},
+{id:"r10",ch:0,t:"Un livre qui fait peur",q:"Ce roman a été brûlé par les nazis en 1933. Pourquoi un livre peut-il faire peur à un pouvoir ? Que dit ce geste de la force de la littérature ?",pistes:["Ce que le roman montre et que la propagande veut cacher.","D'autres exemples de livres interdits ou censurés."]},
+{id:"r1",ch:1,t:"La responsabilité de Kantorek",q:"Kantorek croyait sincèrement bien faire. Est-il pour autant innocent ? Qui est responsable quand des jeunes partent à la guerre poussés par des adultes ?",pistes:["Peut-on être sincère et se tromper gravement ?","Le rôle de la pression du groupe (pense à Joseph Behm).","Aujourd'hui, qui ou quoi peut influencer des jeunes de cette manière ?"]},
+{id:"r2",ch:2,t:"Les bottes de Kemmerich",q:"Pourquoi Remarque accorde-t-il tant d'importance à une simple paire de bottes ? Qu'est-ce que cela dit de la vie au front ? (Tu pourras compléter en fin de livre.)",pistes:["Égoïsme ou bon sens ?","Ce que vaut un objet par rapport à une vie, au front.","Le trajet des bottes d'un soldat à l'autre."]},
+{id:"r3",ch:5,t:"La camaraderie",q:"Paul se sent plus proche de Kat que d'un frère. Qu'est-ce qui crée un lien aussi fort ? Ce lien peut-il exister en dehors de la guerre ?",pistes:["Le danger partagé, la nourriture partagée, le silence partagé.","Ce que la famille ne peut plus comprendre.","La scène de l'oie."]},
+{id:"r4",ch:6,t:"Devenir des bêtes",q:"Paul dit qu'au combat les soldats deviennent comme des bêtes. Cherche-t-il à les excuser, à les accuser ou à expliquer ? Qu'en penses-tu ?",pistes:["La différence entre excuser et comprendre.","L'instinct de survie.","La terre, les rats, les chevaux."]},
+{id:"r5",ch:7,t:"L'impossible retour",q:"Pourquoi Paul n'arrive-t-il pas à parler de la guerre à sa mère ni aux gens de sa ville ? As-tu déjà vécu quelque chose que tu n'arrivais pas à expliquer à ceux qui ne l'avaient pas vécu ?",pistes:["Protéger l'autre ou se protéger soi-même ?","Les hommes de la brasserie et leurs certitudes.","Sa chambre et ses livres d'avant."]},
+{id:"r6",ch:9,t:"Lettre à la famille Duval",q:"Exercice d'écriture : rédige la lettre que Paul aurait pu envoyer à la femme de Gérard Duval (15 à 20 lignes). Il peut avouer, s'expliquer, ou ne pas tout dire : à toi de choisir.",pistes:["Que peut-on dire à la veuve de l'homme qu'on a tué ?","Le ton : excuses, culpabilité, colère contre la guerre ?","Pourquoi Paul n'enverra peut-être jamais cette lettre."]},
+{id:"r7",ch:9,t:"Qu'est-ce qu'un ennemi ?",q:"Être « ennemi », est-ce une identité ou une situation ? Appuie-toi sur les prisonniers russes et sur Gérard Duval.",pistes:["Qui décide qui est l'ennemi ?","Ce qui change quand on connaît le nom, le métier, la famille de l'autre."]},
+{id:"r8",ch:12,t:"Le titre",q:"Explique en une ou deux phrases l'ironie du titre. Puis propose un autre titre pour ce roman et justifie ton choix.",pistes:["La dernière page.","Le point de vue de l'armée face à celui d'un individu."]},
+{id:"r9",ch:12,t:"Ni accusation, ni confession ?",q:"Remarque annonce un livre qui n'est « ni une accusation ni une confession ». Après lecture, es-tu d'accord ? Le livre accuse-t-il quelqu'un ou quelque chose ?",pistes:["Kantorek, les généraux, l'empereur, les civils de l'arrière…","Accuser des personnes ou accuser la guerre elle-même ?"]},
+{id:"r11",ch:12,t:"Lire l'autre camp",q:"Le roman est raconté par un soldat allemand, l'adversaire de la France à l'époque. Qu'apporte le fait de lire la guerre du point de vue de l'autre camp ?",pistes:["Ce qui est pareil des deux côtés du no man's land.","Le lien avec la réconciliation franco-allemande après 1945."]},
+{id:"r12",ch:12,t:"Et aujourd'hui ?",q:"Qu'est-ce qui, dans ce livre écrit il y a près de cent ans, te paraît encore actuel ? Donne un exemple précis du livre et un exemple d'aujourd'hui. Relis ta toute première réponse : qu'est-ce qui a changé dans ta vision ?",pistes:["La jeunesse face aux décisions des adultes.","L'écart entre les images officielles et la réalité vécue."]}
+];
+
+/* ===================== FRISE DU ROMAN ===================== */
+const F=[
+{ch:1,t:"Au repos, après la relève",s:"La compagnie revient du front : seuls 80 hommes sur 150 sont rentrés. On découvre le groupe (Kat, Kropp, Müller, Tjaden, Haie, Detering), le souvenir de Kantorek et de Joseph Behm, puis la visite à Kemmerich amputé."},
+{ch:2,t:"Souvenirs et première mort",s:"Paul se rappelle sa vie d'avant (poèmes, théâtre) et l'instruction sous Himmelstoss. Kemmerich meurt sous ses yeux ; Paul apporte les bottes à Müller."},
+{ch:3,t:"Les recrues, Kat et la revanche",s:"Arrivée de recrues plus jeunes. Kat trouve à manger, on discute du pouvoir et de qui devrait faire la guerre. Récit de la vengeance contre Himmelstoss."},
+{ch:4,t:"Première nuit au front",s:"Corvée de barbelés, bombardement, chevaux blessés, refuge dans un cimetière, attaque au gaz, une jeune recrue gravement touchée."},
+{ch:5,t:"Poux, oie et avenir",s:"Le quotidien du repos, l'arrivée de Himmelstoss au front et l'insolence de Tjaden, la discussion sur l'après-guerre, l'oie rôtie de Kat et Paul."},
+{ch:6,t:"La grande offensive",s:"Cercueils neufs, rats, jours de bombardement, panique des recrues, assauts et contre-assauts. Mort de Haie Westhus. Il reste 32 hommes."},
+{ch:7,t:"Le canal, puis la permission",s:"Rencontre nocturne avec de jeunes Françaises. Permission : la mère malade, la brasserie, Kantorek drillé par Mittelstaedt, la visite à la mère de Kemmerich."},
+{ch:8,t:"Le camp de la lande",s:"Camp d'instruction près d'un camp de prisonniers russes affamés. Visite du père et de la sœur de Paul."},
+{ch:9,t:"Le Kaiser et le trou d'obus",s:"Retour au front, revue du Kaiser, discussion sur les causes de la guerre. Pendant une patrouille, Paul tue Gérard Duval."},
+{ch:10,t:"Le dépôt, puis l'hôpital",s:"Garde d'un dépôt de vivres et festins. Paul et Kropp blessés lors de l'évacuation, train sanitaire, hôpital, amputation de Kropp, convalescence, retour au front."},
+{ch:11,t:"1918, l'année de l'usure",s:"Faim, chars, Américains. Désertion de Detering, morts de Müller, Leer et Bertinck. Kat est tué."},
+{ch:12,t:"Automne 1918",s:"Paul, seul, au repos après avoir respiré du gaz. On parle d'armistice. Sa mort, en octobre 1918."}
+];
+
+/* ===================== FRISE HISTORIQUE ===================== */
+/* per : avant / guerre / entre / nazisme / apres ; star = lien direct avec le roman ou son auteur ; ch = chapitre à avoir lu (anti-spoiler) */
+const H=[
+{d:"1870-1871",per:"avant",t:"Guerre franco-prussienne. La France vaincue perd l'Alsace et la Moselle."},
+{d:"18 janvier 1871",per:"avant",t:"L'Empire allemand est proclamé dans la galerie des Glaces de Versailles."},
+{d:"1882",per:"avant",t:"Triple-Alliance : Allemagne, Autriche-Hongrie, Italie."},
+{d:"22 juin 1898",per:"avant",t:"Naissance d'Erich Paul Remark (futur Erich Maria Remarque) à Osnabrück.",star:1},
+{d:"1904-1907",per:"avant",t:"Entente cordiale franco-britannique, puis Triple-Entente avec la Russie."},
+{d:"1905 et 1911",per:"avant",t:"Crises marocaines : la France et l'Allemagne s'opposent au sujet du Maroc."},
+{d:"1912-1913",per:"avant",t:"Guerres balkaniques : la région devient la « poudrière de l'Europe »."},
+{d:"1913",per:"avant",t:"France : loi des trois ans (service militaire allongé). Course aux armements partout."},
+{d:"28 juin 1914",per:"avant",t:"Attentat de Sarajevo : l'archiduc François-Ferdinand est assassiné."},
+{d:"28 juillet 1914",per:"guerre",t:"L'Autriche-Hongrie déclare la guerre à la Serbie. L'engrenage des alliances commence."},
+{d:"31 juillet 1914",per:"guerre",t:"Assassinat de Jean Jaurès à Paris."},
+{d:"1er-4 août 1914",per:"guerre",t:"Mobilisations, déclarations de guerre, invasion de la Belgique, entrée en guerre du Royaume-Uni. Union sacrée en France, « paix civile » en Allemagne."},
+{d:"Septembre 1914",per:"guerre",t:"Bataille de la Marne. Fin de la guerre de mouvement, début des tranchées."},
+{d:"22 avril 1915",per:"guerre",t:"Premiers gaz de combat à grande échelle, à Ypres."},
+{d:"1915",per:"guerre",t:"L'Italie rejoint les Alliés. Génocide des Arméniens dans l'Empire ottoman."},
+{d:"Février-décembre 1916",per:"guerre",t:"Bataille de Verdun."},
+{d:"Juillet-novembre 1916",per:"guerre",t:"Bataille de la Somme ; premiers chars britanniques en septembre."},
+{d:"Novembre 1916",per:"guerre",t:"Remarque, 18 ans, est mobilisé.",star:1},
+{d:"Hiver 1916-1917",per:"guerre",t:"« Hiver des rutabagas » : la faim gagne l'Allemagne, victime du blocus."},
+{d:"Avril 1917",per:"guerre",t:"Les États-Unis entrent en guerre. Offensive du Chemin des Dames, puis mutineries françaises (mai-juin)."},
+{d:"Juillet 1917",per:"guerre",t:"Remarque est blessé en Flandre ; il passe le reste de la guerre à l'hôpital. En septembre, sa mère meurt d'un cancer.",star:1},
+{d:"Novembre 1917",per:"guerre",t:"Révolution bolchevique en Russie."},
+{d:"3 mars 1918",per:"guerre",t:"Traité de Brest-Litovsk : la Russie sort de la guerre."},
+{d:"Mars-juillet 1918",per:"guerre",t:"Dernières grandes offensives allemandes à l'ouest."},
+{d:"Août-octobre 1918",per:"guerre",t:"Contre-offensive alliée : l'armée allemande recule."},
+{d:"Octobre 1918",per:"guerre",t:"Mort (fictive) de Paul Bäumer, un jour où il n'y a « rien de nouveau à l'ouest ».",star:1,ch:12},
+{d:"4 novembre 1918",per:"guerre",t:"Le poète anglais Wilfred Owen est tué, une semaine avant l'armistice."},
+{d:"9 novembre 1918",per:"guerre",t:"Guillaume II abdique ; la république est proclamée en Allemagne."},
+{d:"11 novembre 1918",per:"guerre",t:"Armistice signé dans un wagon à Rethondes."},
+{d:"28 juin 1919",per:"entre",t:"Traité de Versailles, dans la galerie des Glaces. L'Allemagne le vit comme un « diktat »."},
+{d:"1919",per:"entre",t:"Naissance de la république de Weimar. Diffusion de la légende du « coup de poignard dans le dos »."},
+{d:"1923",per:"entre",t:"Occupation de la Ruhr, hyperinflation, putsch manqué de Hitler à Munich."},
+{d:"1925-1926",per:"entre",t:"Accords de Locarno, l'Allemagne entre à la SDN. Briand et Stresemann reçoivent le prix Nobel de la paix."},
+{d:"1927",per:"entre",t:"Remarque écrit son roman.",star:1},
+{d:"27 août 1928",per:"entre",t:"Pacte Briand-Kellogg : renoncement à la guerre comme instrument de politique."},
+{d:"Nov. 1928 - janv. 1929",per:"entre",t:"Parution du roman, en feuilleton puis en livre. Succès mondial immédiat.",star:1},
+{d:"Octobre 1929",per:"entre",t:"Krach de Wall Street : la crise mondiale commence."},
+{d:"1930",per:"entre",t:"Film américain tiré du roman (Oscar du meilleur film). À Berlin, les nazis perturbent les séances ; le film est interdit. En septembre, les nazis obtiennent 18 % des voix.",star:1},
+{d:"30 janvier 1933",per:"nazisme",t:"Hitler devient chancelier."},
+{d:"10 mai 1933",per:"nazisme",t:"Autodafés : le roman de Remarque est brûlé publiquement.",star:1},
+{d:"1935-1936",per:"nazisme",t:"Réarmement allemand, rétablissement du service militaire, remilitarisation de la Rhénanie."},
+{d:"1938",per:"nazisme",t:"Annexion de l'Autriche, accords de Munich, nuit de Cristal. Remarque est déchu de la nationalité allemande.",star:1},
+{d:"1er-3 septembre 1939",per:"nazisme",t:"Invasion de la Pologne ; la France et le Royaume-Uni déclarent la guerre. Remarque s'installe aux États-Unis.",star:1},
+{d:"22 juin 1940",per:"nazisme",t:"Armistice franco-allemand imposé par Hitler à Rethondes, dans le wagon de 1918."},
+{d:"1941-1945",per:"nazisme",t:"La Shoah : extermination d'environ six millions de Juifs d'Europe."},
+{d:"16 décembre 1943",per:"nazisme",t:"Elfriede Scholz, sœur de Remarque, est exécutée par le régime nazi.",star:1},
+{d:"8 mai 1945",per:"nazisme",t:"Capitulation allemande. En août, bombes atomiques sur Hiroshima et Nagasaki."},
+{d:"1957",per:"apres",t:"Traité de Rome : naissance de la Communauté économique européenne."},
+{d:"22 janvier 1963",per:"apres",t:"Traité de l'Élysée entre de Gaulle et Adenauer : l'amitié franco-allemande."},
+{d:"25 septembre 1970",per:"apres",t:"Mort de Remarque à Locarno (Suisse).",star:1},
+{d:"22 septembre 1984",per:"apres",t:"Mitterrand et Kohl, main dans la main devant l'ossuaire de Douaumont (Verdun)."},
+{d:"2014-2018",per:"apres",t:"Centenaire de la Première Guerre mondiale."},
+{d:"10 novembre 2018",per:"apres",t:"Emmanuel Macron et Angela Merkel se recueillent ensemble à Rethondes."},
+{d:"2022",per:"apres",t:"Nouvelle adaptation allemande du roman (Edward Berger), quatre Oscars en 2023.",star:1}
+];
+
+/* ===================== VIE DE REMARQUE ===================== */
+const V=[
+{d:"1898",t:"Naissance d'Erich Paul Remark à Osnabrück, en Basse-Saxe, dans une famille catholique modeste ; son père est relieur."},
+{d:"1916",t:"Élève à l'école normale d'instituteurs, il est mobilisé en novembre, à 18 ans."},
+{d:"Juin-juillet 1917",t:"Envoyé sur le front des Flandres, il est blessé fin juillet par des éclats d'obus. Il restera à l'hôpital jusqu'à la fin de la guerre."},
+{d:"Septembre 1917",t:"Mort de sa mère, atteinte d'un cancer."},
+{d:"1919-1920",t:"Brièvement instituteur dans des villages, il quitte l'enseignement."},
+{d:"Années 1920",t:"Petits métiers (vendeur de pierres tombales, organiste…), puis journaliste à Hanovre et à Berlin. Il adopte le nom d'Erich Maria Remarque."},
+{d:"1927",t:"Il écrit « Im Westen nichts Neues »."},
+{d:"1928-1929",t:"Publication en feuilleton puis en livre : succès mondial, célébrité, et attaques des nationalistes."},
+{d:"1931",t:"Publication de la suite, « Après » (Der Weg zurück). Il s'installe en Suisse, à Porto Ronco, au bord du lac Majeur."},
+{d:"1933",t:"Ses livres sont brûlés par les nazis."},
+{d:"1937",t:"« Trois camarades », roman sur l'Allemagne de l'après-guerre."},
+{d:"1938",t:"Il est déchu de la nationalité allemande."},
+{d:"1939",t:"Il part pour les États-Unis."},
+{d:"1943",t:"Sa sœur Elfriede est condamnée à mort et exécutée par le régime nazi."},
+{d:"1945",t:"« Arc de triomphe », roman sur des réfugiés à Paris à la veille de la guerre."},
+{d:"1947",t:"Il devient citoyen américain."},
+{d:"1952",t:"« L'Étincelle de vie », roman sur un camp de concentration, dédié à sa sœur."},
+{d:"1954",t:"« Un temps pour vivre, un temps pour mourir », sur un soldat allemand pendant la Seconde Guerre mondiale."},
+{d:"1958",t:"Il épouse l'actrice américaine Paulette Goddard."},
+{d:"1970",t:"Il meurt à Locarno, en Suisse, le 25 septembre. Il est enterré à Ronco."}
+];
+
+/* ===================== DOCUMENTS ===================== */
+/* st : "pd" = texte du domaine public reproduit ; "res" = œuvre protégée, résumée */
+const D=[
+{id:"d01",per:"avant",st:"pd",t:"« Il est doux et glorieux de mourir pour la patrie »",a:"Horace, poète latin",d:"vers 23 av. J.-C.",src:"Odes, livre III, 2",x:"Dulce et decorum est pro patria mori.\n(Il est doux et glorieux de mourir pour la patrie.)",l:"Ce vers a été appris par des générations d'écoliers européens, en France comme en Allemagne. C'est exactement le genre d'idéal que Kantorek transmet à ses élèves.",q:"Ce vers te paraît-il beau, dangereux, ou les deux ? Relis-le après le poème de Wilfred Owen, plus bas."},
+{id:"d02",per:"avant",st:"pd",t:"Une autre définition du courage",a:"Jean Jaurès",d:"30 juillet 1903",src:"Discours à la jeunesse, lycée d'Albi",x:"Le courage, c'est de chercher la vérité et de la dire ; c'est de ne pas subir la loi du mensonge triomphant qui passe, et de ne pas faire écho, de notre âme, de notre bouche et de nos mains, aux applaudissements imbéciles et aux huées fanatiques.",l:"Onze ans avant la guerre, Jaurès propose un courage qui n'a rien de guerrier. Il sera assassiné le 31 juillet 1914, pour avoir voulu empêcher la guerre.",q:"Quel personnage du roman correspond le mieux à cette définition du courage ? Lequel la contredit le plus ?"},
+{id:"d03",per:"guerre",st:"pd",t:"Deux appels à l'unité, le même jour",a:"Guillaume II et Raymond Poincaré",d:"4 août 1914",src:"Discours de l'empereur au Reichstag ; message du président de la République aux Chambres",x:"Guillaume II : « Je ne connais plus de partis, je ne connais que des Allemands. »\n\nRaymond Poincaré : la France « sera héroïquement défendue par tous ses fils, dont rien ne brisera devant l'ennemi l'union sacrée ».",l:"Le même jour, dans les deux camps, le même appel à faire taire les désaccords. Chaque pays se présente comme agressé et défendant sa patrie.",q:"Pourquoi les dirigeants des deux camps emploient-ils presque les mêmes mots ? Qu'est-ce que cela t'apprend sur la propagande ?"},
+{id:"d04",per:"guerre",st:"pd",t:"Une armée qui se suicide",a:"Henri Barbusse",d:"1916",src:"Le Feu, dernier chapitre (« L'Aube ») — prix Goncourt 1916",x:"Deux armées qui se battent, c'est comme une grande armée qui se suicide !",l:"Dès 1916, un soldat-écrivain français formule ce que Paul découvrira : dans cette guerre, chaque camp se détruit en détruisant l'autre.",q:"Explique cette image avec tes propres mots. Es-tu d'accord ?"},
+{id:"d05",per:"guerre",st:"pd",t:"La Chanson de Craonne (refrain)",a:"Anonyme (soldats français)",d:"1917",src:"Chanson interdite par l'armée, connue par des versions publiées après la guerre",x:"Adieu la vie, adieu l'amour,\nAdieu toutes les femmes,\nC'est bien fini, c'est pour toujours,\nDe cette guerre infâme.\nC'est à Craonne, sur le plateau,\nQu'on doit laisser sa peau,\nCar nous sommes tous condamnés,\nC'est nous les sacrifiés.",l:"Chantée en cachette après l'offensive meurtrière du Chemin des Dames et pendant les mutineries. De l'autre côté du front, Paul et ses camarades ressentent la même chose.",q:"Qui sont « les sacrifiés » ? Qu'est-ce qui rapproche ce refrain de ce que ressent Paul ?"},
+{id:"d06",per:"guerre",st:"pd",t:"Le vieux mensonge",a:"Wilfred Owen, poète et soldat anglais",d:"écrit en 1917-1918, publié en 1920",src:"« Dulce et Decorum Est », derniers vers (traduction pour ce carnet)",x:"My friend, you would not tell with such high zest\nTo children ardent for some desperate glory,\nThe old Lie: Dulce et decorum est\nPro patria mori.\n\nMon ami, tu ne dirais pas avec tant d'ardeur\nÀ des enfants avides d'une gloire désespérée\nLe vieux Mensonge : Dulce et decorum est\nPro patria mori.",l:"Owen répond directement au vers d'Horace, après avoir décrit un camarade mourant asphyxié par le gaz. Il est tué le 4 novembre 1918, une semaine avant l'armistice.",q:"Qui, dans le roman, aurait pu dire le vers d'Horace ? Qui aurait pu écrire la réponse d'Owen ?"},
+{id:"d07",per:"entre",st:"pd",t:"Les civilisations sont mortelles",a:"Paul Valéry",d:"1919",src:"La Crise de l'esprit",x:"Nous autres, civilisations, nous savons maintenant que nous sommes mortelles.",l:"Comme Paul à l'hôpital, Valéry constate que la science et la culture européennes n'ont pas empêché le massacre : elles l'ont même rendu plus efficace.",q:"Rapproche cette phrase de la réflexion de Paul à l'hôpital (chapitre 10). Qu'ont-elles en commun ?"},
+{id:"d08",per:"entre",st:"pd",t:"L'article 231 du traité de Versailles",a:"Traité de paix",d:"28 juin 1919",src:"Traité de Versailles, article 231",x:"Les Gouvernements alliés et associés déclarent et l'Allemagne reconnaît que l'Allemagne et ses alliés sont responsables, pour les avoir causés, de toutes les pertes et de tous les dommages subis par les Gouvernements alliés et associés et leurs nationaux en conséquence de la guerre, qui leur a été imposée par l'agression de l'Allemagne et de ses alliés.",l:"Base juridique des réparations. Vécu en Allemagne comme une humiliation (« diktat »), il sera exploité par les nationalistes puis par les nazis.",q:"Pourquoi un article de traité peut-il peser si lourd dans les mémoires ? Les historiens en débattent encore : était-il juste, selon toi ?"},
+{id:"d09",per:"entre",st:"pd",t:"« Arrière les fusils ! »",a:"Aristide Briand",d:"10 septembre 1926",src:"Discours accueillant l'Allemagne à la Société des Nations, Genève",x:"Arrière les fusils, les mitrailleuses, les canons ! Place à la conciliation, à l'arbitrage, à la paix !",l:"Le roman paraît dans ce moment d'espoir de réconciliation, juste avant la crise de 1929.",q:"Qu'est-ce qui a manqué, selon toi, pour que cet espoir se réalise ?"},
+{id:"d10",per:"entre",st:"pd",t:"Renoncer à la guerre",a:"Pacte Briand-Kellogg",d:"27 août 1928",src:"Article 1er",x:"Les Hautes Parties contractantes déclarent solennellement, au nom de leurs peuples respectifs, qu'elles condamnent le recours à la guerre pour le règlement des différends internationaux et y renoncent en tant qu'instrument de politique nationale dans leurs relations mutuelles.",l:"Signé l'année où le roman paraît en feuilleton. Une belle intention… sans aucun moyen de la faire respecter.",q:"Une promesse de paix suffit-elle ? Que faudrait-il de plus ?"},
+{id:"d11",per:"nazisme",st:"pd",t:"La formule contre Remarque",a:"Autodafé de Berlin",d:"10 mai 1933",src:"Formule prononcée en jetant ses livres au feu (traduction)",x:"Gegen literarischen Verrat am Soldaten des Weltkriegs, für Erziehung des Volkes im Geist der Wehrhaftigkeit! Ich übergebe der Flamme die Schriften des Erich Maria Remarque.\n\nContre la trahison littéraire envers les soldats de la Guerre mondiale, pour l'éducation du peuple dans l'esprit de la combativité ! Je livre aux flammes les écrits d'Erich Maria Remarque.",l:"Le livre est accusé de « trahir » les soldats… alors qu'il a été écrit par l'un d'eux. Le mot « Wehrhaftigkeit » (aptitude à se battre, combativité) montre l'objectif : préparer le peuple à une nouvelle guerre.",q:"Pourquoi un régime qui veut éduquer le peuple « dans l'esprit de la combativité » doit-il faire disparaître ce roman ?"},
+{id:"d12",per:"avant",st:"pd",t:"Brûler des livres, brûler des hommes",a:"Heinrich Heine",d:"1821",src:"Almansor (pièce de théâtre)",x:"Dort, wo man Bücher verbrennt, verbrennt man auch am Ende Menschen.\n\nLà où l'on brûle des livres, on finit par brûler des hommes.",l:"Écrite plus d'un siècle avant 1933, à propos de l'Espagne du XVe siècle. Heine fait partie des auteurs brûlés par les nazis ; sa phrase figure aujourd'hui sur le mémorial de l'autodafé, à Berlin.",q:"Que penses-tu de cette phrase ? S'agit-il d'une prophétie, d'un avertissement, ou d'autre chose ?"},
+{id:"d13",per:"apres",st:"res",t:"Albert Camus, enfant de 14-18",a:"Albert Camus",d:"1945, 1957, 1994",src:"Éditorial de Combat (8 août 1945) ; Discours de Suède (1957) ; Le Premier Homme (posthume, 1994)",x:"• Le père de Camus, Lucien, est mortellement blessé à la bataille de la Marne en 1914 ; Albert n'a pas un an. Dans « Le Premier Homme », roman inachevé, le héros adulte se rend sur la tombe de son père et réalise avec stupeur que cet homme est mort plus jeune que lui.\n\n• Dans son discours de réception du prix Nobel (1957), Camus décrit sa génération : née au début de la Première Guerre mondiale, elle avait une vingtaine d'années à l'arrivée de Hitler au pouvoir, puis a traversé la guerre d'Espagne, la Seconde Guerre mondiale et les camps. Selon lui, sa tâche n'est peut-être pas de refaire le monde, mais d'empêcher qu'il ne se défasse.\n\n• Deux jours après Hiroshima, dans le journal Combat, Camus refuse de célébrer l'exploit scientifique : il s'inquiète d'une civilisation technique devenue capable de s'anéantir elle-même.",l:"Camus appartient à la génération des enfants de 14-18 : celle qui a grandi avec les pères morts ou blessés que décrit Remarque.",q:"Quel point commun vois-tu entre l'inquiétude de Camus en 1945 et la réflexion de Paul à l'hôpital ?"},
+{id:"d14",per:"entre",st:"res",t:"Stefan Zweig et l'été 1914",a:"Stefan Zweig, écrivain autrichien",d:"publié en 1942",src:"Le Monde d'hier",x:"Dans ses souvenirs, écrits en exil, Zweig décrit l'Europe d'avant 1914 comme un « monde de la sécurité », où chacun croyait au progrès. Il raconte la ferveur des foules viennoises à l'été 1914, une sorte d'ivresse collective qui l'a à la fois fasciné et effrayé, puis l'effondrement de ce monde en deux guerres.",l:"Ce que Zweig observe dans les rues de Vienne, c'est ce que Kantorek fait vivre à sa classe : l'élan collectif qui emporte les individus.",q:"Comment une foule peut-elle entraîner des gens à penser ou faire ce qu'ils n'auraient pas fait seuls ?"},
+{id:"d15",per:"entre",st:"res",t:"Deux anciens soldats, deux récits",a:"Ernst Jünger et Erich Maria Remarque",d:"1920 et 1929",src:"Orages d'acier ; À l'ouest rien de nouveau",x:"Jünger, officier plusieurs fois blessé et décoré, raconte sa guerre comme une épreuve qui forge les hommes, avec une précision froide et une forme d'admiration pour le combat. Remarque, simple soldat, raconte une guerre qui détruit les hommes, vue par un jeune qui n'y trouve aucun sens.",l:"Deux témoins sincères de la même guerre, deux récits opposés. Dans les années 1930, les nazis célèbrent le premier et brûlent le second.",q:"Deux personnes peuvent-elles dire « la vérité » sur un même événement et pourtant se contredire ? Comment est-ce possible ?"},
+{id:"d16",per:"entre",st:"res",t:"L'avertissement de Remarque",a:"Erich Maria Remarque",d:"1929",src:"Texte d'ouverture du roman",x:"Relis les quelques lignes placées avant le premier chapitre de ton livre. Remarque y précise que son livre n'est ni une accusation ni une confession : il veut seulement parler d'une génération détruite par la guerre, y compris ceux qui ont échappé aux obus.",l:"Ces lignes donnent la clé de lecture voulue par l'auteur… que le lecteur est libre de discuter.",q:"Après lecture, penses-tu que le livre tient cette promesse ? (Voir aussi le parcours « Pourquoi Remarque a-t-il écrit ce livre ? ».)"}
+];
+
+/* ===================== LIBELLÉS ===================== */
+const CATS={personnages:"Personnages",intrigue:"Intrigue",themes:"Thèmes"};
+const CTX={oeuvre:"L'œuvre : publication et réception",auteur:"La vie de Remarque",avant:"Avant 1914 : les racines de la guerre",guerre:"1914-1918 : la guerre",entre:"L'entre-deux-guerres (1919-1932)",nazisme:"Nazisme et Seconde Guerre mondiale",universel:"Messages universels de l'œuvre"};
+const PER={avant:"Avant 1914",guerre:"1914-1918",entre:"1919-1932",nazisme:"1933-1945",apres:"Depuis 1945"};
+const QTYPES=[["chap","Un chapitre précis"],["lus","Tous les chapitres déjà lus"],["livre","Le livre entier"],["ctx","Contexte de l'œuvre et de l'histoire"],["trans","Personnages, intrigue ou thèmes"],["mix","Grand mélange (livre + contexte)"],["err","Mes erreurs à revoir"]];
+const CVIEWS=[["roman","Frise des événements du roman"],["histoire","Frise historique 1870-2018"],["vie","La vie de Remarque"],["docs","Documents, discours et textes"]];
+const ALLQ=B.concat(C);
+const VERSION="v2.2";
+
+/* ===================== ÉTAT ET STOCKAGE ===================== */
+const KEY="aloest-carnet-v2",KEY1="aloest-carnet-v1";
+const blank=()=>({lvl:0,res:{},wrong:[],refl:{},pa:{},pr:{},qsel:{type:"ctx",sub:"all",n:10},rsel:{mode:"parcours",p:"pg",r:"all"},csel:{v:"roman",per:"all",dper:"all"}});
+function load(){
+  try{const s=JSON.parse(localStorage.getItem(KEY));if(s){const b=blank();return Object.assign(b,s,{qsel:Object.assign(b.qsel,s.qsel),rsel:Object.assign(b.rsel,s.rsel),csel:Object.assign(b.csel,s.csel)})}}catch(e){}
+  const b=blank();
+  try{const o=JSON.parse(localStorage.getItem(KEY1));if(o){b.lvl=({0:0,1:3,2:6,3:9,4:12})[o.lvl]||0;b.refl=o.refl||{};b.migrated=true}}catch(e){}
+  return b;
+}
+function save(){try{localStorage.setItem(KEY,JSON.stringify(S))}catch(e){}}
+let S=load();save();
+let tab="quiz",run=null;
+const app=document.getElementById("app");
+const $=s=>document.querySelector(s);
+function shuffle(a){a=a.slice();for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a}
+const words=t=>(t.trim().match(/\S+/g)||[]).length;
+const plural=(n,w)=>n+" "+w+(n>1?"s":"");
+
+/* ===================== BARRE DE LECTURE ET ONGLETS ===================== */
+const lvlSel=$("#lvl");
+for(let c=0;c<=12;c++){const o=document.createElement("option");o.value=c;o.textContent=c===0?"Je n'ai pas encore commencé":c===12?"Chapitre 12 (livre terminé)":"Chapitre "+c;lvlSel.appendChild(o)}
+lvlSel.value=S.lvl;
+lvlSel.onchange=()=>{S.lvl=+lvlSel.value;save();run=null;show()};
+document.querySelectorAll("nav button").forEach(b=>b.onclick=()=>{tab=b.dataset.t;run=null;document.querySelectorAll("nav button").forEach(x=>x.classList.toggle("on",x===b));show();window.scrollTo(0,0)});
+function show(){if(tab==="quiz")run?renderQ():quizHome();else if(tab==="refl")reflHome();else if(tab==="ctx")ctxHome();else parents()}
+
+/* ===================== QUIZ ===================== */
+function subFor(t){
+  if(t==="chap"){const a=[];for(let c=1;c<=12;c++)a.push([String(c),"Chapitre "+c+(c>S.lvl?" 🔒":""),c>S.lvl]);return{label:"Chapitre",opts:a}}
+  if(t==="ctx")return{label:"Thème du contexte",opts:[["all","Tout le contexte",false]].concat(Object.keys(CTX).map(k=>[k,CTX[k],false]))};
+  if(t==="trans")return{label:"Angle",opts:Object.keys(CATS).map(k=>[k,CATS[k],false])};
+  return null;
+}
+function pool(t,s){
+  const L=S.lvl,B2=B.filter(q=>q.ch<=L),C2=C.filter(q=>q.ch<=L);
+  switch(t){
+    case"chap":return +s<=L?B.filter(q=>q.ch===+s):[];
+    case"lus":return B2;
+    case"livre":return L>=12?B.slice():[];
+    case"ctx":return C2.filter(q=>s==="all"||q.grp===s);
+    case"trans":return B2.filter(q=>q.cat===s);
+    case"mix":return B2.concat(C2);
+    case"err":return B2.concat(C2).filter(q=>S.wrong.includes(q.id));
+  }
+  return[];
+}
+function emptyMsg(t){
+  if(t==="livre")return"Ce quiz se débloque quand tu as terminé le livre (règle « J'ai lu jusqu'au » sur le chapitre 12).";
+  if(S.lvl===0&&(t==="chap"||t==="lus"||t==="trans"))return"Indique d'abord, en haut de la page, jusqu'où tu as lu.";
+  if(t==="chap")return"Ce chapitre n'est pas encore débloqué.";
+  if(t==="err")return"Aucune erreur à revoir pour l'instant. Bravo !";
+  return"Aucune question disponible pour ce choix.";
+}
+function bar(lbl,qs){const ok=qs.filter(x=>S.res[x.id]&&S.res[x.id].ok).length;return`<div class="prog-row"><div class="lbl"><span>${lbl}</span><span>${ok}/${qs.length}</span></div><div class="bar"><i style="width:${qs.length?Math.round(100*ok/qs.length):0}%"></i></div></div>`}
+function progressCard(){
+  let h=`<div class="card"><h2>Ma progression</h2><details open><summary>Chapitre par chapitre</summary><div class="cols">`;
+  for(let c=1;c<=12;c++)h+=bar("Chapitre "+c+(c>S.lvl?" 🔒":""),B.filter(q=>q.ch===c));
+  h+=`</div></details><details><summary>Contexte</summary><div class="cols">`+Object.keys(CTX).map(k=>bar(CTX[k],C.filter(q=>q.grp===k))).join("")+`</div></details><p class="small">Une question compte comme maîtrisée quand ta dernière réponse était juste.</p></div>`;
+  return h;
+}
+function quizHome(){
+  const q=S.qsel;
+  let h=(S.migrated?`<div class="card small">Ta progression de lecture et tes réflexions de la version 1 ont été reprises automatiquement.</div>`:"");
+  h+=`<div class="card"><h2>Choisis ton quiz</h2><div class="form">
+  <label>Type de quiz<select id="qt">${QTYPES.map(([v,l])=>`<option value="${v}">${l}</option>`).join("")}</select></label>
+  <label id="qsw"><span id="qsl"></span><select id="qs"></select></label>
+  <label>Nombre de questions<select id="qn"><option value="10">10 questions</option><option value="20">20 questions</option><option value="0">Toutes les questions</option></select></label>
+  </div><p class="small" id="qinfo"></p><button class="btn primary" id="qgo">Commencer</button></div>`;
+  h+=progressCard();
+  app.innerHTML=h;
+  const qt=$("#qt"),qs=$("#qs"),qn=$("#qn");
+  qt.value=q.type;qn.value=String(q.n);
+  const fillSub=()=>{
+    const sf=subFor(qt.value);
+    if(!sf){$("#qsw").style.display="none";return}
+    $("#qsw").style.display="";$("#qsl").textContent=sf.label;
+    qs.innerHTML=sf.opts.map(([v,l,d])=>`<option value="${v}"${d?" disabled":""}>${l}</option>`).join("");
+    let want=q.sub;
+    if(!sf.opts.some(o=>o[0]===want&&!o[2])){const f=sf.opts.find(o=>!o[2]);want=f?f[0]:sf.opts[0][0]}
+    qs.value=want;
+  };
+  const upd=()=>{
+    q.type=qt.value;q.sub=subFor(q.type)?qs.value:"";q.n=+qn.value;save();
+    const p=pool(q.type,q.sub);
+    $("#qinfo").textContent=p.length?plural(p.length,"question")+" disponible"+(p.length>1?"s":"")+" pour ce choix"+(q.n&&p.length>q.n?" (tirées au hasard)":"")+".":emptyMsg(q.type);
+    $("#qgo").disabled=!p.length;
+  };
+  qt.onchange=()=>{fillSub();upd()};qs.onchange=upd;qn.onchange=upd;$("#qgo").onclick=start;
+  fillSub();upd();
+}
+function start(){
+  const q=S.qsel;let list=shuffle(pool(q.type,q.sub));if(q.n)list=list.slice(0,q.n);if(!list.length)return;
+  const sf=subFor(q.type),so=sf&&sf.opts.find(o=>o[0]===q.sub);
+  const title=QTYPES.find(x=>x[0]===q.type)[1]+(so?" — "+so[1]:"");
+  run={title,list:list.map(x=>({q:x,order:shuffle([0,1,2,3]),pick:null})),i:0,score:0};
+  renderQ();window.scrollTo(0,0);
+}
+const tagsOf=q=>q.grp?`<span class="tag">${CTX[q.grp]}</span>`:`<span class="tag">Chapitre ${q.ch}</span><span class="tag">${CATS[q.cat]}</span>`;
+function renderQ(){
+  if(run.i>=run.list.length)return end();
+  const it=run.list[run.i],q=it.q,ans=it.pick!==null;
+  let h=`<div class="top"><button class="btn" onclick="quit()">← Choisir un autre quiz</button><span class="small">${run.title} · ${run.i+1}/${run.list.length} · score ${run.score}</span></div>`;
+  h+=`<div class="card">${tagsOf(q)}<div class="q">${q.q}</div>`;
+  it.order.forEach((oi,k)=>{
+    let c="btn opt",mark="";
+    if(ans){
+      if(oi===0){c+=" ok";mark=`<span class="mk">✓ ${it.pick===0?"ta réponse — bonne réponse":"la bonne réponse"}</span>`}
+      else if(oi===it.pick){c+=" ko";mark=`<span class="mk">✗ ta réponse</span>`}
+    }
+    h+=`<button class="${c}"${ans?" disabled":""} onclick="pick(${oi})">${"ABCD"[k]}. ${q.o[oi]}${mark}</button>`;
+  });
+  if(ans){const ok=it.pick===0;h+=`<div class="expl"><span class="${ok?"verdict-ok":"verdict-ko"}">${ok?"✓ Bonne réponse !":"✗ Pas tout à fait."}</span> ${q.e}</div>
+  <details class="flag"><summary>Tu penses que cette question contient une erreur ? Signale-la</summary><textarea id="flagtxt" placeholder="Explique ce qui te semble faux (avec la page du livre si possible)…" style="min-height:70px"></textarea><button class="btn" onclick="flag()">Enregistrer le signalement</button> <span class="small" id="flagok"></span></details>
+  <p style="text-align:right;margin:14px 0 0"><button class="btn primary" onclick="next()">${run.i+1<run.list.length?"Question suivante →":"Voir mon résultat"}</button></p>`}
+  else h+=`<p class="kbd">Astuce clavier : touches A à D (ou 1 à 4) pour répondre, Entrée pour continuer.</p>`;
+  app.innerHTML=h+`</div>`;
+}
+function pick(oi){
+  const it=run.list[run.i];if(it.pick!==null)return;it.pick=oi;
+  const q=it.q,ok=oi===0;if(ok)run.score++;
+  const r=S.res[q.id]||{n:0,good:0};r.n++;if(ok)r.good++;r.ok=ok;S.res[q.id]=r;
+  S.wrong=S.wrong.filter(x=>x!==q.id);if(!ok)S.wrong.push(q.id);save();
+  renderQ();const ex=app.querySelector(".expl");if(ex&&ex.scrollIntoView)ex.scrollIntoView({block:"nearest",behavior:"smooth"});
+}
+function flag(){
+  const it=run.list[run.i],t=$("#flagtxt").value.trim();
+  S.flags=S.flags||[];
+  S.flags.push({id:it.q.id,q:it.q.q,attendu:it.q.o[0],choisi:it.q.o[it.pick],com:t,date:new Date().toLocaleDateString("fr-FR")});
+  save();$("#flagok").textContent="Merci, c'est noté (visible dans l'onglet Mode d'emploi).";
+}
+function exportFlags(){
+  let out="Signalements — carnet À l'ouest rien de nouveau ("+VERSION+")\n\n";
+  (S.flags||[]).forEach((f,i)=>{out+=(i+1)+". ["+f.id+"] "+f.date+"\nQuestion : "+f.q+"\nRéponse attendue par le carnet : "+f.attendu+"\nRéponse choisie : "+f.choisi+"\nCommentaire : "+(f.com||"(aucun)")+"\n\n"});
+  showText(out,"Mes signalements");
+}
+function next(){run.i++;renderQ();window.scrollTo(0,0)}
+function quit(){run=null;quizHome();window.scrollTo(0,0)}
+function end(){
+  const n=run.list.length,s=run.score,p=s/n;
+  const msg=p===1?"Parfait !":p>=.7?"Très bien : quelques points à revoir.":p>=.4?"Pas mal, mais relis les passages concernés.":"Il vaut sans doute mieux relire avant de réessayer.";
+  const miss=run.list.filter(it=>it.pick!==0);
+  let h=`<div class="card" style="text-align:center"><h2>${run.title}</h2><div class="score">${s} / ${n}</div><p>${msg}</p><button class="btn primary" onclick="again()">Recommencer</button> <button class="btn" onclick="quit()">Choisir un autre quiz</button></div>`;
+  if(miss.length)h+=`<div class="card"><h2>À revoir</h2>${miss.map(it=>`<div class="miss"><b>${it.q.q}</b><br><span class="small">Bonne réponse :</span> ${it.q.o[0]}<br><span class="small">${it.q.e}</span></div>`).join("")}</div>`;
+  app.innerHTML=h;
+}
+function again(){run={title:run.title,list:shuffle(run.list.map(it=>({q:it.q,order:shuffle([0,1,2,3]),pick:null}))),i:0,score:0};renderQ();window.scrollTo(0,0)}
+document.addEventListener("keydown",e=>{
+  if(tab!=="quiz"||!run||run.i>=run.list.length)return;
+  const tg=e.target.tagName;if(tg==="TEXTAREA"||tg==="SELECT"||tg==="INPUT")return;
+  const it=run.list[run.i],k=e.key.toLowerCase();
+  let idx="1234".indexOf(k);if(idx<0)idx="abcd".indexOf(k);
+  if(it.pick===null&&idx>=0&&k.length===1)pick(it.order[idx]);
+  else if(it.pick!==null&&e.key==="Enter"&&tg!=="BUTTON"){e.preventDefault();next()}
+});
+
+/* ===================== RÉFLEXION ===================== */
+const gateTxt=ch=>ch>=12?"après la fin du livre":"après le chapitre "+ch;
+function reflHome(){
+  const r=S.rsel;
+  app.innerHTML=`<div class="card"><h2>Réfléchir sur le livre</h2><div class="form">
+  <label>Type de réflexion<select id="rm"><option value="parcours">Parcours guidés (réflexion progressive)</option><option value="carnet">Carnet de questions ouvertes</option></select></label>
+  <label><span id="rsl"></span><select id="rs"></select></label></div>
+  <p class="small" id="rinfo"></p><button class="btn" id="rexp">📋 Copier toutes mes réponses</button></div><div id="rbody"></div>`;
+  const rm=$("#rm"),rs=$("#rs");rm.value=r.mode;
+  const fill=()=>{
+    if(rm.value==="parcours"){
+      $("#rsl").textContent="Parcours";
+      rs.innerHTML=P.map(p=>`<option value="${p.id}"${p.ch>S.lvl?" disabled":""}>${p.t}${p.ch>S.lvl?" 🔒 ("+gateTxt(p.ch)+")":""}</option>`).join("");
+      let w=r.p;if(!P.some(p=>p.id===w&&p.ch<=S.lvl)){const f=P.find(p=>p.ch<=S.lvl);w=f?f.id:P[0].id}rs.value=w;
+      $("#rinfo").textContent="Chaque parcours avance pas à pas : tu écris ta réponse, puis tu découvres une piste à discuter, et une nouvelle question.";
+    }else{
+      $("#rsl").textContent="Question";
+      rs.innerHTML=`<option value="all">Toutes les questions disponibles</option>`+R.map(q=>`<option value="${q.id}"${q.ch>S.lvl?" disabled":""}>${q.t}${q.ch>S.lvl?" 🔒":""}</option>`).join("");
+      rs.value=(r.r==="all"||R.some(q=>q.id===r.r&&q.ch<=S.lvl))?r.r:"all";
+      $("#rinfo").textContent="Des questions ouvertes, sans piste fournie : à toi d'argumenter avec des exemples précis du livre.";
+    }
+  };
+  const draw=()=>{
+    r.mode=rm.value;if(r.mode==="parcours")r.p=rs.value;else r.r=rs.value;save();
+    if(r.mode==="parcours"){const p=P.find(x=>x.id===rs.value);if(p&&p.ch<=S.lvl)renderParcours(p);else $("#rbody").innerHTML=`<div class="card locked">Aucun parcours disponible pour l'instant.</div>`}
+    else renderCarnet(rs.value);
+  };
+  rm.onchange=()=>{fill();draw()};rs.onchange=draw;$("#rexp").onclick=exportAll;
+  fill();draw();
+}
+function renderParcours(p){
+  const ans=S.pa[p.id]||(S.pa[p.id]=[]),rev=S.pr[p.id]||(S.pr[p.id]=[]);
+  let h=`<div class="card"><h2>${p.t}</h2><p>${p.intro}</p><p class="small">Écris d'abord ta propre réponse (quelques phrases suffisent), puis découvre une piste. Les pistes ne sont pas « la » bonne réponse : ce sont des idées à discuter, nuancer ou contester.</p></div>`;
+  for(let k=0;k<p.steps.length;k++){
+    const s=p.steps[k];
+    h+=`<div class="card step"><div class="small">Étape ${k+1} sur ${p.steps.length}</div><h3>${s.q}</h3><textarea data-k="${k}" placeholder="Ta réponse…"></textarea><div class="small" id="pw-${k}"></div>`;
+    if(rev[k])h+=`<div class="piste"><p><b>Une piste possible…</b> ${s.p}</p><p><b>Mais on peut aussi penser…</b> ${s.n}</p><p class="relance"><b>Et toi ?</b> ${s.r}</p><p class="small">Tu peux compléter ou modifier ta réponse ci-dessus : changer d'avis en réfléchissant, c'est bon signe.</p></div>`;
+    else h+=`<div class="actions"><button class="btn primary" data-rev="${k}">Voir une piste</button><button class="btn ghost" data-help="${k}">Je bloque, montre-moi une piste</button></div><p class="small" id="ph-${k}">Écris au moins 5 mots pour débloquer la piste.</p>`;
+    h+=`</div>`;
+    if(!rev[k])break;
+  }
+  const done=p.steps.every((_,k)=>rev[k]);
+  if(done)h+=`<div class="card"><h3>Parcours terminé</h3><p>Relis ta première réponse puis ta dernière : ta façon de voir a-t-elle bougé ? Si oui, qu'est-ce qui l'a fait bouger ?</p><button class="btn" id="preset">Recommencer ce parcours (efface mes réponses)</button></div>`;
+  const body=$("#rbody");body.innerHTML=h;
+  body.querySelectorAll("textarea").forEach(t=>{
+    const k=+t.dataset.k;t.value=ans[k]||"";
+    const upd=()=>{ans[k]=t.value;save();const n=words(t.value);$("#pw-"+k).textContent=n?plural(n,"mot"):"";const b=body.querySelector(`[data-rev="${k}"]`);if(b){b.disabled=n<5;const ph=$("#ph-"+k);if(ph)ph.style.display=n<5?"":"none"}};
+    t.oninput=upd;upd();
+  });
+  body.querySelectorAll("[data-rev],[data-help]").forEach(b=>b.onclick=()=>{
+    const k=+(b.dataset.rev!==undefined?b.dataset.rev:b.dataset.help);rev[k]=true;save();renderParcours(p);
+    const el=body.querySelectorAll(".step")[k];if(el&&el.scrollIntoView)el.scrollIntoView({block:"start",behavior:"smooth"});
+  });
+  const pr=$("#preset");if(pr)pr.onclick=()=>{askOK("Effacer tes réponses à ce parcours ?",()=>{S.pa[p.id]=[];S.pr[p.id]=[];save();renderParcours(p)})};
+}
+function renderCarnet(sel){
+  let h="";
+  R.filter(r=>sel==="all"||r.id===sel).forEach(r=>{
+    const lk=r.ch>S.lvl;
+    h+=`<div class="card"><span class="tag">${r.ch===0?"Avant ou pendant la lecture":r.ch===12?"Fin du livre":"À partir du chapitre "+r.ch}</span><h3>${r.t}</h3>`;
+    if(lk)h+=`<p class="locked">🔒 Disponible ${gateTxt(r.ch)}.</p>`;
+    else h+=`<p>${r.q}</p><details><summary>Des pistes pour démarrer</summary><ul class="pistes">${r.pistes.map(x=>`<li>${x}</li>`).join("")}</ul></details><textarea data-id="${r.id}" placeholder="Ta réponse…"></textarea><div class="small" id="wc-${r.id}"></div>`;
+    h+=`</div>`;
+  });
+  const body=$("#rbody");body.innerHTML=h;
+  body.querySelectorAll("textarea").forEach(t=>{
+    const id=t.dataset.id;t.value=S.refl[id]||"";
+    const upd=()=>{S.refl[id]=t.value;save();const n=words(t.value);$("#wc-"+id).textContent=n?plural(n,"mot"):""};
+    t.oninput=upd;upd();
+  });
+}
+function exportAll(){
+  let out="À l'ouest rien de nouveau — Mes réflexions\n"+new Date().toLocaleDateString("fr-FR")+"\n\n";
+  P.forEach(p=>{const a=S.pa[p.id]||[];if(a.some(x=>x&&x.trim())){out+="######## Parcours : "+p.t+" ########\n\n";p.steps.forEach((s,k)=>{if(a[k]&&a[k].trim())out+="Q"+(k+1)+". "+s.q+"\n→ "+a[k].trim()+"\n\n"})}});
+  const rs=R.filter(r=>(S.refl[r.id]||"").trim());
+  if(rs.length){out+="######## Carnet de questions ouvertes ########\n\n";rs.forEach(r=>{out+="== "+r.t+" ==\n"+r.q+"\n\n"+S.refl[r.id].trim()+"\n\n"})}
+  showText(out,"Mes réflexions");
+}
+
+/* ===================== CONTEXTE ===================== */
+function ctxHome(){
+  const c=S.csel;
+  app.innerHTML=`<div class="card"><h2>Comprendre le contexte</h2><div class="form">
+  <label>Afficher<select id="cv">${CVIEWS.map(([v,l])=>`<option value="${v}">${l}</option>`).join("")}</select></label>
+  <label id="cpw">Période<select id="cp"><option value="all">Toutes les périodes</option>${Object.keys(PER).map(k=>`<option value="${k}">${PER[k]}</option>`).join("")}</select></label></div></div><div id="cbody"></div>`;
+  const cv=$("#cv"),cp=$("#cp");cv.value=c.v;
+  const draw=()=>{
+    c.v=cv.value;const usesPer=c.v==="histoire"||c.v==="docs";
+    $("#cpw").style.display=usesPer?"":"none";
+    if(usesPer)cp.value=c.v==="histoire"?c.per:c.dper;
+    save();
+    const body=$("#cbody");
+    if(c.v==="roman")body.innerHTML=frRoman();
+    else if(c.v==="histoire")body.innerHTML=frHist(c.per);
+    else if(c.v==="vie")body.innerHTML=frVie();
+    else body.innerHTML=docs(c.dper);
+  };
+  cv.onchange=draw;cp.onchange=()=>{if(c.v==="histoire")c.per=cp.value;else c.dper=cp.value;draw()};
+  draw();
+}
+function frRoman(){
+  let h=`<div class="card"><h2>Les événements du roman, chapitre par chapitre</h2><p class="small">Le roman ne donne presque aucune date : on ne sait vraiment où l'on est dans le temps qu'à la fin, en 1918. La guerre semble sans début ni fin. Les chapitres que tu n'as pas encore lus restent cachés.</p><div class="tl">`;
+  F.forEach(f=>{
+    if(f.ch>S.lvl)h+=`<div class="tl-item locked"><div class="tl-date">Chapitre ${f.ch}</div><div class="locked">🔒 À découvrir quand tu l'auras lu.</div></div>`;
+    else h+=`<div class="tl-item"><div class="tl-date">Chapitre ${f.ch} — ${f.t}</div><div>${f.s}</div></div>`;
+  });
+  h+=`</div><p class="small">Fil rouge à suivre : les bottes de Kemmerich (chapitres 1, 2, 11), et le nombre de survivants de la compagnie (chapitres 1 et 6).</p></div>`;
+  return h;
+}
+function frHist(per){
+  let h=`<div class="card"><h2>De 1870 à aujourd'hui</h2><p class="small">● Point plein et mention « lien avec le roman » : événement directement lié au livre ou à son auteur.</p><div class="tl">`;
+  let last="";
+  H.filter(x=>(per==="all"||x.per===per)&&!(x.ch&&x.ch>S.lvl)).forEach(x=>{
+    if(x.per!==last){h+=`<div class="tl-per">${PER[x.per]}</div>`;last=x.per}
+    h+=`<div class="tl-item${x.star?" star":""}"><div class="tl-date">${x.d}${x.star?`<span class="badge lien">lien avec le roman</span>`:""}</div><div>${x.t}</div></div>`;
+  });
+  return h+`</div></div>`;
+}
+function frVie(){
+  return`<div class="card"><h2>Erich Maria Remarque (1898-1970)</h2><p class="small">Une vie traversée par les deux guerres mondiales : soldat en 1917, écrivain célèbre en 1929, auteur brûlé en 1933, exilé, frappé dans sa famille par le régime nazi.</p><div class="tl">`+V.map(x=>`<div class="tl-item"><div class="tl-date">${x.d}</div><div>${x.t}</div></div>`).join("")+`</div></div>`;
+}
+function docs(per){
+  const order=Object.keys(PER);
+  let h=`<div class="card small">Les textes du <b>domaine public</b> sont cités en entier ou en extrait. Les œuvres encore protégées par le droit d'auteur (Remarque, Camus, Zweig, Jünger) sont seulement <b>résumées</b> : tu peux les lire en bibliothèque ou au CDI.</div>`;
+  const list=D.filter(d=>per==="all"||d.per===per).sort((a,b)=>order.indexOf(a.per)-order.indexOf(b.per));
+  if(!list.length)return h+`<div class="card locked">Aucun document pour cette période.</div>`;
+  list.forEach(d=>{
+    h+=`<div class="card"><span class="tag">${PER[d.per]}</span><h3>${d.t}<span class="badge ${d.st}">${d.st==="pd"?"domaine public":"résumé — œuvre protégée"}</span></h3><div class="doc-meta">${d.a} · ${d.d}<br>${d.src}</div><blockquote>${d.x}</blockquote><p><b>Pourquoi ce document ?</b> ${d.l}</p><p class="relance"><b>À toi de réfléchir :</b> ${d.q}</p></div>`;
+  });
+  return h;
+}
+
+/* ===================== MODE D'EMPLOI ===================== */
+function parents(){
+  const ids=Object.keys(S.res),tot=ids.reduce((s,i)=>s+S.res[i].n,0),good=ids.reduce((s,i)=>s+S.res[i].good,0);
+  const nr=Object.values(S.refl).filter(v=>v&&v.trim()).length;
+  const np=P.filter(p=>p.steps.every((_,k)=>(S.pr[p.id]||[])[k])).length;
+  app.innerHTML=`<div class="card"><h2>Comment l'utiliser</h2><ul>
+<li><b>En haut de la page</b>, indiquer jusqu'à quel chapitre on a lu : tout ce qui dévoile la suite reste verrouillé (questions, parcours, frise du roman).</li>
+<li><b>Avant de commencer le livre</b> : quiz « Contexte de l'œuvre et de l'histoire », onglet Contexte, et le parcours « Pourquoi brûler un livre ? ».</li>
+<li><b>Après chaque chapitre</b> : le quiz « Un chapitre précis ». Régulièrement : « Tous les chapitres déjà lus » et « Mes erreurs à revoir ».</li>
+<li><b>Les parcours de réflexion</b> sont le cœur de l'outil : on écrit d'abord, puis on découvre une piste, une autre façon de voir et une relance. Les pistes ne sont jamais présentées comme la vérité.</li>
+<li><b>À discuter ensemble</b> : copier les réponses depuis l'onglet Réflexion (bouton « Copier »), et en parler à table.</li>
+</ul></div>
+<div class="card"><h2>Statistiques</h2><p>${plural(tot,"réponse")} au quiz, ${tot?Math.round(100*good/tot):0} % de bonnes réponses.<br>${np} parcours terminé${np>1?"s":""} sur ${P.length} · ${nr} question${nr>1?"s":""} du carnet rédigée${nr>1?"s":""} sur ${R.length}.</p></div>
+<div class="card"><h2>Signalements d'erreurs</h2>${(S.flags||[]).length?`<p class="small">${plural(S.flags.length,"signalement")}. Copiez-les et transmettez-les pour la version suivante.</p><ul class="small">${S.flags.map(f=>`<li><b>${f.q}</b><br>Réponse choisie : ${f.choisi}${f.com?"<br>« "+f.com+" »":""}</li>`).join("")}</ul><button class="btn" onclick="exportFlags()">📋 Copier les signalements</button> <button class="btn ghost" onclick="askOK('Effacer les signalements ?',()=>{S.flags=[];save();parents()})">Effacer</button>`:`<p class="small">Aucun pour l'instant. Après chaque réponse, un lien « Signale-la » permet de noter une question qui semble fausse.</p>`}</div>
+<div class="card"><h2>Contenu de cette version</h2><p class="small">${B.length} questions sur le livre (12 chapitres) · ${C.length} questions de contexte (7 thèmes) · ${P.length} parcours de réflexion · ${R.length} questions ouvertes · 3 frises · ${D.length} documents.</p>
+<h3>Historique des versions</h3><ul class="small">
+<li><b>v1</b> — QCM par partie du livre (4 blocs de chapitres), carnet de réflexion.</li>
+<li><b>v2</b> — Quiz par chapitre, sur les chapitres lus, sur le livre entier, et sur 7 thèmes de contexte (œuvre, vie de l'auteur, avant 1914, la guerre, l'entre-deux-guerres, nazisme et 1939-1945, messages universels) ; menus déroulants ; parcours de réflexion progressive ; onglet Contexte (frise du roman, frise historique, vie de Remarque, documents) ; reprise automatique des données de la v1.</li>
+<li><b>v2.1</b> — Correctif : la bonne réponse et ta réponse sont désormais signalées par ✓ / ✗ et un libellé, en plus des couleurs ; bouton pour signaler une question erronée ; correction de la traduction de la formule de l'autodafé de 1933 (« Wehrhaftigkeit » = combativité, et non « vérité »).</li>
+<li><b>v2.2</b> — Compatibilité iPad / iPhone : l'outil est aussi publié en page web ; confirmations et export des réponses intégrés à la page (bouton « Copier » au lieu du téléchargement de fichier) ; mode sombre amélioré.</li>
+</ul></div>
+<div class="card"><h2>Données</h2><p class="small">Tout est enregistré uniquement dans le navigateur de cet appareil : rien n'est envoyé sur internet. Changer de navigateur ou d'ordinateur repart de zéro ; vider les données de navigation efface la progression. Sur un ordinateur partagé, les autres utilisateurs peuvent lire les réflexions.</p><button class="btn" onclick="resetAll()">Tout effacer</button></div>`;
+}
+function resetAll(){askOK("Effacer toute la progression et les réflexions ?",()=>{S=blank();save();lvlSel.value=0;tab="quiz";document.querySelectorAll("nav button").forEach(x=>x.classList.toggle("on",x.dataset.t==="quiz"));show()})}
+
+show();
+
+</script>
+<script>if("serviceWorker" in navigator){addEventListener("load",function(){navigator.serviceWorker.register("sw.js").catch(function(){})})}</script>
+</body>
+</html>
